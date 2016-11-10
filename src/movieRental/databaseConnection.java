@@ -9,7 +9,7 @@ Connection conn = null;
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://LocalHost:3306/project_wei", "root", "1234");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://www.db4free.net:3306/project_wei", "cresendiz7", "123456");
 			System.out.println("Connection Successful ");
 			return conn;
 		}catch(Exception ex){
