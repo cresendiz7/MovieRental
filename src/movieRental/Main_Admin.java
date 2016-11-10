@@ -93,7 +93,7 @@ public class Main_Admin extends JFrame {
  
 	public void refAllCustTbl(){
 		try{
-			String query = "SELECT * FROM customers";
+			String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -109,7 +109,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refNewCustTbl(){
 		try{
-			String query = "SELECT * FROM customers";
+			String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableNewCust.setModel(DbUtils.resultSetToTableModel(rs));
@@ -124,7 +124,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refEditCustTbl(){
 		try{
-			String query = "SELECT * FROM customers";
+			String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableEditCust.setModel(DbUtils.resultSetToTableModel(rs));
@@ -139,7 +139,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refDelCustTbl(){
 		try{
-			String query = "SELECT * FROM customers";
+			String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableDelCust.setModel(DbUtils.resultSetToTableModel(rs));
@@ -154,7 +154,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refAllMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -170,7 +170,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refNewMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableNewMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -185,7 +185,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refEditMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableEditMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -200,7 +200,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refDelMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableDelMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -612,7 +612,7 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxEditCust.getSelectedItem();
 					String value1 = tfSearchEditCust.getText();
-					String query = "SELECT * FROM customers where "+ value0 +" = '"+value1+"' ";
+					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers where "+ value0 +" = '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -638,18 +638,18 @@ public class Main_Admin extends JFrame {
 					int row = tableEditCust.getSelectedRow();
 					String Table_click = (tableEditCust.getModel().getValueAt(row, 0).toString());
 					
-					String query = "SELECT * FROM customers WHERE userid = ' "+Table_click+" ' ";
+					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers WHERE userid = ' "+Table_click+" ' ";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 				
 				while(rs.next())
 				{
-					tfCustID.setText(rs.getString("userid"));
-					tfFirstName2.setText(rs.getString("first_name"));
-					tfLastName2.setText(rs.getString("last_name"));
-					tfAge2.setText(rs.getString("age"));
-					tfUsername2.setText(rs.getString("username"));
-					tfPassword2.setText(rs.getString("password"));
+					tfCustID.setText(rs.getString("Customer ID"));
+					tfFirstName2.setText(rs.getString("First Name"));
+					tfLastName2.setText(rs.getString("Last Name"));
+					tfAge2.setText(rs.getString("Age"));
+					tfUsername2.setText(rs.getString("Username"));
+					tfPassword2.setText(rs.getString("Password"));
 				}
 				
 				rs.close();
@@ -805,7 +805,7 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxDelCust.getSelectedItem();
 					String value1 = tfDelUserSearch.getText();
-					String query = "SELECT * FROM customers where "+value0+" = '"+value1+"' ";
+					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers where "+value0+" = '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -877,16 +877,10 @@ public class Main_Admin extends JFrame {
 		dateChooserNew.setBounds(345, 304, 145, 29);
 		panelAddMov.add(dateChooserNew);
 		
-		JSpinField spinFieldNewHour = new JSpinField();
-		spinFieldNewHour.setMaximum(10);
-		spinFieldNewHour.setMinimum(0);
-		spinFieldNewHour.setBounds(347, 345, 42, 28);
-		panelAddMov.add(spinFieldNewHour);
-		
 		JSpinField spinFieldNewMin = new JSpinField();
-		spinFieldNewMin.setMaximum(59);
+		spinFieldNewMin.setMaximum(1000);
 		spinFieldNewMin.setMinimum(0);
-		spinFieldNewMin.setBounds(387, 345, 42, 28);
+		spinFieldNewMin.setBounds(347, 345, 54, 28);
 		panelAddMov.add(spinFieldNewMin);
 		
 		JButton button_2 = new JButton("Submit");
@@ -895,25 +889,12 @@ public class Main_Admin extends JFrame {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new movie?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				 if(action == 0){
 					try{
-						String value0, value1;
-						if(spinFieldNewHour.getValue() == 1){
-							value0 = " hour ";
-						}else{
-							value0 =" hours ";
-						}
-						
-						if(spinFieldNewMin.getValue() == 1){
-							value1 = " minute";
-						}else{
-							value1 =" minutes";
-						}
-						
 						String query = "INSERT INTO movies (title, genre, release_date, length, rating) VALUES (?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);
 						pst.setString(1, tfTitle.getText());
 						pst.setString(2, (String)comboBoxNewGenre.getSelectedItem());
 						pst.setString(3, ((JTextField)dateChooserNew.getDateEditor().getUiComponent()).getText());
-						pst.setString(4, spinFieldNewHour.getValue()+ value0 + spinFieldNewMin.getValue() + value1);
+						pst.setInt(4, spinFieldNewMin.getValue());
 						pst.setString(5, (String)comboBoxNewRating.getSelectedItem());
 						
 						pst.execute();
@@ -973,12 +954,8 @@ public class Main_Admin extends JFrame {
 		comboBoxNewRating.setBounds(574, 304, 82, 28);
 		panelAddMov.add(comboBoxNewRating);
 		
-		JLabel lblHours = new JLabel("Hour");
-		lblHours.setBounds(347, 330, 42, 16);
-		panelAddMov.add(lblHours);
-		
 		JLabel lblMin = new JLabel("Min");
-		lblMin.setBounds(387, 330, 42, 16);
+		lblMin.setBounds(355, 330, 42, 16);
 		panelAddMov.add(lblMin);
 		
 		JPanel panelEditMov = new JPanel();
@@ -998,16 +975,10 @@ public class Main_Admin extends JFrame {
 		dateChooserEdit.setBounds(347, 305, 145, 29);
 		panelEditMov.add(dateChooserEdit);
 		
-		JSpinField spinFieldEditHour = new JSpinField();
-		spinFieldEditHour.setMinimum(0);
-		spinFieldEditHour.setMaximum(10);
-		spinFieldEditHour.setBounds(347, 348, 42, 28);
-		panelEditMov.add(spinFieldEditHour);
-		
 		JSpinField spinFieldEditMin = new JSpinField();
 		spinFieldEditMin.setMinimum(0);
-		spinFieldEditMin.setMaximum(59);
-		spinFieldEditMin.setBounds(387, 348, 42, 28);
+		spinFieldEditMin.setMaximum(1000);
+		spinFieldEditMin.setBounds(347, 348, 54, 28);
 		panelEditMov.add(spinFieldEditMin);
 		
 		JScrollPane scrollPane_6 = new JScrollPane();
@@ -1022,7 +993,7 @@ public class Main_Admin extends JFrame {
 					int row = tableEditMov.getSelectedRow();
 					String Table_click = (tableEditMov.getModel().getValueAt(row, 0).toString());
 					
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies WHERE movieid = ' "+Table_click+" ' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies WHERE movieid = ' "+Table_click+" ' ";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 				
@@ -1032,8 +1003,7 @@ public class Main_Admin extends JFrame {
 					tfTitle2.setText(rs.getString("Title"));
 					comboBoxEditGenre.setSelectedItem(rs.getString("Genre"));
 					((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).setText(rs.getString("Release Date"));
-			//		spinFieldNewHour.getValue()+ value0 + spinFieldNewMin.getValue() + value1;
-			//		tfUsername2.setText(rs.getString("length"));
+					spinFieldNewMin.setValue(new Integer(rs.getInt("Length (Minutes)")));
 					comboBoxEditRating.setSelectedItem(rs.getString("Rating"));
 				}
 				
@@ -1053,24 +1023,11 @@ public class Main_Admin extends JFrame {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 				 if(action == 0){
 					try{
-						String hour, minute;
-						if(spinFieldNewHour.getValue() == 1){
-							hour = " hour ";
-						}else{
-							hour =" hours ";
-						}
-						
-						if(spinFieldNewMin.getValue() == 1){
-							minute = " minute";
-						}else{
-							minute =" minutes";
-						}
-						
 						String value0 = tfmovieID.getText();
 						String value1 = tfTitle2.getText();
 						String value2 = (String)comboBoxEditGenre.getSelectedItem();
 						String value3 = ((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).getText();
-						String value4 = spinFieldEditHour.getValue() + hour + spinFieldEditMin.getValue() + minute;
+						int value4 = spinFieldEditMin.getValue();
 						String value5 = (String)comboBoxEditRating.getSelectedItem();
 	
 						String query = "UPDATE movies SET  title = '"+ value1 +"', genre = '"+ value2 +
@@ -1141,7 +1098,7 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxEditMov.getSelectedItem();
 					String value1 = tfEditMovSearch.getText();
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies where "+ value0 +" = '"+value1+"' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" = '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1176,12 +1133,8 @@ public class Main_Admin extends JFrame {
 		label_18.setBounds(271, 347, 64, 29);
 		panelEditMov.add(label_18);
 		
-		JLabel label_14 = new JLabel("Hour");
-		label_14.setBounds(347, 333, 42, 16);
-		panelEditMov.add(label_14);
-		
 		JLabel label_20 = new JLabel("Min");
-		label_20.setBounds(387, 333, 42, 16);
+		label_20.setBounds(357, 334, 42, 16);
 		panelEditMov.add(label_20);
 		
 		tfmovieID = new JTextField();
@@ -1248,7 +1201,7 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxDelMov.getSelectedItem();
 					String value1 = tfDelMovSearch.getText();
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length' FROM movies where "+ value0 +" = '"+value1+"' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" = '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
