@@ -10,16 +10,7 @@ public class Login{
 	private JPasswordField Password;
 	private JTextField Username;
 	
-	///sdf
-	///ssdf
-	///sdfsdf
-	//asdasd
-
-	//sfsdfdfd	
-
-	///sdfsdf
-
-	//jnkjnkjnkjnkjnk
+	//Hello 
 	/**
 	 * Launch the application.
 	 */
