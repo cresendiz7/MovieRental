@@ -872,16 +872,15 @@ public class Main_Admin extends JFrame {
 		tfTitle.setBounds(70, 304, 145, 29);
 		panelAddMov.add(tfTitle);
 		
+		JSpinner spinnerNewMin = new JSpinner();
+		spinnerNewMin.setModel(new SpinnerNumberModel(0, 0, 999, 1));
+		spinnerNewMin.setBounds(345, 345, 54, 29);
+		panelAddMov.add(spinnerNewMin);
+		
 		JDateChooser dateChooserNew = new JDateChooser();
 		dateChooserNew.setDateFormatString("MM-dd-yyyy");
 		dateChooserNew.setBounds(345, 304, 145, 29);
 		panelAddMov.add(dateChooserNew);
-		
-		JSpinField spinFieldNewMin = new JSpinField();
-		spinFieldNewMin.setMaximum(1000);
-		spinFieldNewMin.setMinimum(0);
-		spinFieldNewMin.setBounds(347, 345, 54, 28);
-		panelAddMov.add(spinFieldNewMin);
 		
 		JButton button_2 = new JButton("Submit");
 		button_2.addActionListener(new ActionListener() {
@@ -894,7 +893,7 @@ public class Main_Admin extends JFrame {
 						pst.setString(1, tfTitle.getText());
 						pst.setString(2, (String)comboBoxNewGenre.getSelectedItem());
 						pst.setString(3, ((JTextField)dateChooserNew.getDateEditor().getUiComponent()).getText());
-						pst.setInt(4, spinFieldNewMin.getValue());
+						pst.setInt(4, ((Integer)spinnerNewMin.getValue()));
 						pst.setString(5, (String)comboBoxNewRating.getSelectedItem());
 						
 						pst.execute();
@@ -954,8 +953,9 @@ public class Main_Admin extends JFrame {
 		comboBoxNewRating.setBounds(574, 304, 82, 28);
 		panelAddMov.add(comboBoxNewRating);
 		
-		JLabel lblMin = new JLabel("Min");
-		lblMin.setBounds(355, 330, 42, 16);
+		JLabel lblMin = new JLabel("Minutes");
+		lblMin.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMin.setBounds(345, 330, 52, 16);
 		panelAddMov.add(lblMin);
 		
 		JPanel panelEditMov = new JPanel();
@@ -970,16 +970,15 @@ public class Main_Admin extends JFrame {
 		comboBoxEditRating.setBounds(574, 305, 82, 28);
 		panelEditMov.add(comboBoxEditRating);
 		
+		JSpinner spinnerEditMin = new JSpinner();
+		spinnerEditMin.setModel(new SpinnerNumberModel(0, 0, 1000, 1));
+		spinnerEditMin.setBounds(347, 346, 54, 29);
+		panelEditMov.add(spinnerEditMin);
+		
 		JDateChooser dateChooserEdit = new JDateChooser();
 		dateChooserEdit.setDateFormatString("MM-dd-yyyy");
 		dateChooserEdit.setBounds(347, 305, 145, 29);
 		panelEditMov.add(dateChooserEdit);
-		
-		JSpinField spinFieldEditMin = new JSpinField();
-		spinFieldEditMin.setMinimum(0);
-		spinFieldEditMin.setMaximum(1000);
-		spinFieldEditMin.setBounds(347, 348, 54, 28);
-		panelEditMov.add(spinFieldEditMin);
 		
 		JScrollPane scrollPane_6 = new JScrollPane();
 		scrollPane_6.setBounds(6, 47, 781, 208);
@@ -1003,7 +1002,7 @@ public class Main_Admin extends JFrame {
 					tfTitle2.setText(rs.getString("Title"));
 					comboBoxEditGenre.setSelectedItem(rs.getString("Genre"));
 					((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).setText(rs.getString("Release Date"));
-					spinFieldNewMin.setValue(new Integer(rs.getInt("Length (Minutes)")));
+					spinnerEditMin.setValue(new Integer(rs.getInt("Length (Minutes)")));
 					comboBoxEditRating.setSelectedItem(rs.getString("Rating"));
 				}
 				
@@ -1027,7 +1026,7 @@ public class Main_Admin extends JFrame {
 						String value1 = tfTitle2.getText();
 						String value2 = (String)comboBoxEditGenre.getSelectedItem();
 						String value3 = ((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).getText();
-						int value4 = spinFieldEditMin.getValue();
+						int value4 = (Integer)spinnerEditMin.getValue();
 						String value5 = (String)comboBoxEditRating.getSelectedItem();
 	
 						String query = "UPDATE movies SET  title = '"+ value1 +"', genre = '"+ value2 +
@@ -1047,7 +1046,7 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_4.setBounds(676, 347, 102, 29);
+		button_4.setBounds(685, 345, 102, 29);
 		panelEditMov.add(button_4);
 		
 		JLabel label_10 = new JLabel("Release Date:");
@@ -1133,9 +1132,10 @@ public class Main_Admin extends JFrame {
 		label_18.setBounds(271, 347, 64, 29);
 		panelEditMov.add(label_18);
 		
-		JLabel label_20 = new JLabel("Min");
-		label_20.setBounds(357, 334, 42, 16);
-		panelEditMov.add(label_20);
+		JLabel lblMinutes = new JLabel("Minutes");
+		lblMinutes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMinutes.setBounds(347, 332, 54, 16);
+		panelEditMov.add(lblMinutes);
 		
 		tfmovieID = new JTextField();
 		tfmovieID.setEditable(false);
