@@ -611,8 +611,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
 					String value0 = (String)comboBoxEditCust.getSelectedItem();
-					String value1 = tfSearchEditCust.getText();
-					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers where "+ value0 +" = '"+value1+"' ";
+					String value1 = tfSearchEditCust.getText()+"%";
+					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers WHERE "+value0+" LIKE '"+value1+"'";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -804,8 +804,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					String value0 = (String)comboBoxDelCust.getSelectedItem();
-					String value1 = tfDelUserSearch.getText();
-					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers where "+value0+" = '"+value1+"' ";
+					String value1 = tfDelUserSearch.getText()+"%";
+					String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM customers where "+value0+" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1096,8 +1096,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
 					String value0 = (String)comboBoxEditMov.getSelectedItem();
-					String value1 = tfEditMovSearch.getText();
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" = '"+value1+"' ";
+					String value1 = tfEditMovSearch.getText()+"%";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1200,8 +1200,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {		
 				try{
 					String value0 = (String)comboBoxDelMov.getSelectedItem();
-					String value1 = tfDelMovSearch.getText();
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" = '"+value1+"' ";
+					String value1 = tfDelMovSearch.getText()+"%";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1396,8 +1396,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					String value0 = (String)comboBoxEditAdm.getSelectedItem();
-					String value1 = tfEditAdmSearch.getText();
-					String query = "SELECT adminid as'Admin ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM admins where " + value0 + " = '"+value1+"' ";
+					String value1 = tfEditAdmSearch.getText()+"%";
+					String query = "SELECT adminid as'Admin ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM admins where " + value0 + " LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1548,8 +1548,8 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					String value0 = (String)comboBoxDelAdm.getSelectedItem();
-					String value1 = tfDelAdmSearch.getText();
-					String query = "SELECT adminid as'Admin ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM admins where "+value0+" = '"+value1+"' ";
+					String value1 = tfDelAdmSearch.getText()+"%";
+					String query = "SELECT adminid as'Admin ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username', password as 'Password' FROM admins where "+value0+" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
