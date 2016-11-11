@@ -1597,6 +1597,28 @@ public class Main_Admin extends JFrame {
 		comboBoxDelAdm.setBounds(190, 6, 145, 29);
 		panelDelAdm.add(comboBoxDelAdm);
 		
+		JPanel panelRent = new JPanel();
+		panelRent.setBackground(SystemColor.textHighlight);
+		panelCards.add(panelRent, "name_21985245195754");
+		panelRent.setLayout(null);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(SystemColor.textHighlight);
+		tabbedPane.setBounds(0, 0, 793, 412);
+		panelRent.add(tabbedPane);
+		
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("View All Rentals", null, panel, null);
+		
+		JPanel panel_1 = new JPanel();
+		tabbedPane.addTab("Overdue Rentals", null, panel_1, null);
+		
+		JPanel panel_2 = new JPanel();
+		tabbedPane.addTab("New tab", null, panel_2, null);
+		
+		JPanel panel_3 = new JPanel();
+		tabbedPane.addTab("New tab", null, panel_3, null);
+		
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(SystemColor.textHighlight);
 		ButtonMenu.setBounds(10, 79, 130, 412);
@@ -1671,6 +1693,14 @@ public class Main_Admin extends JFrame {
 		ButtonMenu.add(btnSettings);
 		
 		JButton btnRentals = new JButton("Rentals");
+		btnRentals.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelCards.removeAll();
+				panelCards.add(panelRent);
+				panelCards.repaint();
+				panelCards.revalidate();
+			}
+		});
 		btnRentals.setIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/database.png")));
 		btnRentals.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnRentals.setHorizontalTextPosition(SwingConstants.CENTER);
