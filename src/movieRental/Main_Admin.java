@@ -1646,22 +1646,6 @@ public class Main_Admin extends JFrame {
 			}
 		});
 		
-		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(10, 312, 100, 90);
-		btnLogout.setIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/sign-ban48.png")));
-		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnLogout.setVerticalTextPosition(SwingConstants.BOTTOM);
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
-				if(action == 0){
-				contentPane.setVisible(false);
-				dispose();
-				Login.main(null);
-				}
-			}
-		});
-		
 		JButton btnSettings = new JButton("Admins");
 		btnSettings.setBounds(10, 209, 100, 90);
 		btnSettings.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -1684,7 +1668,29 @@ public class Main_Admin extends JFrame {
 		ButtonMenu.setLayout(null);
 		ButtonMenu.add(btnCustomers);
 		ButtonMenu.add(btnMovies);
-		ButtonMenu.add(btnLogout);
 		ButtonMenu.add(btnSettings);
+		
+		JButton btnRentals = new JButton("Rentals");
+		btnRentals.setIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/database.png")));
+		btnRentals.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnRentals.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnRentals.setBounds(10, 311, 100, 90);
+		ButtonMenu.add(btnRentals);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.setHorizontalAlignment(SwingConstants.LEFT);
+		btnLogout.setBounds(843, 11, 100, 57);
+		contentPane.add(btnLogout);
+		btnLogout.setIcon(new ImageIcon(Main_Admin.class.getResource("/twentyfour/sign-ban.png")));
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
+				if(action == 0){
+				contentPane.setVisible(false);
+				dispose();
+				Login.main(null);
+				}
+			}
+		});
 	}
 }
