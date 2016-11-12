@@ -11,10 +11,10 @@ import javax.swing.border.*;
 import net.proteanit.sql.DbUtils;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Main_Admin extends JFrame {
-	
-	//sdsd
 
 	Connection connection = null;
 	private JPanel contentPane;
@@ -71,6 +71,9 @@ public class Main_Admin extends JFrame {
 	private JTextField tfEditMovSearch;
 	private JTextField tfDelMovSearch;
 	private JTextField tfmovieID;
+	public static JLabel lbCurrentUsername;
+	public static JLabel lbCurrentUserID;
+	private JTable tableViewRent;
 	
 	/**
 	 * Launch the application.
@@ -275,6 +278,22 @@ public class Main_Admin extends JFrame {
 			ex.printStackTrace();
 		}
 	}
+	
+	public void refAllRentTbl(){
+		try{
+			String query = "SELECT * FROM rentals";
+			
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableViewRent.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
 
 	public void fillComboEditCust(){
 		try{
@@ -431,7 +450,7 @@ public class Main_Admin extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_Admin.class.getResource("/fortyeight/device-tv.png")));
 		connection = databaseConnection.dbConnection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 969, 541);
+		setBounds(100, 100, 969, 552);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.textHighlight);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -1611,15 +1630,26 @@ public class Main_Admin extends JFrame {
 		
 		JPanel panel = new JPanel();
 		tabbedPane.addTab("View All Rentals", null, panel, null);
+		panel.setLayout(null);
+		
+		JScrollPane scrollPane_12 = new JScrollPane();
+		scrollPane_12.setBounds(6, 6, 781, 370);
+		panel.add(scrollPane_12);
+		
+		tableViewRent = new JTable();
+		scrollPane_12.setViewportView(tableViewRent);
 		
 		JPanel panel_1 = new JPanel();
 		tabbedPane.addTab("Overdue Rentals", null, panel_1, null);
+		panel_1.setLayout(null);
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_2, null);
+		panel_2.setLayout(null);
 		
 		JPanel panel_3 = new JPanel();
 		tabbedPane.addTab("New tab", null, panel_3, null);
+		panel_3.setLayout(null);
 		
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(SystemColor.textHighlight);
@@ -1689,10 +1719,6 @@ public class Main_Admin extends JFrame {
 				fillComboDelAdm();
 			}
 		});
-		ButtonMenu.setLayout(null);
-		ButtonMenu.add(btnCustomers);
-		ButtonMenu.add(btnMovies);
-		ButtonMenu.add(btnSettings);
 		
 		JButton btnRentals = new JButton("Rentals");
 		btnRentals.addActionListener(new ActionListener() {
@@ -1701,12 +1727,19 @@ public class Main_Admin extends JFrame {
 				panelCards.add(panelRent);
 				panelCards.repaint();
 				panelCards.revalidate();
+				refAllRentTbl();
 			}
 		});
+		
 		btnRentals.setIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/database.png")));
 		btnRentals.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnRentals.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnRentals.setBounds(10, 311, 100, 90);
+		
+		ButtonMenu.setLayout(null);
+		ButtonMenu.add(btnCustomers);
+		ButtonMenu.add(btnMovies);
+		ButtonMenu.add(btnSettings);
 		ButtonMenu.add(btnRentals);
 		
 		JButton btnLogout = new JButton("Logout");
@@ -1724,5 +1757,50 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBounds(0, 494, 963, 29);
+		contentPane.add(panel_4);
+		
+		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in: ");
+		
+		JLabel lblId_2 = new JLabel("ID:");
+		
+		lbCurrentUserID = new JLabel();
+		
+		JLabel lblUsername = new JLabel("Username:");
+		
+		lbCurrentUsername = new JLabel();
+			
+		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
+		gl_panel_4.setHorizontalGroup(
+			gl_panel_4.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_4.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblCurrentlyLoggedIn)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lbCurrentUsername, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblId_2, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lbCurrentUserID, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(581, Short.MAX_VALUE))
+		);
+		gl_panel_4.setVerticalGroup(
+			gl_panel_4.createParallelGroup(Alignment.LEADING)
+				.addGroup(Alignment.TRAILING, gl_panel_4.createSequentialGroup()
+					.addContainerGap(7, Short.MAX_VALUE)
+					.addGroup(gl_panel_4.createParallelGroup(Alignment.LEADING)
+						.addComponent(lbCurrentUserID, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lbCurrentUsername, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel_4.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblCurrentlyLoggedIn)
+							.addComponent(lblUsername))
+						.addComponent(lblId_2))
+					.addContainerGap())
+		);
+		panel_4.setLayout(gl_panel_4);
 	}
 }

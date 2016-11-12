@@ -2,14 +2,18 @@ package movieRental;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
+import net.proteanit.sql.DbUtils;
+
 import java.sql.*;
 
 public class Login{
 
 	private JFrame frmLogin;
 	private JPasswordField Password;
-	private JTextField Username;
-	
+	private JTextField Username;	
+	private JTable tableCurrentID;
+	private String str;
 
 	/**
 	 * Launch the application.
@@ -38,6 +42,7 @@ public class Login{
 	 */
 	public Login() {
 		initialize();
+		getUserID();
 		connection = databaseConnection.dbConnection();
 	}
 	
@@ -53,6 +58,9 @@ public class Login{
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	private void getUserID() {
+		
+	}
 	private void initialize() {
 		frmLogin =  new JFrame();
 		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/fortyeight/device-tv.png")));
@@ -86,10 +94,26 @@ public class Login{
 							count++;
 						}
 						if(count == 1){
+							try{
+								String query2 = "SELECT adminid from admins where username = '"+ Username.getText() +"'";
+								PreparedStatement pst2 = connection.prepareStatement(query2);
+								ResultSet rs2 = pst2.executeQuery();
+									
+								tableCurrentID.setModel(DbUtils.resultSetToTableModel(rs2));
+								int row =0;
+								int column = 0;
+								str = (tableCurrentID.getModel().getValueAt(row,column).toString());
+								
+							}catch (Exception ex) { 
+								JOptionPane.showMessageDialog(null, ex);
+							}
+							
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
-							frmLogin.dispose();
 							Main_Admin wel = new Main_Admin();
+							Main_Admin.lbCurrentUserID.setText(str);
+							Main_Admin.lbCurrentUsername.setText(Username.getText());
 							wel.setVisible(true);
+							frmLogin.dispose();
 						}
 						else if(count > 1){
 							JOptionPane.showMessageDialog(null, "Duplicate Username and Password");
@@ -97,11 +121,10 @@ public class Login{
 						else{
 							JOptionPane.showMessageDialog(null, "Username/Password is not correct. Try Again.");
 						}
-						
 						rs.close();
 						pst.close();
 					}catch(Exception ex){
-						ex.printStackTrace();
+						JOptionPane.showMessageDialog(null,ex);
 				}
 				}else{
 					try{
@@ -117,9 +140,9 @@ public class Login{
 						}
 						if(count == 1){
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
-							frmLogin.dispose();
 							Main_Cust window = new Main_Cust();
 							window.setVisible(true);
+							frmLogin.dispose();
 						}
 						else if(count > 1){
 							JOptionPane.showMessageDialog(null, "Duplicate Username and Password");
@@ -169,5 +192,8 @@ public class Login{
 		btnCustomerSignUp.addActionListener(signup); 
 		btnCustomerSignUp.setBounds(130, 227, 145, 29);
 		frmLogin.getContentPane().add(btnCustomerSignUp);
+		
+		tableCurrentID = new JTable();
+		frmLogin.getContentPane().add(tableCurrentID);
 	}
 }

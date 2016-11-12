@@ -9,7 +9,7 @@ Connection conn = null;
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://www.db4free.net:3306/project_wei", "cresendiz7", "123456");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://Localhost:3306/project_wei", "root", "1234");
 			System.out.println("Connection Successful ");
 			return conn;
 		}catch(Exception ex){
@@ -18,3 +18,9 @@ Connection conn = null;
 		}
 	}
 }
+
+//To access online database 
+// use this:   Connection conn = DriverManager.getConnection("jdbc:mysql://www.db4free.net:3306/project_wei", "cresendiz7", "123456");
+
+//To access local database
+// use this:   Connection conn = DriverManager.getConnection("jdbc:mysql://Localhost:3306/project_wei", "root", "1234");
