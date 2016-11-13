@@ -71,8 +71,8 @@ public class Main_Admin extends JFrame {
 	private JTextField tfEditMovSearch;
 	private JTextField tfDelMovSearch;
 	private JTextField tfmovieID;
-	public static JLabel lbCurrentUsername;
-	public static JLabel lbCurrentUserID;
+	public static JLabel lbCurrentUsernameAdmin;
+	public static JLabel lbCurrentUserIDAdmin;
 	private JTable tableViewRent;
 	
 	/**
@@ -1762,45 +1762,25 @@ public class Main_Admin extends JFrame {
 		panel_4.setBounds(0, 494, 963, 29);
 		contentPane.add(panel_4);
 		
-		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in: ");
+		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in as Administrator ");
+		lblCurrentlyLoggedIn.setBounds(6, 7, 206, 16);
 		
 		JLabel lblId_2 = new JLabel("ID:");
+		lblId_2.setBounds(413, 7, 27, 16);
 		
-		lbCurrentUserID = new JLabel();
+		lbCurrentUserIDAdmin = new JLabel();
+		lbCurrentUserIDAdmin.setBounds(431, 7, 55, 16);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setBounds(224, 7, 73, 16);
 		
-		lbCurrentUsername = new JLabel();
-			
-		GroupLayout gl_panel_4 = new GroupLayout(panel_4);
-		gl_panel_4.setHorizontalGroup(
-			gl_panel_4.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_4.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblCurrentlyLoggedIn)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lbCurrentUsername, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblId_2, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lbCurrentUserID, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(581, Short.MAX_VALUE))
-		);
-		gl_panel_4.setVerticalGroup(
-			gl_panel_4.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_panel_4.createSequentialGroup()
-					.addContainerGap(7, Short.MAX_VALUE)
-					.addGroup(gl_panel_4.createParallelGroup(Alignment.LEADING)
-						.addComponent(lbCurrentUserID, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lbCurrentUsername, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_panel_4.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblCurrentlyLoggedIn)
-							.addComponent(lblUsername))
-						.addComponent(lblId_2))
-					.addContainerGap())
-		);
-		panel_4.setLayout(gl_panel_4);
+		lbCurrentUsernameAdmin = new JLabel();
+		lbCurrentUsernameAdmin.setBounds(289, 7, 112, 16);
+		panel_4.setLayout(null);
+		panel_4.add(lblCurrentlyLoggedIn);
+		panel_4.add(lblUsername);
+		panel_4.add(lbCurrentUsernameAdmin);
+		panel_4.add(lblId_2);
+		panel_4.add(lbCurrentUserIDAdmin);
 	}
 }

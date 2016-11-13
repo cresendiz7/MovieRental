@@ -12,7 +12,8 @@ public class Login{
 	private JFrame frmLogin;
 	private JPasswordField Password;
 	private JTextField Username;	
-	private JTable tableCurrentID;
+	private JTable tableCurrentIDAdmin;
+	private JTable tableCurrentIDCust;
 	private String str;
 
 	/**
@@ -99,10 +100,10 @@ public class Login{
 								PreparedStatement pst2 = connection.prepareStatement(query2);
 								ResultSet rs2 = pst2.executeQuery();
 									
-								tableCurrentID.setModel(DbUtils.resultSetToTableModel(rs2));
+								tableCurrentIDAdmin.setModel(DbUtils.resultSetToTableModel(rs2));
 								int row =0;
 								int column = 0;
-								str = (tableCurrentID.getModel().getValueAt(row,column).toString());
+								str = (tableCurrentIDAdmin.getModel().getValueAt(row,column).toString());
 								
 							}catch (Exception ex) { 
 								JOptionPane.showMessageDialog(null, ex);
@@ -110,8 +111,8 @@ public class Login{
 							
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
 							Main_Admin wel = new Main_Admin();
-							Main_Admin.lbCurrentUserID.setText(str);
-							Main_Admin.lbCurrentUsername.setText(Username.getText());
+							Main_Admin.lbCurrentUserIDAdmin.setText(str);
+							Main_Admin.lbCurrentUsernameAdmin.setText(Username.getText());
 							wel.setVisible(true);
 							frmLogin.dispose();
 						}
@@ -139,8 +140,24 @@ public class Login{
 							count++;
 						}
 						if(count == 1){
+							try{
+								String query2 = "SELECT userid from customers where username = '"+ Username.getText() +"'";
+								PreparedStatement pst2 = connection.prepareStatement(query2);
+								ResultSet rs2 = pst2.executeQuery();
+									
+								tableCurrentIDCust.setModel(DbUtils.resultSetToTableModel(rs2));
+								int row =0;
+								int column = 0;
+								str = (tableCurrentIDCust.getModel().getValueAt(row,column).toString());
+								
+							}catch (Exception ex) { 
+								JOptionPane.showMessageDialog(null, ex);
+							}
+							
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
 							Main_Cust window = new Main_Cust();
+							Main_Cust.lbCurrentUserIDCust.setText(str);
+							Main_Cust.lbCurrentUsernameCust.setText(Username.getText());
 							window.setVisible(true);
 							frmLogin.dispose();
 						}
@@ -193,7 +210,10 @@ public class Login{
 		btnCustomerSignUp.setBounds(130, 227, 145, 29);
 		frmLogin.getContentPane().add(btnCustomerSignUp);
 		
-		tableCurrentID = new JTable();
-		frmLogin.getContentPane().add(tableCurrentID);
+		tableCurrentIDAdmin = new JTable();
+		frmLogin.getContentPane().add(tableCurrentIDAdmin);
+		
+		tableCurrentIDCust = new JTable();
+		frmLogin.getContentPane().add(tableCurrentIDCust);
 	}
 }
