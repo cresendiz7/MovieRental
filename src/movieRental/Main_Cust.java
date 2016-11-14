@@ -1,6 +1,7 @@
 package movieRental;
 
 import java.awt.*;
+import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -13,13 +14,13 @@ public class Main_Cust extends JFrame {
 	Connection connection = null;
 	private JPanel contentPane;
 	private JTable tableViewEditCust;
-	private JTextField txtFieldUser2;
-	private JPasswordField txtFieldPass2;
-	private JTextField txtFieldFirstName2;
-	private JTextField txtFieldLastName2;
-	private JTextField txtFieldAge2;
+	private JTextField tfUsername;
+	private JPasswordField tfPassword;
+	private JTextField tfFirstName;
+	private JTextField tfLastName;
+	private JTextField tfAge;
 	private JTable tableViewMov;
-	private JTextField txtFieldUserID;
+	private JTextField tfUserID;
 	public static JLabel lbCurrentUsernameCust;
 	public static JLabel lbCurrentUserIDCust;
 
@@ -65,12 +66,12 @@ public class Main_Cust extends JFrame {
 		
 		while(rs.next())
 		{
-			txtFieldUserID.setText(rs.getString("userid"));
-			txtFieldFirstName2.setText(rs.getString("first_name"));
-			txtFieldLastName2.setText(rs.getString("last_name"));
-			txtFieldAge2.setText(rs.getString("age"));
-			txtFieldUser2.setText(rs.getString("username"));
-			txtFieldPass2.setText(rs.getString("password"));
+			tfUserID.setText(rs.getString("userid"));
+			tfFirstName.setText(rs.getString("first_name"));
+			tfLastName.setText(rs.getString("last_name"));
+			tfAge.setText(rs.getString("age"));
+			tfUsername.setText(rs.getString("username"));
+			tfPassword.setText(rs.getString("password"));
 		}
 		
 		rs.close();
@@ -142,29 +143,29 @@ public class Main_Cust extends JFrame {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		panelEditCust.add(scrollPane_2);
 		
-		txtFieldFirstName2 = new JTextField();
-		txtFieldFirstName2.setColumns(10);
-		txtFieldFirstName2.setBounds(125, 99, 145, 29);
-		panelEditCust.add(txtFieldFirstName2);
+		tfFirstName = new JTextField();
+		tfFirstName.setColumns(10);
+		tfFirstName.setBounds(125, 99, 145, 29);
+		panelEditCust.add(tfFirstName);
 		
-		txtFieldLastName2 = new JTextField();
-		txtFieldLastName2.setColumns(10);
-		txtFieldLastName2.setBounds(125, 140, 145, 29);
-		panelEditCust.add(txtFieldLastName2);
+		tfLastName = new JTextField();
+		tfLastName.setColumns(10);
+		tfLastName.setBounds(125, 140, 145, 29);
+		panelEditCust.add(tfLastName);
 		
-		txtFieldAge2 = new JTextField();
-		txtFieldAge2.setColumns(10);
-		txtFieldAge2.setBounds(125, 263, 145, 29);
-		panelEditCust.add(txtFieldAge2);
+		tfAge = new JTextField();
+		tfAge.setColumns(10);
+		tfAge.setBounds(125, 263, 145, 29);
+		panelEditCust.add(tfAge);
 		
-		txtFieldUser2 = new JTextField();
-		txtFieldUser2.setColumns(10);
-		txtFieldUser2.setBounds(125, 181, 145, 29);
-		panelEditCust.add(txtFieldUser2);
+		tfUsername = new JTextField();
+		tfUsername.setColumns(10);
+		tfUsername.setBounds(125, 181, 145, 29);
+		panelEditCust.add(tfUsername);
 		
-		txtFieldPass2 = new JPasswordField();
-		txtFieldPass2.setBounds(125, 222, 145, 29);
-		panelEditCust.add(txtFieldPass2);
+		tfPassword = new JPasswordField();
+		tfPassword.setBounds(125, 222, 145, 29);
+		panelEditCust.add(tfPassword);
 		
 		tableViewEditCust = new JTable();
 		scrollPane_2.setViewportView(tableViewEditCust);
@@ -203,12 +204,28 @@ public class Main_Cust extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-					String value0 = txtFieldUserID.getText();
-					String value1 = txtFieldFirstName2.getText();
-					String value2 = txtFieldLastName2.getText();
-					String value3 = txtFieldAge2.getText();
-					String value4 = txtFieldUser2.getText();
-					String value5 = txtFieldPass2.getText();
+					 String query2 = ("SELECT username from customers where username = ?");
+					 PreparedStatement pst2 = connection.prepareStatement(query2);
+					 pst2.setString(1, tfUsername.getText());
+					 ResultSet rs2 = pst2.executeQuery();
+					 if(rs2.next()){
+						 if(rs2.getString(1).equals(tfUsername.getText())){
+							 JOptionPane.showMessageDialog(null, "Username same."); 
+						 }else{
+							 JOptionPane.showMessageDialog(null, "Username already exists."); 
+							return;
+						 }
+					 }
+				  }catch(Exception ex){
+					  JOptionPane.showMessageDialog(null,ex);
+				  }
+				try{
+					String value0 = tfUserID.getText();
+					String value1 = tfFirstName.getText();
+					String value2 = tfLastName.getText();
+					String value3 = tfAge.getText();
+					String value4 = tfUsername.getText();
+					String value5 = tfPassword.getText();
 					
 					String query = "UPDATE customers SET  first_name = '"+ value1 +"', last_name = '"+ value2 +
 								   "', age = '"+ value3 +"', username = '"+ value4 +"', password = '"+ value5 +
@@ -240,11 +257,11 @@ public class Main_Cust extends JFrame {
 		lblId.setBounds(31, 303, 82, 29);
 		panelEditCust.add(lblId);
 		
-		txtFieldUserID = new JTextField();
-		txtFieldUserID.setEditable(false);
-		txtFieldUserID.setColumns(10);
-		txtFieldUserID.setBounds(125, 304, 145, 29);
-		panelEditCust.add(txtFieldUserID);
+		tfUserID = new JTextField();
+		tfUserID.setEditable(false);
+		tfUserID.setColumns(10);
+		tfUserID.setBounds(125, 304, 145, 29);
+		panelEditCust.add(tfUserID);
 		
 		JPanel panelMov = new JPanel();
 		panelMov.setBackground(SystemColor.textHighlight);

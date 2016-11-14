@@ -124,6 +124,18 @@ public class Signup extends JFrame {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			  if(checkBoxAdmin.isSelected()){
+				 try{
+					 String query2 = ("SELECT username from admins where username = ?");
+					 PreparedStatement pst2 = connection.prepareStatement(query2);
+					 pst2.setString(1, txtFieldUsername.getText());
+					 ResultSet rs2 = pst2.executeQuery();
+					 if(rs2.next()){
+							JOptionPane.showMessageDialog(null, "Username already exists."); 
+							return;
+					 }
+				  }catch(Exception ex){
+					  JOptionPane.showMessageDialog(null,ex);
+				  }
 				try{
 					String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 					PreparedStatement pst = connection.prepareStatement(query);
@@ -147,6 +159,18 @@ public class Signup extends JFrame {
 					ex.printStackTrace();
 				}
 			  }else{
+				  try{
+						 String query2 = ("SELECT username from customers where username = ?");
+						 PreparedStatement pst2 = connection.prepareStatement(query2);
+						 pst2.setString(1, txtFieldUsername.getText());
+						 ResultSet rs2 = pst2.executeQuery();
+						 if(rs2.next()){
+								JOptionPane.showMessageDialog(null, "Username already exists."); 
+								return;
+						 }
+					  }catch(Exception ex){
+						  JOptionPane.showMessageDialog(null,ex);
+					  }
 				  try{
 						String query = "INSERT INTO customers (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);

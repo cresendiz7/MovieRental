@@ -556,28 +556,40 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new customer?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
-				try{
-					String query = "INSERT INTO customers (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.setString(1, tfFirstName.getText() );
-					pst.setString(2, tfLastName.getText() );
-					pst.setString(3, tfAge.getText() );
-					pst.setString(4, tfUsername.getText() );
-					pst.setString(5, tfPassword.getText() );
-					
-					pst.execute();
-					
-					JOptionPane.showMessageDialog(null, "Profile Created.");
-					
-					pst.close();
-					
-				}catch(Exception ex){
-					JOptionPane.showMessageDialog(null, ex);
-				}
-				refNewCustTbl();
-				refEditCustTbl();
-				refAllCustTbl();
-				refDelCustTbl();
+				  try{
+						 String query2 = ("SELECT username from customers where username = ?");
+						 PreparedStatement pst2 = connection.prepareStatement(query2);
+						 pst2.setString(1, tfUsername.getText());
+						 ResultSet rs2 = pst2.executeQuery();
+						 if(rs2.next()){
+								JOptionPane.showMessageDialog(null, "Username already exists."); 
+								return;
+						 }
+					  }catch(Exception ex){
+						  JOptionPane.showMessageDialog(null,ex);
+					  }
+				  try{
+						String query = "INSERT INTO customers (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
+						PreparedStatement pst = connection.prepareStatement(query);
+						pst.setString(1, tfFirstName.getText() );
+						pst.setString(2, tfLastName.getText() );
+						pst.setString(3, tfAge.getText() );
+						pst.setString(4, tfUsername.getText() );
+						pst.setString(5, tfPassword.getText() );
+						
+						pst.execute();
+						
+						JOptionPane.showMessageDialog(null, "Profile Created.");
+						
+						pst.close();
+						
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, ex);
+					}
+					refNewCustTbl();
+					refEditCustTbl();
+					refAllCustTbl();
+					refDelCustTbl();
 			  }
 			}
 		});
@@ -718,28 +730,45 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
-				try{
-					String value0 = tfCustID.getText();
-					String value1 = tfFirstName2.getText();
-					String value2 = tfLastName2.getText();
-					String value3 = tfAge2.getText();
-					String value4 = tfUsername2.getText();
-					String value5 = tfPassword2.getText();
+				  try{
+						 String query2 = ("SELECT username from customers where username = ?");
+						 PreparedStatement pst2 = connection.prepareStatement(query2);
+						 pst2.setString(1, tfUsername2.getText());
+						 ResultSet rs2 = pst2.executeQuery();
+						 if(rs2.next()){
+							 String currentUsername = rs2.getString(1);
+							 if(currentUsername == tfUsername2.getText()){
+								 tfUsername2.setText(currentUsername);
+							 }else{
+								 JOptionPane.showMessageDialog(null, "Username already exists."); 
+								return;
+							 }
+						 }
+					  }catch(Exception ex){
+						  JOptionPane.showMessageDialog(null,ex);
+					  }
+				  try{
+						String value0 = tfCustID.getText();
+						String value1 = tfFirstName2.getText();
+						String value2 = tfLastName2.getText();
+						String value3 = tfAge2.getText();
+						String value4 = tfUsername2.getText();
+						String value5 = tfPassword2.getText();
+						
+						String query = "UPDATE customers SET  first_name = '"+ value1 +"', last_name = '"+ value2 +
+									   "', age = '"+ value3 +"', username = '"+ value4 +"', password = '"+ value5 +
+									   "' WHERE userid = "+value0+" ";
+						
+						PreparedStatement pst = connection.prepareStatement(query);
+						pst.execute();
 					
-					String query = "UPDATE customers SET  first_name = '"+ value1 +"', last_name = '"+ value2 +
-								   "', age = '"+ value3 +"', username = '"+ value4 +"', password = '"+ value5 +
-								   "' WHERE userid = "+value0+" ";
-					
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.execute();
-				
-				}catch (Exception ex) { 
-					JOptionPane.showMessageDialog(null, ex);
-				}
-				refNewCustTbl();
-				refEditCustTbl();
-				refAllCustTbl();
-				refDelCustTbl();
+					}catch (Exception ex) { 
+						JOptionPane.showMessageDialog(null, ex);
+					}
+					refNewCustTbl();
+					refEditCustTbl();
+					refAllCustTbl();
+					refDelCustTbl();
 			  }
 			}
 		});
@@ -1334,29 +1363,41 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new administrator?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
-					try{
-						String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
-						PreparedStatement pst = connection.prepareStatement(query);
-						pst.setString(1, tfFirstName3.getText() );
-						pst.setString(2, tfLastName3.getText() );
-						pst.setString(3, tfAge3.getText() );
-						pst.setString(4, tfUsername3.getText() );
-						pst.setString(5, tfPassword3.getText() );
-						
-						pst.execute();
-						
-						JOptionPane.showMessageDialog(null, "Profile Created.");
-						
-						pst.close();
-						
-					}catch(Exception ex){
-						ex.printStackTrace();
-					}
-					refNewAdmTbl();
-					refEditAdmTbl();
-					refAllAdmTbl();
-					refDelAdmTbl();
-				  }
+					  try{
+							 String query2 = ("SELECT username from admins where username = ?");
+							 PreparedStatement pst2 = connection.prepareStatement(query2);
+							 pst2.setString(1, tfUsername3.getText());
+							 ResultSet rs2 = pst2.executeQuery();
+							 if(rs2.next()){
+									JOptionPane.showMessageDialog(null, "Username already exists."); 
+									return;
+							 }
+						  }catch(Exception ex){
+							  JOptionPane.showMessageDialog(null,ex);
+						  }
+					  try{
+							String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
+							PreparedStatement pst = connection.prepareStatement(query);
+							pst.setString(1, tfFirstName3.getText() );
+							pst.setString(2, tfLastName3.getText() );
+							pst.setString(3, tfAge3.getText() );
+							pst.setString(4, tfUsername3.getText() );
+							pst.setString(5, tfPassword3.getText() );
+							
+							pst.execute();
+							
+							JOptionPane.showMessageDialog(null, "Profile Created.");
+							
+							pst.close();
+							
+						}catch(Exception ex){
+							ex.printStackTrace();
+						}
+						refNewAdmTbl();
+						refEditAdmTbl();
+						refAllAdmTbl();
+						refDelAdmTbl();
+					  }
 			}
 		});
 		button_7.setBounds(635, 346, 102, 29);
@@ -1511,28 +1552,40 @@ public class Main_Admin extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
-					try{
-						String value0 = tfAdminID.getText();
-						String value1 = tfFirstName4.getText();
-						String value2 = tfLastName4.getText();
-						String value3 = tfAge4.getText();
-						String value4 = tfUsername4.getText();
-						String value5 = tfPassword4.getText();
+					  try{
+							 String query2 = ("SELECT username from admins where username = ?");
+							 PreparedStatement pst2 = connection.prepareStatement(query2);
+							 pst2.setString(1, tfUsername4.getText());
+							 ResultSet rs2 = pst2.executeQuery();
+							 if(rs2.next()){
+									JOptionPane.showMessageDialog(null, "Username already exists."); 
+									return;
+							 }
+						  }catch(Exception ex){
+							  JOptionPane.showMessageDialog(null,ex);
+						  }
+					  try{
+							String value0 = tfAdminID.getText();
+							String value1 = tfFirstName4.getText();
+							String value2 = tfLastName4.getText();
+							String value3 = tfAge4.getText();
+							String value4 = tfUsername4.getText();
+							String value5 = tfPassword4.getText();
+							
+							String query = "UPDATE admins SET  first_name = '"+ value1 +"', last_name = '"+ value2 +
+										   "', age = '"+ value3 +"', username = '"+ value4 +"', password = '"+ value5 +
+										   "' WHERE adminid = "+value0+" ";
+							
+							PreparedStatement pst = connection.prepareStatement(query);
+							pst.execute();
 						
-						String query = "UPDATE admins SET  first_name = '"+ value1 +"', last_name = '"+ value2 +
-									   "', age = '"+ value3 +"', username = '"+ value4 +"', password = '"+ value5 +
-									   "' WHERE adminid = "+value0+" ";
-						
-						PreparedStatement pst = connection.prepareStatement(query);
-						pst.execute();
-					
-					}catch (Exception ex) { 
-						JOptionPane.showMessageDialog(null, ex);
-					}
-					refNewAdmTbl();
-					refEditAdmTbl();
-					refAllAdmTbl();
-					refDelAdmTbl();
+						}catch (Exception ex) { 
+							JOptionPane.showMessageDialog(null, ex);
+						}
+						refNewAdmTbl();
+						refEditAdmTbl();
+						refAllAdmTbl();
+						refDelAdmTbl();
 				  }
 			}
 		});
@@ -1554,10 +1607,10 @@ public class Main_Admin extends JFrame {
 		tableDelAdm = new JTable();
 		scrollPane_11.setViewportView(tableDelAdm);
 		
-		JLabel label_19 = new JLabel("Search Customer:");
-		label_19.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_19.setBounds(6, 6, 237, 28);
-		panelDelAdm.add(label_19);
+		JLabel lblSearchAdministrator_1 = new JLabel("Search Administrator:");
+		lblSearchAdministrator_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSearchAdministrator_1.setBounds(6, 6, 237, 28);
+		panelDelAdm.add(lblSearchAdministrator_1);
 		
 		tfDelAdmSearch = new JTextField();
 		tfDelAdmSearch.setColumns(10);
