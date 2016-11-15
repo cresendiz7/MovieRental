@@ -11,7 +11,7 @@ import net.proteanit.sql.DbUtils;
 
 public class Main_Cust extends JFrame {
 
-	Connection connection = null;
+	static Connection connection = null;
 	private JPanel contentPane;
 	private JTable tableViewEditCust;
 	private JTextField tfUsername;
@@ -27,6 +27,7 @@ public class Main_Cust extends JFrame {
 	public static JLabel lbCurrentUserIDCust;
 	private JTextField textField;
 	private JTable tableCurrentRentals;
+	private JTable tableCart;
 
 	/**
 	 * Launch the application.
@@ -47,6 +48,12 @@ public class Main_Cust extends JFrame {
 				}
 			}
 		});
+		//Delete Customer Cart on exit
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+	        public void run() {
+	        	Main_Cust.delCart();
+	        }
+	    }, "Shutdown-thread"));
 	}
 	
 	public void refEditCustTbl(){
@@ -95,6 +102,33 @@ public class Main_Cust extends JFrame {
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	public static void delCart(){
+		try{
+			String query = "TRUNCATE TABLE cart";
+			PreparedStatement pst = connection.prepareStatement(query);
+			pst.execute();
+			pst.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void refCartTbl(){
+		try{
+			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate', replacement_cost as 'Replacement Cost' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+				
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableCart.setModel(DbUtils.resultSetToTableModel(rs));
 
 			pst.close();
 			rs.close();
@@ -332,10 +366,6 @@ public class Main_Cust extends JFrame {
 		tableViewMov = new JTable();
 		scrollPane_4.setViewportView(tableViewMov);
 		
-		JButton btnRent = new JButton("Rent");
-		btnRent.setBounds(6, 342, 54, 28);
-		panelSelectMovies.add(btnRent);
-		
 		JPanel panelCart = new JPanel();
 		panelRentCards.add(panelCart);
 		panelCart.setLayout(null);
@@ -352,8 +382,23 @@ public class Main_Cust extends JFrame {
 		btnReturnToMovies.setBounds(6, 348, 119, 28);
 		panelCart.add(btnReturnToMovies);
 		
-		JButton btnNewButton = new JButton("View Cart");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.setBounds(697, 348, 90, 28);
+		panelCart.add(btnCheckout);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(6, 46, 781, 282);
+		panelCart.add(scrollPane_1);
+		
+		tableCart = new JTable();
+		scrollPane_1.setViewportView(tableCart);
+		
+		JButton btnRemoveFromCart = new JButton("Remove from Cart");
+		btnRemoveFromCart.setBounds(250, 348, 128, 28);
+		panelCart.add(btnRemoveFromCart);
+		
+		JButton btnViewCart = new JButton("View Cart");
+		btnViewCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelRentCards.removeAll();
 				panelRentCards.add(panelCart);
@@ -361,24 +406,33 @@ public class Main_Cust extends JFrame {
 				panelRentCards.revalidate();
 			}
 		});
-		btnNewButton.setBounds(685, 342, 90, 28);
-		panelSelectMovies.add(btnNewButton);
-		btnRent.addActionListener(new ActionListener() {
+		btnViewCart.setBounds(685, 342, 90, 28);
+		panelSelectMovies.add(btnViewCart);
+		
+		JButton btnAddToCart = new JButton("Add to Cart");
+		btnAddToCart.setBounds(6, 342, 90, 28);
+		panelSelectMovies.add(btnAddToCart);
+		btnAddToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					try{
 						int row = tableViewMov.getSelectedRow();
-						int Table_click = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+						int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+						String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
+						String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
+						String repl_cost = (tableViewMov.getModel().getValueAt(row, 7).toString());
 						
-						String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
+						String query = "INSERT INTO cart (userid,movieid,title,rental_rate,replacement_cost) VALUES (?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);
+						
 						pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
-						pst.setInt(2, Table_click);
-						pst.setString(3, "01/26/1996");
-						pst.setString(4, "02/01/1996");
+						pst.setInt(2, movieid);
+						pst.setString(3, title);
+						pst.setString(4, rent_rate);
+						pst.setString(5, repl_cost);
 						
 						pst.execute();
 						
-						JOptionPane.showMessageDialog(null, "Movie Rented.");
+						JOptionPane.showMessageDialog(null, "Added to Cart");
 						
 						pst.close();
 						
@@ -386,7 +440,7 @@ public class Main_Cust extends JFrame {
 						JOptionPane.showMessageDialog(null, ex);
 					}
 					refAllMovTbl();
-					refCurrentRentalsTbl();
+					refCartTbl();
 				  }
 		});
 		
@@ -463,9 +517,10 @@ public class Main_Cust extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
 				if(action == 0){
-				contentPane.setVisible(false);
-				dispose();
-				Login.main(null);
+					delCart();
+					contentPane.setVisible(false);
+					dispose();
+					Login.main(null);
 			}
 			}
 		});
