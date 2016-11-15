@@ -13,6 +13,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.components.JSpinField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import com.toedter.calendar.JYearChooser;
 
 public class Main_Admin extends JFrame {
 
@@ -74,6 +75,12 @@ public class Main_Admin extends JFrame {
 	public static JLabel lbCurrentUsernameAdmin;
 	public static JLabel lbCurrentUserIDAdmin;
 	private JTable tableViewRent;
+	private String current;
+	private JTable tableCurrentUsername;
+	private JTextField tfRentRateNew;
+	private JTextField tfReplaceNew;
+	private JTextField tfRentRateEdit;
+	private JTextField tfReplaceEdit;
 	
 	/**
 	 * Launch the application.
@@ -159,7 +166,9 @@ public class Main_Admin extends JFrame {
 	
 	public void refAllMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -175,7 +184,10 @@ public class Main_Admin extends JFrame {
 	
 	public void refNewMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
+			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableNewMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -190,7 +202,10 @@ public class Main_Admin extends JFrame {
 	
 	public void refEditMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
+			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableEditMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -205,7 +220,10 @@ public class Main_Admin extends JFrame {
 	
 	public void refDelMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
+			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableDelMov.setModel(DbUtils.resultSetToTableModel(rs));
@@ -328,6 +346,8 @@ public class Main_Admin extends JFrame {
 			comboBoxEditMov.addItem("title");
 			comboBoxEditMov.addItem("genre");
 			comboBoxEditMov.addItem("rating");
+			comboBoxEditMov.addItem("rental_rate");
+			comboBoxEditMov.addItem("release_year");
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -366,6 +386,8 @@ public class Main_Admin extends JFrame {
 			comboBoxDelMov.addItem("title");
 			comboBoxDelMov.addItem("genre");
 			comboBoxDelMov.addItem("rating");
+			comboBoxDelMov.addItem("rental_rate");
+			comboBoxDelMov.addItem("release_year");
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -402,6 +424,7 @@ public class Main_Admin extends JFrame {
 			comboBoxNewRating.addItem("PG");
 			comboBoxNewRating.addItem("PG-13");
 			comboBoxNewRating.addItem("R");
+			comboBoxNewRating.addItem("NC-17");
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -436,6 +459,7 @@ public class Main_Admin extends JFrame {
 			comboBoxEditRating.addItem("PG");
 			comboBoxEditRating.addItem("PG-13");
 			comboBoxEditRating.addItem("R");
+			comboBoxEditRating.addItem("NC-17");
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -450,7 +474,7 @@ public class Main_Admin extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_Admin.class.getResource("/fortyeight/device-tv.png")));
 		connection = databaseConnection.dbConnection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 969, 552);
+		setBounds(100, 100, 969, 627);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.textHighlight);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -463,13 +487,19 @@ public class Main_Admin extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JPanel panelCards = new JPanel();
-		panelCards.setBounds(150, 79, 793, 412);
+		panelCards.setBounds(150, 79, 793, 478);
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 		
-		JPanel panelBlank = new JPanel();
-		panelBlank.setBackground(SystemColor.textHighlight);
-		panelCards.add(panelBlank, "name_145839516092709");
+		JPanel panelWelcome = new JPanel();
+		panelWelcome.setBackground(SystemColor.textHighlight);
+		panelCards.add(panelWelcome, "name_145839516092709");
+		panelWelcome.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblWelcome = new JLabel("Welcome");
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 70));
+		panelWelcome.add(lblWelcome);
 		
 		JPanel panelCust = new JPanel();
 		panelCust.setBackground(SystemColor.textHighlight);
@@ -477,7 +507,7 @@ public class Main_Admin extends JFrame {
 		panelCust.setLayout(null);
 		
 		JTabbedPane tabbedPaneCust = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneCust.setBounds(0, 0, 793, 412);
+		tabbedPaneCust.setBounds(0, 0, 793, 472);
 		panelCust.add(tabbedPaneCust);
 		
 		JPanel panelViewCust = new JPanel();
@@ -485,7 +515,7 @@ public class Main_Admin extends JFrame {
 		panelViewCust.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 780, 375);
+		scrollPane.setBounds(6, 6, 780, 430);
 		panelViewCust.add(scrollPane);
 		
 		tableViewCust = new JTable();
@@ -496,7 +526,7 @@ public class Main_Admin extends JFrame {
 		panelAddCust.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(6, 6, 780, 250);
+		scrollPane_1.setBounds(6, 6, 780, 308);
 		panelAddCust.add(scrollPane_1);
 		
 		tableNewCust = new JTable();
@@ -505,50 +535,50 @@ public class Main_Admin extends JFrame {
 		
 		tfFirstName = new JTextField();
 		tfFirstName.setColumns(10);
-		tfFirstName.setBounds(98, 309, 145, 29);
+		tfFirstName.setBounds(98, 366, 145, 29);
 		panelAddCust.add(tfFirstName);
 		
 		JLabel label_1 = new JLabel("Last Name:");
 		label_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_1.setBounds(6, 347, 82, 29);
+		label_1.setBounds(6, 407, 82, 29);
 		panelAddCust.add(label_1);
 		
 		tfLastName = new JTextField();
 		tfLastName.setColumns(10);
-		tfLastName.setBounds(98, 347, 145, 29);
+		tfLastName.setBounds(98, 408, 145, 29);
 		panelAddCust.add(tfLastName);
 		
 		JLabel label_2 = new JLabel("Age:");
 		label_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_2.setBounds(500, 309, 82, 29);
+		label_2.setBounds(502, 365, 82, 29);
 		panelAddCust.add(label_2);
 		
 		tfAge = new JTextField();
 		tfAge.setColumns(10);
-		tfAge.setBounds(592, 309, 145, 29);
+		tfAge.setBounds(596, 366, 145, 29);
 		panelAddCust.add(tfAge);
 		
 		JLabel label_3 = new JLabel("Username:");
 		label_3.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_3.setBounds(253, 307, 82, 29);
+		label_3.setBounds(255, 365, 82, 29);
 		panelAddCust.add(label_3);
 		
 		tfUsername = new JTextField();
 		tfUsername.setColumns(10);
-		tfUsername.setBounds(345, 309, 145, 29);
+		tfUsername.setBounds(345, 366, 145, 29);
 		panelAddCust.add(tfUsername);
 		
 		JLabel label_4 = new JLabel("Password:");
 		label_4.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_4.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_4.setBounds(253, 345, 82, 29);
+		label_4.setBounds(255, 406, 82, 29);
 		panelAddCust.add(label_4);
 		
 		tfPassword = new JPasswordField();
-		tfPassword.setBounds(345, 349, 145, 29);
+		tfPassword.setBounds(345, 408, 145, 29);
 		panelAddCust.add(tfPassword);
 		
 		JButton button = new JButton("Submit");
@@ -557,17 +587,31 @@ public class Main_Admin extends JFrame {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new customer?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
 				  try{
-						 String query2 = ("SELECT username from customers where username = ?");
-						 PreparedStatement pst2 = connection.prepareStatement(query2);
-						 pst2.setString(1, tfUsername.getText());
-						 ResultSet rs2 = pst2.executeQuery();
-						 if(rs2.next()){
-								JOptionPane.showMessageDialog(null, "Username already exists."); 
-								return;
-						 }
-					  }catch(Exception ex){
-						  JOptionPane.showMessageDialog(null,ex);
-					  }
+				      String query3 = ("SELECT username from customers");
+				      PreparedStatement pst3 = connection.prepareStatement(query3);
+				      ResultSet rs3 = pst3.executeQuery();
+				      tableCurrentUsername.setModel(DbUtils.resultSetToTableModel(rs3));
+				      int row =0;
+				      int column = 0;
+				      current = (tableCurrentUsername.getModel().getValueAt(row,column).toString());
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
+				    try{
+				      String query2 = ("SELECT username from customers where username = ?");
+				      PreparedStatement pst2 = connection.prepareStatement(query2);
+				      pst2.setString(1, tfUsername.getText());
+				      ResultSet rs2 = pst2.executeQuery();
+				      if(rs2.next()){
+				       if(current.equals(tfUsername.getText())){}
+				       else{
+				        JOptionPane.showMessageDialog(null, "Username already exists.");
+				       return;
+				       }
+				      }
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
 				  try{
 						String query = "INSERT INTO customers (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);
@@ -593,18 +637,18 @@ public class Main_Admin extends JFrame {
 			  }
 			}
 		});
-		button.setBounds(635, 347, 102, 29);
+		button.setBounds(639, 327, 102, 29);
 		panelAddCust.add(button);
 		
 		JLabel lblAddCustomerInformation = new JLabel("Add Customer Information:");
 		lblAddCustomerInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblAddCustomerInformation.setBounds(6, 268, 237, 28);
+		lblAddCustomerInformation.setBounds(6, 326, 237, 28);
 		panelAddCust.add(lblAddCustomerInformation);
 		
 		JLabel label = new JLabel("First Name:");
 		label.setHorizontalAlignment(SwingConstants.RIGHT);
 		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label.setBounds(6, 307, 82, 29);
+		label.setBounds(6, 366, 82, 29);
 		panelAddCust.add(label);
 		
 		JPanel panelEditCust = new JPanel();
@@ -612,31 +656,31 @@ public class Main_Admin extends JFrame {
 		panelEditCust.setLayout(null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(6, 50, 780, 210);
+		scrollPane_2.setBounds(6, 49, 780, 265);
 		panelEditCust.add(scrollPane_2);
 		
 		tfFirstName2 = new JTextField();
 		tfFirstName2.setColumns(10);
-		tfFirstName2.setBounds(98, 307, 145, 29);
+		tfFirstName2.setBounds(98, 366, 145, 29);
 		panelEditCust.add(tfFirstName2);
 		
 		tfLastName2 = new JTextField();
 		tfLastName2.setColumns(10);
-		tfLastName2.setBounds(98, 347, 145, 29);
+		tfLastName2.setBounds(98, 408, 145, 29);
 		panelEditCust.add(tfLastName2);
 		
 		tfAge2 = new JTextField();
 		tfAge2.setColumns(10);
-		tfAge2.setBounds(592, 307, 145, 29);
+		tfAge2.setBounds(596, 366, 145, 29);
 		panelEditCust.add(tfAge2);
 		
 		tfUsername2 = new JTextField();
 		tfUsername2.setColumns(10);
-		tfUsername2.setBounds(345, 307, 145, 29);
+		tfUsername2.setBounds(345, 366, 145, 29);
 		panelEditCust.add(tfUsername2);
 		
 		tfPassword2 = new JPasswordField();
-		tfPassword2.setBounds(345, 347, 145, 29);
+		tfPassword2.setBounds(345, 408, 145, 29);
 		panelEditCust.add(tfPassword2);
 		
 		JButton btnSearch = new JButton("Search");
@@ -659,7 +703,7 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		btnSearch.setBounds(635, 6, 102, 29);
+		btnSearch.setBounds(684, 8, 102, 29);
 		panelEditCust.add(btnSearch);
 		
 		tableEditCust = new JTable();
@@ -698,31 +742,31 @@ public class Main_Admin extends JFrame {
 		JLabel label_9 = new JLabel("First Name:");
 		label_9.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_9.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_9.setBounds(6, 307, 82, 29);
+		label_9.setBounds(6, 366, 82, 29);
 		panelEditCust.add(label_9);
 
 		JLabel label_8 = new JLabel("Last Name:");
 		label_8.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_8.setBounds(6, 347, 82, 29);
+		label_8.setBounds(6, 407, 82, 29);
 		panelEditCust.add(label_8);
 
 		JLabel label_7 = new JLabel("Age:");
 		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_7.setBounds(500, 305, 82, 29);
+		label_7.setBounds(502, 365, 82, 29);
 		panelEditCust.add(label_7);
 		
 		JLabel label_6 = new JLabel("Username:");
 		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_6.setBounds(253, 305, 82, 29);
+		label_6.setBounds(255, 365, 82, 29);
 		panelEditCust.add(label_6);
 		
 		JLabel label_5 = new JLabel("Password:");
 		label_5.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_5.setBounds(253, 345, 82, 29);
+		label_5.setBounds(255, 406, 82, 29);
 		panelEditCust.add(label_5);
 		
 		JButton button_1 = new JButton("Submit");
@@ -731,22 +775,31 @@ public class Main_Admin extends JFrame {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
 				  try{
-						 String query2 = ("SELECT username from customers where username = ?");
-						 PreparedStatement pst2 = connection.prepareStatement(query2);
-						 pst2.setString(1, tfUsername2.getText());
-						 ResultSet rs2 = pst2.executeQuery();
-						 if(rs2.next()){
-							 String currentUsername = rs2.getString(1);
-							 if(currentUsername == tfUsername2.getText()){
-								 tfUsername2.setText(currentUsername);
-							 }else{
-								 JOptionPane.showMessageDialog(null, "Username already exists."); 
-								return;
-							 }
-						 }
-					  }catch(Exception ex){
-						  JOptionPane.showMessageDialog(null,ex);
-					  }
+				      String query3 = ("SELECT username from customers");
+				      PreparedStatement pst3 = connection.prepareStatement(query3);
+				      ResultSet rs3 = pst3.executeQuery();
+				      tableCurrentUsername.setModel(DbUtils.resultSetToTableModel(rs3));
+				      int row =0;
+				      int column = 0;
+				      current = (tableCurrentUsername.getModel().getValueAt(row,column).toString());
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
+				    try{
+				      String query2 = ("SELECT username from customers where username = ?");
+				      PreparedStatement pst2 = connection.prepareStatement(query2);
+				      pst2.setString(1, tfUsername2.getText());
+				      ResultSet rs2 = pst2.executeQuery();
+				      if(rs2.next()){
+				       if(current.equals(tfUsername2.getText())){}
+				       else{
+				        JOptionPane.showMessageDialog(null, "Username already exists.");
+				       return;
+				       }
+				      }
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
 				  try{
 						String value0 = tfCustID.getText();
 						String value1 = tfFirstName2.getText();
@@ -772,38 +825,38 @@ public class Main_Admin extends JFrame {
 			  }
 			}
 		});
-		button_1.setBounds(635, 266, 102, 29);
+		button_1.setBounds(639, 327, 102, 29);
 		panelEditCust.add(button_1);
 		
 		JLabel lblEditCustomerInformation = new JLabel("Edit Customer Information:");
 		lblEditCustomerInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEditCustomerInformation.setBounds(6, 267, 237, 28);
+		lblEditCustomerInformation.setBounds(6, 326, 237, 28);
 		panelEditCust.add(lblEditCustomerInformation);
 		
 		tfSearchEditCust = new JTextField();
 		tfSearchEditCust.setColumns(10);
-		tfSearchEditCust.setBounds(345, 6, 145, 29);
+		tfSearchEditCust.setBounds(345, 8, 145, 29);
 		panelEditCust.add(tfSearchEditCust);
 		
 		JLabel lblId = new JLabel("ID:");
 		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblId.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblId.setBounds(500, 347, 82, 29);
+		lblId.setBounds(502, 407, 82, 29);
 		panelEditCust.add(lblId);
 		
 		tfCustID = new JTextField();
 		tfCustID.setEditable(false);
 		tfCustID.setColumns(10);
-		tfCustID.setBounds(592, 347, 145, 29);
+		tfCustID.setBounds(596, 408, 145, 29);
 		panelEditCust.add(tfCustID);
 		
 		JLabel label_13 = new JLabel("Search Customer:");
 		label_13.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_13.setBounds(6, 6, 174, 28);
+		label_13.setBounds(6, 8, 174, 28);
 		panelEditCust.add(label_13);
 		
 		comboBoxEditCust = new JComboBox<String>();
-		comboBoxEditCust.setBounds(190, 6, 145, 29);
+		comboBoxEditCust.setBounds(190, 8, 145, 29);
 		panelEditCust.add(comboBoxEditCust);
 		
 		JPanel panelDelCust = new JPanel();
@@ -811,7 +864,7 @@ public class Main_Admin extends JFrame {
 		panelDelCust.setLayout(null);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(6, 50, 780, 330);
+		scrollPane_3.setBounds(6, 50, 780, 386);
 		panelDelCust.add(scrollPane_3);
 		
 		tableDelCust = new JTable();
@@ -819,7 +872,7 @@ public class Main_Admin extends JFrame {
 		
 		tfDelUserSearch = new JTextField();
 		tfDelUserSearch.setColumns(10);
-		tfDelUserSearch.setBounds(345, 6, 145, 29);
+		tfDelUserSearch.setBounds(345, 8, 145, 29);
 		panelDelCust.add(tfDelUserSearch);
 		
 		JButton btnDelete = new JButton("Delete");
@@ -846,7 +899,7 @@ public class Main_Admin extends JFrame {
 			  }
 			}
 		});
-		btnDelete.setBounds(685, 6, 102, 29);
+		btnDelete.setBounds(685, 8, 102, 29);
 		panelDelCust.add(btnDelete);
 		
 		JButton button_6 = new JButton("Search");
@@ -869,16 +922,16 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_6.setBounds(573, 6, 102, 29);
+		button_6.setBounds(573, 8, 102, 29);
 		panelDelCust.add(button_6);
 		
 		JLabel label_11 = new JLabel("Search Customer:");
 		label_11.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_11.setBounds(6, 6, 237, 28);
+		label_11.setBounds(6, 8, 237, 28);
 		panelDelCust.add(label_11);
 		
 		comboBoxDelCust = new JComboBox<String>();
-		comboBoxDelCust.setBounds(190, 6, 145, 29);
+		comboBoxDelCust.setBounds(190, 8, 145, 29);
 		panelDelCust.add(comboBoxDelCust);
 		
 		JPanel panelMov = new JPanel();
@@ -887,7 +940,7 @@ public class Main_Admin extends JFrame {
 		panelMov.setLayout(null);
 		
 		JTabbedPane tabbedPaneMov = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneMov.setBounds(0, 0, 793, 412);
+		tabbedPaneMov.setBounds(0, 0, 793, 472);
 		panelMov.add(tabbedPaneMov);
 		
 		JPanel panelViewMov = new JPanel();
@@ -895,7 +948,7 @@ public class Main_Admin extends JFrame {
 		panelViewMov.setLayout(null);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(6, 6, 781, 370);
+		scrollPane_4.setBounds(6, 6, 781, 430);
 		panelViewMov.add(scrollPane_4);
 		
 		tableViewMov = new JTable();
@@ -906,7 +959,7 @@ public class Main_Admin extends JFrame {
 		panelAddMov.setLayout(null);
 		
 		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(6, 6, 781, 249);
+		scrollPane_5.setBounds(6, 6, 781, 266);
 		panelAddMov.add(scrollPane_5);
 		
 		tableNewMov = new JTable();
@@ -914,23 +967,38 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblAddMovieInformation = new JLabel("Add Movie Information:");
 		lblAddMovieInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblAddMovieInformation.setBounds(6, 265, 267, 28);
+		lblAddMovieInformation.setBounds(6, 284, 170, 28);
 		panelAddMov.add(lblAddMovieInformation);
 		
 		tfTitle = new JTextField();
 		tfTitle.setColumns(10);
-		tfTitle.setBounds(70, 304, 145, 29);
+		tfTitle.setBounds(70, 326, 145, 29);
 		panelAddMov.add(tfTitle);
 		
+		JYearChooser yearChooserNew = new JYearChooser();
+		yearChooserNew.setBounds(347, 284, 54, 28);
+		panelAddMov.add(yearChooserNew);
+		
 		JSpinner spinnerNewMin = new JSpinner();
-		spinnerNewMin.setModel(new SpinnerNumberModel(0, 0, 999, 1));
-		spinnerNewMin.setBounds(345, 345, 54, 29);
+		spinnerNewMin.setModel(new SpinnerNumberModel(120, 0, 999, 1));
+		spinnerNewMin.setBounds(347, 366, 54, 29);
 		panelAddMov.add(spinnerNewMin);
 		
-		JDateChooser dateChooserNew = new JDateChooser();
-		dateChooserNew.setDateFormatString("MM-dd-yyyy");
-		dateChooserNew.setBounds(345, 304, 145, 29);
-		panelAddMov.add(dateChooserNew);
+		JTextArea taDescriptionNew = new JTextArea();
+		taDescriptionNew.setWrapStyleWord(true);
+		taDescriptionNew.setLineWrap(true);
+		taDescriptionNew.setBounds(413, 324, 374, 112);
+		panelAddMov.add(taDescriptionNew);
+		
+		tfRentRateNew = new JTextField();
+		tfRentRateNew.setBounds(347, 324, 54, 28);
+		panelAddMov.add(tfRentRateNew);
+		tfRentRateNew.setColumns(10);
+		
+		tfReplaceNew = new JTextField();
+		tfReplaceNew.setColumns(10);
+		tfReplaceNew.setBounds(347, 407, 54, 28);
+		panelAddMov.add(tfReplaceNew);
 		
 		JButton button_2 = new JButton("Submit");
 		button_2.addActionListener(new ActionListener() {
@@ -938,13 +1006,16 @@ public class Main_Admin extends JFrame {
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new movie?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				 if(action == 0){
 					try{
-						String query = "INSERT INTO movies (title, genre, release_date, length, rating) VALUES (?,?,?,?,?)";
+						String query = "INSERT INTO movies (title, genre, release_year, length, rating, description, rental_rate, replacement_cost) VALUES (?,?,?,?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);
 						pst.setString(1, tfTitle.getText());
 						pst.setString(2, (String)comboBoxNewGenre.getSelectedItem());
-						pst.setString(3, ((JTextField)dateChooserNew.getDateEditor().getUiComponent()).getText());
+						pst.setInt(3, yearChooserNew.getYear());
 						pst.setInt(4, ((Integer)spinnerNewMin.getValue()));
 						pst.setString(5, (String)comboBoxNewRating.getSelectedItem());
+						pst.setString(6, taDescriptionNew.getText());
+						pst.setString(7, tfRentRateNew.getText());
+						pst.setString(8, tfReplaceNew.getText());
 						
 						pst.execute();
 						
@@ -962,77 +1033,109 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_2.setBounds(676, 344, 102, 29);
+		button_2.setBounds(685, 284, 102, 29);
 		panelAddMov.add(button_2);
 		
 		JLabel lblTitle_1 = new JLabel("Title:");
 		lblTitle_1.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblTitle_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblTitle_1.setBounds(6, 304, 54, 29);
+		lblTitle_1.setBounds(6, 325, 54, 29);
 		panelAddMov.add(lblTitle_1);
 		
 		JLabel lblGenre = new JLabel("Genre:");
 		lblGenre.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblGenre.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblGenre.setBounds(6, 344, 54, 29);
+		lblGenre.setBounds(6, 366, 54, 29);
 		panelAddMov.add(lblGenre);
 		
-		JLabel lblReleaseDate = new JLabel("Release Date:");
+		JLabel lblReleaseDate = new JLabel("Release Year:");
 		lblReleaseDate.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblReleaseDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblReleaseDate.setBounds(225, 304, 110, 29);
+		lblReleaseDate.setBounds(225, 284, 110, 29);
 		panelAddMov.add(lblReleaseDate);
 		
 		JLabel lblRating = new JLabel("Rating:");
 		lblRating.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblRating.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblRating.setBounds(500, 302, 64, 29);
+		lblRating.setBounds(6, 407, 54, 29);
 		panelAddMov.add(lblRating);
 		
 		JLabel lblLength = new JLabel("Length:");
 		lblLength.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLength.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblLength.setBounds(271, 342, 64, 29);
+		lblLength.setBounds(271, 366, 64, 29);
 		panelAddMov.add(lblLength);
 		
 		comboBoxNewGenre = new JComboBox<String>();
-		comboBoxNewGenre.setBounds(70, 344, 145, 29);
+		comboBoxNewGenre.setBounds(70, 367, 145, 29);
 		panelAddMov.add(comboBoxNewGenre);
 		
 		comboBoxNewRating = new JComboBox<String>();
-		comboBoxNewRating.setBounds(574, 304, 82, 28);
+		comboBoxNewRating.setBounds(70, 408, 82, 28);
 		panelAddMov.add(comboBoxNewRating);
 		
 		JLabel lblMin = new JLabel("Minutes");
 		lblMin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMin.setBounds(345, 330, 52, 16);
+		lblMin.setBounds(347, 351, 54, 16);
 		panelAddMov.add(lblMin);
+		
+		JLabel label_10 = new JLabel("Rental Rate:");
+		label_10.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_10.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_10.setBounds(225, 325, 110, 29);
+		panelAddMov.add(label_10);
+		
+		JLabel label_14 = new JLabel("Replacement Cost:");
+		label_14.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_14.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_14.setBounds(203, 408, 132, 29);
+		panelAddMov.add(label_14);
+		
+		JLabel label_19 = new JLabel("Description:");
+		label_19.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_19.setBounds(415, 296, 110, 29);
+		panelAddMov.add(label_19);
 		
 		JPanel panelEditMov = new JPanel();
 		tabbedPaneMov.addTab("Edit Movies", null, panelEditMov, null);
 		panelEditMov.setLayout(null);
 		
 		comboBoxEditGenre = new JComboBox<String>();
-		comboBoxEditGenre.setBounds(70, 346, 145, 29);
+		comboBoxEditGenre.setBounds(70, 367, 145, 29);
 		panelEditMov.add(comboBoxEditGenre);
 		
 		comboBoxEditRating = new JComboBox<String>();
-		comboBoxEditRating.setBounds(574, 305, 82, 28);
+		comboBoxEditRating.setBounds(70, 408, 82, 28);
 		panelEditMov.add(comboBoxEditRating);
 		
 		JSpinner spinnerEditMin = new JSpinner();
 		spinnerEditMin.setModel(new SpinnerNumberModel(0, 0, 1000, 1));
-		spinnerEditMin.setBounds(347, 346, 54, 29);
+		spinnerEditMin.setBounds(347, 366, 54, 29);
 		panelEditMov.add(spinnerEditMin);
 		
-		JDateChooser dateChooserEdit = new JDateChooser();
-		dateChooserEdit.setDateFormatString("MM-dd-yyyy");
-		dateChooserEdit.setBounds(347, 305, 145, 29);
-		panelEditMov.add(dateChooserEdit);
-		
 		JScrollPane scrollPane_6 = new JScrollPane();
-		scrollPane_6.setBounds(6, 47, 781, 208);
+		scrollPane_6.setBounds(6, 47, 781, 225);
 		panelEditMov.add(scrollPane_6);
+		
+		JYearChooser yearChooserEdit = new JYearChooser();
+		yearChooserEdit.setBounds(347, 284, 54, 28);
+		panelEditMov.add(yearChooserEdit);
+		
+		JTextArea taDescriptionEdit = new JTextArea();
+		taDescriptionEdit.setWrapStyleWord(true);
+		taDescriptionEdit.setLineWrap(true);
+		taDescriptionEdit.setBounds(413, 324, 374, 112);
+		panelEditMov.add(taDescriptionEdit);
+		
+		tfRentRateEdit = new JTextField();
+		tfRentRateEdit.setColumns(10);
+		tfRentRateEdit.setBounds(347, 324, 54, 28);
+		panelEditMov.add(tfRentRateEdit);
+		
+		tfReplaceEdit = new JTextField();
+		tfReplaceEdit.setColumns(10);
+		tfReplaceEdit.setBounds(347, 407, 54, 28);
+		panelEditMov.add(tfReplaceEdit);
 		
 		tableEditMov = new JTable();
 		tableEditMov.addMouseListener(new MouseAdapter() {
@@ -1042,7 +1145,9 @@ public class Main_Admin extends JFrame {
 					int row = tableEditMov.getSelectedRow();
 					String Table_click = (tableEditMov.getModel().getValueAt(row, 0).toString());
 					
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies WHERE movieid = ' "+Table_click+" ' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title', description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
+					+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies WHERE movieid = ' "+Table_click+" ' ";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 				
@@ -1051,9 +1156,12 @@ public class Main_Admin extends JFrame {
 					tfmovieID.setText(rs.getString("Movie ID"));
 					tfTitle2.setText(rs.getString("Title"));
 					comboBoxEditGenre.setSelectedItem(rs.getString("Genre"));
-					((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).setText(rs.getString("Release Date"));
+					yearChooserEdit.setYear(rs.getInt("Release Year"));
 					spinnerEditMin.setValue(new Integer(rs.getInt("Length (Minutes)")));
 					comboBoxEditRating.setSelectedItem(rs.getString("Rating"));
+					taDescriptionEdit.setText(rs.getString("Description"));
+					tfRentRateEdit.setText(rs.getString("Rental Rate"));
+					tfReplaceEdit.setText(rs.getString("Replacement Cost"));
 				}
 				
 				rs.close();
@@ -1075,13 +1183,18 @@ public class Main_Admin extends JFrame {
 						String value0 = tfmovieID.getText();
 						String value1 = tfTitle2.getText();
 						String value2 = (String)comboBoxEditGenre.getSelectedItem();
-						String value3 = ((JTextField)dateChooserEdit.getDateEditor().getUiComponent()).getText();
+						int value3 = yearChooserEdit.getYear();
 						int value4 = (Integer)spinnerEditMin.getValue();
 						String value5 = (String)comboBoxEditRating.getSelectedItem();
+						String value6 = taDescriptionEdit.getText();
+						String value7 = tfRentRateEdit.getText();
+						String value8 = tfReplaceEdit.getText();
 	
-						String query = "UPDATE movies SET  title = '"+ value1 +"', genre = '"+ value2 +
-									   "', release_date = '"+ value3 +"', length = '"+ value4 +"', rating = '"+ value5 +
-									   "' WHERE movieid = "+value0+" ";
+						String query = "UPDATE movies SET  title = '"+ value1 +"', genre = '"+ value2
+								       + "', release_year = '"+ value3 +"', length = '"+ value4
+								       + "', rating = '"+ value5 +"', description = '"+ value6
+									   + "', replacement_cost = '"+ value8 +"', rental_rate = '"+ value7
+									   +"' WHERE movieid = "+value0+" ";
 						
 						PreparedStatement pst = connection.prepareStatement(query);
 						pst.execute();
@@ -1096,35 +1209,35 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_4.setBounds(685, 345, 102, 29);
+		button_4.setBounds(685, 284, 102, 29);
 		panelEditMov.add(button_4);
 		
-		JLabel label_10 = new JLabel("Release Date:");
-		label_10.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_10.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_10.setBounds(225, 305, 110, 29);
-		panelEditMov.add(label_10);
+		JLabel lblReleaseYear = new JLabel("Release Year:");
+		lblReleaseYear.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblReleaseYear.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblReleaseYear.setBounds(225, 284, 110, 29);
+		panelEditMov.add(lblReleaseYear);
 		
-		JLabel label_15 = new JLabel("Add Movie Information:");
-		label_15.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_15.setBounds(6, 266, 267, 28);
-		panelEditMov.add(label_15);
+		JLabel lblEditMovieInformation = new JLabel("Edit Movie Information:");
+		lblEditMovieInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblEditMovieInformation.setBounds(6, 284, 168, 28);
+		panelEditMov.add(lblEditMovieInformation);
 		
 		tfTitle2 = new JTextField();
 		tfTitle2.setColumns(10);
-		tfTitle2.setBounds(70, 305, 145, 29);
+		tfTitle2.setBounds(70, 326, 145, 29);
 		panelEditMov.add(tfTitle2);
 		
 		JLabel label_16 = new JLabel("Title:");
 		label_16.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_16.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_16.setBounds(6, 305, 54, 29);
+		label_16.setBounds(6, 325, 54, 29);
 		panelEditMov.add(label_16);
 		
 		JLabel label_17 = new JLabel("Genre:");
 		label_17.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_17.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_17.setBounds(6, 345, 54, 29);
+		label_17.setBounds(6, 366, 54, 29);
 		panelEditMov.add(label_17);
 		
 		JLabel lblSearchMovie_1 = new JLabel("Search Movie:");
@@ -1147,7 +1260,9 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxEditMov.getSelectedItem();
 					String value1 = tfEditMovSearch.getText()+"%";
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
+							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1161,44 +1276,55 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		btnEditMovSearch.setBounds(676, 10, 102, 29);
+		btnEditMovSearch.setBounds(676, 8, 102, 29);
 		panelEditMov.add(btnEditMovSearch);
-		
-		JLabel lblId_1 = new JLabel("ID:");
-		lblId_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblId_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblId_1.setBounds(500, 345, 64, 29);
-		panelEditMov.add(lblId_1);
 		
 		JLabel label_12 = new JLabel("Rating:");
 		label_12.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_12.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_12.setBounds(500, 305, 64, 29);
+		label_12.setBounds(6, 407, 54, 29);
 		panelEditMov.add(label_12);
 		
 		JLabel label_18 = new JLabel("Length:");
 		label_18.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_18.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_18.setBounds(271, 347, 64, 29);
+		label_18.setBounds(271, 366, 64, 29);
 		panelEditMov.add(label_18);
 		
 		JLabel lblMinutes = new JLabel("Minutes");
 		lblMinutes.setHorizontalAlignment(SwingConstants.CENTER);
-		lblMinutes.setBounds(347, 332, 54, 16);
+		lblMinutes.setBounds(347, 351, 54, 16);
 		panelEditMov.add(lblMinutes);
 		
 		tfmovieID = new JTextField();
-		tfmovieID.setEditable(false);
-		tfmovieID.setColumns(10);
-		tfmovieID.setBounds(576, 345, 82, 29);
+	//	tfmovieID.setEditable(false);
+	//	tfmovieID.setColumns(10);
+	//	tfmovieID.setBounds(70, 285, 54, 29);
 		panelEditMov.add(tfmovieID);
+		
+		JLabel lblRentalRate = new JLabel("Rental Rate:");
+		lblRentalRate.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblRentalRate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblRentalRate.setBounds(225, 325, 110, 29);
+		panelEditMov.add(lblRentalRate);
+		
+		JLabel lblDescription = new JLabel("Description:");
+		lblDescription.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblDescription.setBounds(415, 296, 110, 29);
+		panelEditMov.add(lblDescription);
+		
+		JLabel lblReplacementCost = new JLabel("Replacement Cost:");
+		lblReplacementCost.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblReplacementCost.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblReplacementCost.setBounds(203, 408, 132, 29);
+		panelEditMov.add(lblReplacementCost);
 		
 		JPanel panelDelMov = new JPanel();
 		tabbedPaneMov.addTab("Delete Movies", null, panelDelMov, null);
 		panelDelMov.setLayout(null);
 		
 		JScrollPane scrollPane_7 = new JScrollPane();
-		scrollPane_7.setBounds(6, 47, 781, 329);
+		scrollPane_7.setBounds(6, 47, 781, 389);
 		panelDelMov.add(scrollPane_7);
 		
 		tableDelMov = new JTable();
@@ -1228,21 +1354,21 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_5.setBounds(676, 6, 102, 29);
+		button_5.setBounds(676, 8, 102, 29);
 		panelDelMov.add(button_5);
 		
 		JLabel lblSearchMovie = new JLabel("Search Movie:");
 		lblSearchMovie.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchMovie.setBounds(6, 6, 174, 28);
+		lblSearchMovie.setBounds(6, 8, 174, 28);
 		panelDelMov.add(lblSearchMovie);
 		
 		comboBoxDelMov = new JComboBox<String>();
-		comboBoxDelMov.setBounds(190, 6, 145, 29);
+		comboBoxDelMov.setBounds(190, 8, 145, 29);
 		panelDelMov.add(comboBoxDelMov);
 		
 		tfDelMovSearch = new JTextField();
 		tfDelMovSearch.setColumns(10);
-		tfDelMovSearch.setBounds(345, 6, 145, 29);
+		tfDelMovSearch.setBounds(345, 8, 145, 29);
 		panelDelMov.add(tfDelMovSearch);
 		
 		JButton button_3 = new JButton("Search");
@@ -1251,7 +1377,9 @@ public class Main_Admin extends JFrame {
 				try{
 					String value0 = (String)comboBoxDelMov.getSelectedItem();
 					String value1 = tfDelMovSearch.getText()+"%";
-					String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
+							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
@@ -1265,7 +1393,7 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_3.setBounds(562, 6, 102, 29);
+		button_3.setBounds(562, 8, 102, 29);
 		panelDelMov.add(button_3);
 		
 		JPanel panelAdm = new JPanel();
@@ -1274,7 +1402,7 @@ public class Main_Admin extends JFrame {
 		panelAdm.setLayout(null);
 		
 		JTabbedPane tabbedPaneAdm = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAdm.setBounds(0, 0, 793, 412);
+		tabbedPaneAdm.setBounds(0, 0, 793, 472);
 		panelAdm.add(tabbedPaneAdm);
 		
 		JPanel panelViewAdm = new JPanel();
@@ -1282,7 +1410,7 @@ public class Main_Admin extends JFrame {
 		panelViewAdm.setLayout(null);
 		
 		JScrollPane scrollPane_8 = new JScrollPane();
-		scrollPane_8.setBounds(6, 6, 780, 375);
+		scrollPane_8.setBounds(6, 6, 780, 430);
 		panelViewAdm.add(scrollPane_8);
 		
 		tableViewAdm = new JTable();
@@ -1293,7 +1421,7 @@ public class Main_Admin extends JFrame {
 		panelAddAdm.setLayout(null);
 		
 		JScrollPane scrollPane_9 = new JScrollPane();
-		scrollPane_9.setBounds(6, 6, 780, 250);
+		scrollPane_9.setBounds(6, 6, 780, 308);
 		panelAddAdm.add(scrollPane_9);
 		
 		tableNewAdm = new JTable();
@@ -1301,61 +1429,61 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblAddAdministratorInformation = new JLabel("Add Administrator Information:");
 		lblAddAdministratorInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblAddAdministratorInformation.setBounds(6, 267, 237, 28);
+		lblAddAdministratorInformation.setBounds(6, 326, 237, 28);
 		panelAddAdm.add(lblAddAdministratorInformation);
 		
 		JLabel label_26 = new JLabel("First Name:");
 		label_26.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_26.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_26.setBounds(6, 306, 82, 29);
+		label_26.setBounds(6, 366, 82, 29);
 		panelAddAdm.add(label_26);
 		
 		JLabel label_27 = new JLabel("Last Name:");
 		label_27.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_27.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_27.setBounds(6, 346, 82, 29);
+		label_27.setBounds(6, 407, 82, 29);
 		panelAddAdm.add(label_27);
 		
 		tfLastName3 = new JTextField();
 		tfLastName3.setColumns(10);
-		tfLastName3.setBounds(98, 346, 145, 29);
+		tfLastName3.setBounds(100, 408, 145, 29);
 		panelAddAdm.add(tfLastName3);
 		
 		tfFirstName3 = new JTextField();
 		tfFirstName3.setColumns(10);
-		tfFirstName3.setBounds(98, 308, 145, 29);
+		tfFirstName3.setBounds(100, 367, 145, 29);
 		panelAddAdm.add(tfFirstName3);
 		
 		JLabel label_28 = new JLabel("Username:");
 		label_28.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_28.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_28.setBounds(253, 306, 82, 29);
+		label_28.setBounds(257, 366, 82, 29);
 		panelAddAdm.add(label_28);
 		
 		JLabel label_29 = new JLabel("Password:");
 		label_29.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_29.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_29.setBounds(253, 344, 82, 29);
+		label_29.setBounds(257, 407, 82, 29);
 		panelAddAdm.add(label_29);
 		
 		tfPassword3 = new JPasswordField();
-		tfPassword3.setBounds(345, 348, 145, 29);
+		tfPassword3.setBounds(351, 408, 145, 29);
 		panelAddAdm.add(tfPassword3);
 		
 		tfUsername3 = new JTextField();
 		tfUsername3.setColumns(10);
-		tfUsername3.setBounds(345, 308, 145, 29);
+		tfUsername3.setBounds(351, 367, 145, 29);
 		panelAddAdm.add(tfUsername3);
 		
 		JLabel label_30 = new JLabel("Age:");
 		label_30.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_30.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_30.setBounds(500, 308, 82, 29);
+		label_30.setBounds(508, 366, 82, 29);
 		panelAddAdm.add(label_30);
 		
 		tfAge3 = new JTextField();
 		tfAge3.setColumns(10);
-		tfAge3.setBounds(592, 308, 145, 29);
+		tfAge3.setBounds(602, 367, 145, 29);
 		panelAddAdm.add(tfAge3);
 		
 		JButton button_7 = new JButton("Submit");
@@ -1364,17 +1492,31 @@ public class Main_Admin extends JFrame {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new administrator?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
 					  try{
-							 String query2 = ("SELECT username from admins where username = ?");
-							 PreparedStatement pst2 = connection.prepareStatement(query2);
-							 pst2.setString(1, tfUsername3.getText());
-							 ResultSet rs2 = pst2.executeQuery();
-							 if(rs2.next()){
-									JOptionPane.showMessageDialog(null, "Username already exists."); 
-									return;
-							 }
-						  }catch(Exception ex){
-							  JOptionPane.showMessageDialog(null,ex);
-						  }
+					      String query3 = ("SELECT username from admins");
+					      PreparedStatement pst3 = connection.prepareStatement(query3);
+					      ResultSet rs3 = pst3.executeQuery();
+					      tableCurrentUsername.setModel(DbUtils.resultSetToTableModel(rs3));
+					      int row =0;
+					      int column = 0;
+					      current = (tableCurrentUsername.getModel().getValueAt(row,column).toString());
+					      }catch(Exception ex){
+					       JOptionPane.showMessageDialog(null,ex);
+					      }
+					    try{
+					      String query2 = ("SELECT username from admins where username = ?");
+					      PreparedStatement pst2 = connection.prepareStatement(query2);
+					      pst2.setString(1, tfUsername3.getText());
+					      ResultSet rs2 = pst2.executeQuery();
+					      if(rs2.next()){
+					       if(current.equals(tfUsername3.getText())){}
+					       else{
+					        JOptionPane.showMessageDialog(null, "Username already exists.");
+					       return;
+					       }
+					      }
+					      }catch(Exception ex){
+					       JOptionPane.showMessageDialog(null,ex);
+					      }
 					  try{
 							String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 							PreparedStatement pst = connection.prepareStatement(query);
@@ -1400,7 +1542,7 @@ public class Main_Admin extends JFrame {
 					  }
 			}
 		});
-		button_7.setBounds(635, 346, 102, 29);
+		button_7.setBounds(645, 326, 102, 29);
 		panelAddAdm.add(button_7);
 		
 		JPanel panelEditAdm = new JPanel();
@@ -1408,7 +1550,7 @@ public class Main_Admin extends JFrame {
 		panelEditAdm.setLayout(null);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
-		scrollPane_10.setBounds(6, 50, 780, 210);
+		scrollPane_10.setBounds(6, 50, 780, 264);
 		panelEditAdm.add(scrollPane_10);
 		
 		tableEditAdm = new JTable();
@@ -1445,12 +1587,12 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblSearchAdministrator = new JLabel("Search Administrator:");
 		lblSearchAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchAdministrator.setBounds(6, 6, 174, 28);
+		lblSearchAdministrator.setBounds(6, 8, 174, 28);
 		panelEditAdm.add(lblSearchAdministrator);
 		
 		tfEditAdmSearch = new JTextField();
 		tfEditAdmSearch.setColumns(10);
-		tfEditAdmSearch.setBounds(345, 6, 145, 29);
+		tfEditAdmSearch.setBounds(345, 8, 145, 29);
 		panelEditAdm.add(tfEditAdmSearch);
 		
 		JButton button_8 = new JButton("Search");
@@ -1473,78 +1615,78 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_8.setBounds(635, 6, 102, 29);
+		button_8.setBounds(684, 8, 102, 29);
 		panelEditAdm.add(button_8);
 		
 		JLabel label_32 = new JLabel("Password:");
 		label_32.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_32.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_32.setBounds(253, 342, 82, 29);
+		label_32.setBounds(257, 407, 82, 29);
 		panelEditAdm.add(label_32);
 		
 		JLabel lblEditAdministratorInformation = new JLabel("Edit Administrator Information:");
 		lblEditAdministratorInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEditAdministratorInformation.setBounds(6, 264, 237, 28);
+		lblEditAdministratorInformation.setBounds(6, 326, 237, 28);
 		panelEditAdm.add(lblEditAdministratorInformation);
 		
 		JLabel label_34 = new JLabel("First Name:");
 		label_34.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_34.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_34.setBounds(6, 304, 82, 29);
+		label_34.setBounds(6, 366, 82, 29);
 		panelEditAdm.add(label_34);
 		
 		JLabel label_35 = new JLabel("Last Name:");
 		label_35.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_35.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_35.setBounds(6, 344, 82, 29);
+		label_35.setBounds(6, 407, 82, 29);
 		panelEditAdm.add(label_35);
 		
 		tfLastName4 = new JTextField();
 		tfLastName4.setColumns(10);
-		tfLastName4.setBounds(98, 344, 145, 29);
+		tfLastName4.setBounds(100, 408, 145, 29);
 		panelEditAdm.add(tfLastName4);
 		
 		tfFirstName4 = new JTextField();
 		tfFirstName4.setColumns(10);
-		tfFirstName4.setBounds(98, 304, 145, 29);
+		tfFirstName4.setBounds(100, 367, 145, 29);
 		panelEditAdm.add(tfFirstName4);
 		
 		JLabel label_36 = new JLabel("Username:");
 		label_36.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_36.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_36.setBounds(253, 302, 82, 29);
+		label_36.setBounds(257, 366, 82, 29);
 		panelEditAdm.add(label_36);
 		
 		tfUsername4 = new JTextField();
 		tfUsername4.setColumns(10);
-		tfUsername4.setBounds(345, 304, 145, 29);
+		tfUsername4.setBounds(351, 367, 145, 29);
 		panelEditAdm.add(tfUsername4);
 		
 		tfPassword4 = new JPasswordField();
-		tfPassword4.setBounds(345, 344, 145, 29);
+		tfPassword4.setBounds(351, 408, 145, 29);
 		panelEditAdm.add(tfPassword4);
 		
 		JLabel label_37 = new JLabel("ID:");
 		label_37.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_37.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_37.setBounds(500, 344, 82, 29);
+		label_37.setBounds(508, 407, 82, 29);
 		panelEditAdm.add(label_37);
 		
 		tfAdminID = new JTextField();
 		tfAdminID.setEditable(false);
 		tfAdminID.setColumns(10);
-		tfAdminID.setBounds(592, 344, 145, 29);
+		tfAdminID.setBounds(602, 408, 145, 29);
 		panelEditAdm.add(tfAdminID);
 		
 		tfAge4 = new JTextField();
 		tfAge4.setColumns(10);
-		tfAge4.setBounds(592, 304, 145, 29);
+		tfAge4.setBounds(602, 367, 145, 29);
 		panelEditAdm.add(tfAge4);
 		
 		JLabel label_38 = new JLabel("Age:");
 		label_38.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_38.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_38.setBounds(500, 302, 82, 29);
+		label_38.setBounds(508, 366, 82, 29);
 		panelEditAdm.add(label_38);
 		
 		JButton button_9 = new JButton("Submit");
@@ -1553,17 +1695,31 @@ public class Main_Admin extends JFrame {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
 					  try{
-							 String query2 = ("SELECT username from admins where username = ?");
-							 PreparedStatement pst2 = connection.prepareStatement(query2);
-							 pst2.setString(1, tfUsername4.getText());
-							 ResultSet rs2 = pst2.executeQuery();
-							 if(rs2.next()){
-									JOptionPane.showMessageDialog(null, "Username already exists."); 
-									return;
-							 }
-						  }catch(Exception ex){
-							  JOptionPane.showMessageDialog(null,ex);
-						  }
+					      String query3 = ("SELECT username from admins");
+					      PreparedStatement pst3 = connection.prepareStatement(query3);
+					      ResultSet rs3 = pst3.executeQuery();
+					      tableCurrentUsername.setModel(DbUtils.resultSetToTableModel(rs3));
+					      int row =0;
+					      int column = 0;
+					      current = (tableCurrentUsername.getModel().getValueAt(row,column).toString());
+					      }catch(Exception ex){
+					       JOptionPane.showMessageDialog(null,ex);
+					      }
+					    try{
+					      String query2 = ("SELECT username from admins where username = ?");
+					      PreparedStatement pst2 = connection.prepareStatement(query2);
+					      pst2.setString(1, tfUsername4.getText());
+					      ResultSet rs2 = pst2.executeQuery();
+					      if(rs2.next()){
+					       if(current.equals(tfUsername4.getText())){}
+					       else{
+					        JOptionPane.showMessageDialog(null, "Username already exists.");
+					       return;
+					       }
+					      }
+					      }catch(Exception ex){
+					       JOptionPane.showMessageDialog(null,ex);
+					      }
 					  try{
 							String value0 = tfAdminID.getText();
 							String value1 = tfFirstName4.getText();
@@ -1589,11 +1745,11 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_9.setBounds(635, 263, 102, 29);
+		button_9.setBounds(645, 326, 102, 29);
 		panelEditAdm.add(button_9);
 		
 		comboBoxEditAdm = new JComboBox<String>();
-		comboBoxEditAdm.setBounds(190, 6, 145, 29);
+		comboBoxEditAdm.setBounds(190, 8, 145, 29);
 		panelEditAdm.add(comboBoxEditAdm);
 		
 		JPanel panelDelAdm = new JPanel();
@@ -1601,7 +1757,7 @@ public class Main_Admin extends JFrame {
 		panelDelAdm.setLayout(null);
 		
 		JScrollPane scrollPane_11 = new JScrollPane();
-		scrollPane_11.setBounds(6, 50, 780, 330);
+		scrollPane_11.setBounds(6, 50, 780, 386);
 		panelDelAdm.add(scrollPane_11);
 		
 		tableDelAdm = new JTable();
@@ -1609,7 +1765,7 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblSearchAdministrator_1 = new JLabel("Search Administrator:");
 		lblSearchAdministrator_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchAdministrator_1.setBounds(6, 6, 237, 28);
+		lblSearchAdministrator_1.setBounds(6, 8, 237, 28);
 		panelDelAdm.add(lblSearchAdministrator_1);
 		
 		tfDelAdmSearch = new JTextField();
@@ -1668,7 +1824,7 @@ public class Main_Admin extends JFrame {
 		panelDelAdm.add(button_11);
 		
 		comboBoxDelAdm = new JComboBox<String>();
-		comboBoxDelAdm.setBounds(190, 6, 145, 29);
+		comboBoxDelAdm.setBounds(190, 8, 145, 29);
 		panelDelAdm.add(comboBoxDelAdm);
 		
 		JPanel panelRent = new JPanel();
@@ -1678,7 +1834,7 @@ public class Main_Admin extends JFrame {
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBackground(SystemColor.textHighlight);
-		tabbedPane.setBounds(0, 0, 793, 412);
+		tabbedPane.setBounds(0, 0, 793, 472);
 		panelRent.add(tabbedPane);
 		
 		JPanel panel = new JPanel();
@@ -1686,7 +1842,7 @@ public class Main_Admin extends JFrame {
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane_12 = new JScrollPane();
-		scrollPane_12.setBounds(6, 6, 781, 370);
+		scrollPane_12.setBounds(6, 6, 781, 430);
 		panel.add(scrollPane_12);
 		
 		tableViewRent = new JTable();
@@ -1797,7 +1953,7 @@ public class Main_Admin extends JFrame {
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.setHorizontalAlignment(SwingConstants.LEFT);
-		btnLogout.setBounds(843, 11, 100, 57);
+		btnLogout.setBounds(20, 492, 100, 57);
 		contentPane.add(btnLogout);
 		btnLogout.setIcon(new ImageIcon(Main_Admin.class.getResource("/twentyfour/sign-ban.png")));
 		btnLogout.addActionListener(new ActionListener() {
@@ -1811,8 +1967,19 @@ public class Main_Admin extends JFrame {
 			}
 		});
 		
+		// Click on outside of card panels and return to welcome page
+		contentPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				panelCards.removeAll();
+				panelCards.add(panelWelcome);
+				panelCards.repaint();
+				panelCards.revalidate();
+			}
+		});
+		
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(0, 494, 963, 29);
+		panel_4.setBounds(0, 569, 963, 29);
 		contentPane.add(panel_4);
 		
 		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in as Administrator ");
@@ -1835,5 +2002,8 @@ public class Main_Admin extends JFrame {
 		panel_4.add(lbCurrentUsernameAdmin);
 		panel_4.add(lblId_2);
 		panel_4.add(lbCurrentUserIDAdmin);
+		
+		tableCurrentUsername = new JTable();
+		contentPane.add(tableCurrentUsername);
 	}
 }

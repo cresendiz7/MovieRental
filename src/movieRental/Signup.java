@@ -6,15 +6,21 @@ import javax.swing.*;
 import java.sql.*;
 import javax.swing.border.*;
 
+import net.proteanit.sql.DbUtils;
+
 
 public class Signup extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField txtFieldFirstName;
-	private JTextField txtFieldLastName;
-	private JTextField txtFieldAge;
-	private JTextField txtFieldUsername;
-	private JPasswordField txtFieldPassword;
+	private JTextField tfFirstName;
+	private JTextField tfLastName;
+	private JTextField tfAge;
+	private JTextField tfUsername;
+	private JPasswordField tfPassword;
+	private JTable tableCurrentUsernameCust;
+	private String currentCust;
+	private JTable tableCurrentUsernameAdmin;
+	private String currentAdmin;
 	
 	/**
 	 * Launch the application.
@@ -67,10 +73,10 @@ public class Signup extends JFrame {
 		lblFirstName.setBounds(10, 117, 110, 29);
 		contentPane.add(lblFirstName);
 		
-		txtFieldFirstName = new JTextField();
-		txtFieldFirstName.setBounds(130, 117, 145, 29);
-		contentPane.add(txtFieldFirstName);
-		txtFieldFirstName.setColumns(10);
+		tfFirstName = new JTextField();
+		tfFirstName.setBounds(130, 117, 145, 29);
+		contentPane.add(tfFirstName);
+		tfFirstName.setColumns(10);
 		
 		JLabel lblLastName = new JLabel("Last Name:");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -78,10 +84,10 @@ public class Signup extends JFrame {
 		lblLastName.setBounds(10, 157, 110, 29);
 		contentPane.add(lblLastName);
 		
-		txtFieldLastName = new JTextField();
-		txtFieldLastName.setColumns(10);
-		txtFieldLastName.setBounds(130, 157, 145, 29);
-		contentPane.add(txtFieldLastName);
+		tfLastName = new JTextField();
+		tfLastName.setColumns(10);
+		tfLastName.setBounds(130, 157, 145, 29);
+		contentPane.add(tfLastName);
 		
 		JLabel lblAge = new JLabel("Age:");
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -89,10 +95,10 @@ public class Signup extends JFrame {
 		lblAge.setBounds(10, 197, 110, 29);
 		contentPane.add(lblAge);
 		
-		txtFieldAge = new JTextField();
-		txtFieldAge.setColumns(10);
-		txtFieldAge.setBounds(130, 197, 145, 29);
-		contentPane.add(txtFieldAge);
+		tfAge = new JTextField();
+		tfAge.setColumns(10);
+		tfAge.setBounds(130, 197, 145, 29);
+		contentPane.add(tfAge);
 		
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -100,10 +106,10 @@ public class Signup extends JFrame {
 		lblUsername.setBounds(10, 237, 110, 29);
 		contentPane.add(lblUsername);
 		
-		txtFieldUsername = new JTextField();
-		txtFieldUsername.setColumns(10);
-		txtFieldUsername.setBounds(130, 237, 145, 29);
-		contentPane.add(txtFieldUsername);
+		tfUsername = new JTextField();
+		tfUsername.setColumns(10);
+		tfUsername.setBounds(130, 237, 145, 29);
+		contentPane.add(tfUsername);
 		
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -111,9 +117,9 @@ public class Signup extends JFrame {
 		lblPassword.setBounds(10, 277, 110, 29);
 		contentPane.add(lblPassword);
 		
-		txtFieldPassword = new JPasswordField();
-		txtFieldPassword.setBounds(130, 277, 145, 29);
-		contentPane.add(txtFieldPassword);
+		tfPassword = new JPasswordField();
+		tfPassword.setBounds(130, 277, 145, 29);
+		contentPane.add(tfPassword);
 		
 		JCheckBox checkBoxAdmin = new JCheckBox("Admin?");
 		checkBoxAdmin.setBounds(130, 318, 75, 29);
@@ -124,26 +130,40 @@ public class Signup extends JFrame {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			  if(checkBoxAdmin.isSelected()){
-				 try{
-					 String query2 = ("SELECT username from admins where username = ?");
-					 PreparedStatement pst2 = connection.prepareStatement(query2);
-					 pst2.setString(1, txtFieldUsername.getText());
-					 ResultSet rs2 = pst2.executeQuery();
-					 if(rs2.next()){
-							JOptionPane.showMessageDialog(null, "Username already exists."); 
-							return;
-					 }
-				  }catch(Exception ex){
-					  JOptionPane.showMessageDialog(null,ex);
-				  }
+				  try{
+				      String query3 = ("SELECT username FROM admins");
+				      PreparedStatement pst3 = connection.prepareStatement(query3);
+				      ResultSet rs3 = pst3.executeQuery();
+				      tableCurrentUsernameAdmin.setModel(DbUtils.resultSetToTableModel(rs3));
+				      int row =0;
+				      int column = 0;
+				      currentAdmin = (tableCurrentUsernameAdmin.getModel().getValueAt(row,column).toString());
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
+				    try{
+				      String query2 = ("SELECT username FROM admins WHERE username = ?");
+				      PreparedStatement pst2 = connection.prepareStatement(query2);
+				      pst2.setString(1, tfUsername.getText());
+				      ResultSet rs2 = pst2.executeQuery();
+				      if(rs2.next()){
+				       if(currentAdmin.equals(tfUsername.getText())){}
+				       else{
+				        JOptionPane.showMessageDialog(null, "Username already exists.");
+				       return;
+				       }
+				      }
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
 				try{
 					String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 					PreparedStatement pst = connection.prepareStatement(query);
-					pst.setString(1, txtFieldFirstName.getText() );
-					pst.setString(2, txtFieldLastName.getText() );
-					pst.setString(3, txtFieldAge.getText() );
-					pst.setString(4, txtFieldUsername.getText() );
-					pst.setString(5, txtFieldPassword.getText() );
+					pst.setString(1, tfFirstName.getText() );
+					pst.setString(2, tfLastName.getText() );
+					pst.setString(3, tfAge.getText() );
+					pst.setString(4, tfUsername.getText() );
+					pst.setString(5, tfPassword.getText() );
 					
 					pst.execute();
 					
@@ -160,25 +180,39 @@ public class Signup extends JFrame {
 				}
 			  }else{
 				  try{
-						 String query2 = ("SELECT username from customers where username = ?");
-						 PreparedStatement pst2 = connection.prepareStatement(query2);
-						 pst2.setString(1, txtFieldUsername.getText());
-						 ResultSet rs2 = pst2.executeQuery();
-						 if(rs2.next()){
-								JOptionPane.showMessageDialog(null, "Username already exists."); 
-								return;
-						 }
-					  }catch(Exception ex){
-						  JOptionPane.showMessageDialog(null,ex);
-					  }
+				      String query3 = ("SELECT username FROM customers");
+				      PreparedStatement pst3 = connection.prepareStatement(query3);
+				      ResultSet rs3 = pst3.executeQuery();
+				      tableCurrentUsernameCust.setModel(DbUtils.resultSetToTableModel(rs3));
+				      int row =0;
+				      int column = 0;
+				      currentCust = (tableCurrentUsernameCust.getModel().getValueAt(row,column).toString());
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
+				    try{
+				      String query2 = ("SELECT username FROM customers WHERE username = ?");
+				      PreparedStatement pst2 = connection.prepareStatement(query2);
+				      pst2.setString(1, tfUsername.getText());
+				      ResultSet rs2 = pst2.executeQuery();
+				      if(rs2.next()){
+				       if(currentCust.equals(tfUsername.getText())){}
+				       else{
+				        JOptionPane.showMessageDialog(null, "Username already exists.");
+				       return;
+				       }
+				      }
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
 				  try{
 						String query = "INSERT INTO customers (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
 						PreparedStatement pst = connection.prepareStatement(query);
-						pst.setString(1, txtFieldFirstName.getText() );
-						pst.setString(2, txtFieldLastName.getText() );
-						pst.setString(3, txtFieldAge.getText() );
-						pst.setString(4, txtFieldUsername.getText() );
-						pst.setString(5, txtFieldPassword.getText() );
+						pst.setString(1, tfFirstName.getText() );
+						pst.setString(2, tfLastName.getText() );
+						pst.setString(3, tfAge.getText() );
+						pst.setString(4, tfUsername.getText() );
+						pst.setString(5, tfPassword.getText() );
 						
 						pst.execute();
 						
@@ -214,5 +248,11 @@ public class Signup extends JFrame {
 		});
 		btnLoginPage.setBounds(328, 157, 102, 29);
 		contentPane.add(btnLoginPage);
+		
+		tableCurrentUsernameCust = new JTable();
+		contentPane.add(tableCurrentUsernameCust);
+		
+		tableCurrentUsernameAdmin = new JTable();
+		contentPane.add(tableCurrentUsernameAdmin);
 	}
 }

@@ -21,8 +21,12 @@ public class Main_Cust extends JFrame {
 	private JTextField tfAge;
 	private JTable tableViewMov;
 	private JTextField tfUserID;
+	private JTable tableCurrentUsername;
+	private String current;
 	public static JLabel lbCurrentUsernameCust;
 	public static JLabel lbCurrentUserIDCust;
+	private JTextField textField;
+	private JTable tableCurrentRentals;
 
 	/**
 	 * Launch the application.
@@ -84,11 +88,29 @@ public class Main_Cust extends JFrame {
 	
 	public void refAllMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title', genre as 'Genre', release_date as 'Release Date', rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
 				
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void refCurrentRentalsTbl(){
+		try{
+			String query = "SELECT userid as 'Customer ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+				
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
 
 			pst.close();
 			rs.close();
@@ -102,6 +124,8 @@ public class Main_Cust extends JFrame {
 	 * Create the frame.
 	 */
 	public Main_Cust() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_Cust.class.getResource("/fortyeight/device-tv.png")));
+		setTitle("Movie Project");
 		connection = databaseConnection.dbConnection();
 		
 		setResizable(false);
@@ -123,9 +147,15 @@ public class Main_Cust extends JFrame {
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 		
-		JPanel panelBlank = new JPanel();
-		panelBlank.setBackground(SystemColor.textHighlight);
-		panelCards.add(panelBlank, "name_145839516092709");
+		JPanel panelWelcome = new JPanel();
+		panelWelcome.setBackground(SystemColor.textHighlight);
+		panelCards.add(panelWelcome, "name_145839516092709");
+		panelWelcome.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblWelcome = new JLabel("Welcome");
+		lblWelcome.setHorizontalAlignment(SwingConstants.CENTER);
+		lblWelcome.setFont(new Font("Tahoma", Font.BOLD, 70));
+		panelWelcome.add(lblWelcome, BorderLayout.CENTER);
 		
 		JPanel panelCust = new JPanel();
 		panelCust.setBackground(SystemColor.textHighlight);
@@ -204,21 +234,31 @@ public class Main_Cust extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
-					 String query2 = ("SELECT username from customers where username = ?");
-					 PreparedStatement pst2 = connection.prepareStatement(query2);
-					 pst2.setString(1, tfUsername.getText());
-					 ResultSet rs2 = pst2.executeQuery();
-					 if(rs2.next()){
-						 if(rs2.getString(1).equals(tfUsername.getText())){
-							 JOptionPane.showMessageDialog(null, "Username same."); 
-						 }else{
-							 JOptionPane.showMessageDialog(null, "Username already exists."); 
-							return;
-						 }
-					 }
-				  }catch(Exception ex){
-					  JOptionPane.showMessageDialog(null,ex);
-				  }
+				      String query3 = ("SELECT username from customers");
+				      PreparedStatement pst3 = connection.prepareStatement(query3);
+				      ResultSet rs3 = pst3.executeQuery();
+				      tableCurrentUsername.setModel(DbUtils.resultSetToTableModel(rs3));
+				      int row =0;
+				      int column = 0;
+				      current = (tableCurrentUsername.getModel().getValueAt(row,column).toString());
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
+				    try{
+				      String query2 = ("SELECT username from customers where username = ?");
+				      PreparedStatement pst2 = connection.prepareStatement(query2);
+				      pst2.setString(1, tfUsername.getText());
+				      ResultSet rs2 = pst2.executeQuery();
+				      if(rs2.next()){
+				       if(current.equals(tfUsername.getText())){}
+				       else{
+				        JOptionPane.showMessageDialog(null, "Username already exists.");
+				       return;
+				       }
+				      }
+				      }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				      }
 				try{
 					String value0 = tfUserID.getText();
 					String value1 = tfFirstName.getText();
@@ -272,26 +312,110 @@ public class Main_Cust extends JFrame {
 		tabbedPaneMov.setBounds(0, 0, 793, 412);
 		panelMov.add(tabbedPaneMov);
 		
-		JPanel panel_2 = new JPanel();
-		tabbedPaneMov.addTab("View Current Rentals", null, panel_2, null);
+		JPanel panelRentMovie = new JPanel();
+		tabbedPaneMov.addTab("Rent Movie", null, panelRentMovie, null);
+		panelRentMovie.setLayout(null);
 		
-		JPanel panelViewAllMov = new JPanel();
-		tabbedPaneMov.addTab("Rent Movie", null, panelViewAllMov, null);
-		panelViewAllMov.setLayout(null);
+		JPanel panelRentCards = new JPanel();
+		panelRentCards.setBounds(0, 0, 793, 382);
+		panelRentMovie.add(panelRentCards);
+		panelRentCards.setLayout(new CardLayout(0, 0));
+		
+		JPanel panelSelectMovies = new JPanel();
+		panelRentCards.add(panelSelectMovies);
+		panelSelectMovies.setLayout(null);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(6, 6, 781, 321);
-		panelViewAllMov.add(scrollPane_4);
+		scrollPane_4.setBounds(6, 6, 769, 324);
+		panelSelectMovies.add(scrollPane_4);
 		
 		tableViewMov = new JTable();
 		scrollPane_4.setViewportView(tableViewMov);
 		
 		JButton btnRent = new JButton("Rent");
-		btnRent.setBounds(6, 339, 90, 28);
-		panelViewAllMov.add(btnRent);
+		btnRent.setBounds(6, 342, 54, 28);
+		panelSelectMovies.add(btnRent);
 		
-		JPanel panel_1 = new JPanel();
-		tabbedPaneMov.addTab("Return Movie", null, panel_1, null);
+		JPanel panelCart = new JPanel();
+		panelRentCards.add(panelCart);
+		panelCart.setLayout(null);
+		
+		JButton btnReturnToMovies = new JButton("Return to Movies");
+		btnReturnToMovies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelSelectMovies);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnReturnToMovies.setBounds(6, 348, 119, 28);
+		panelCart.add(btnReturnToMovies);
+		
+		JButton btnNewButton = new JButton("View Cart");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCart);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnNewButton.setBounds(685, 342, 90, 28);
+		panelSelectMovies.add(btnNewButton);
+		btnRent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					try{
+						int row = tableViewMov.getSelectedRow();
+						int Table_click = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+						
+						String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
+						PreparedStatement pst = connection.prepareStatement(query);
+						pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+						pst.setInt(2, Table_click);
+						pst.setString(3, "01/26/1996");
+						pst.setString(4, "02/01/1996");
+						
+						pst.execute();
+						
+						JOptionPane.showMessageDialog(null, "Movie Rented.");
+						
+						pst.close();
+						
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, ex);
+					}
+					refAllMovTbl();
+					refCurrentRentalsTbl();
+				  }
+		});
+		
+		JPanel panelReturnMovie = new JPanel();
+		tabbedPaneMov.addTab("Return Movie", null, panelReturnMovie, null);
+		
+		JPanel panelAccount = new JPanel();
+		tabbedPaneMov.addTab("Account Summary", null, panelAccount, null);
+		panelAccount.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Account Balance:");
+		lblNewLabel_1.setBounds(6, 6, 94, 16);
+		panelAccount.add(lblNewLabel_1);
+		
+		textField = new JTextField();
+		textField.setBounds(6, 25, 122, 28);
+		panelAccount.add(textField);
+		textField.setColumns(10);
+		
+		JLabel lblCurrentRentals = new JLabel("Current Rentals");
+		lblCurrentRentals.setBounds(6, 65, 94, 16);
+		panelAccount.add(lblCurrentRentals);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(6, 93, 366, 162);
+		panelAccount.add(scrollPane);
+		
+		tableCurrentRentals = new JTable();
+		scrollPane.setViewportView(tableCurrentRentals);
 		
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(SystemColor.textHighlight);
@@ -326,6 +450,7 @@ public class Main_Cust extends JFrame {
 				panelCards.repaint();
 				panelCards.revalidate();
 				refAllMovTbl();
+				refCurrentRentalsTbl();
 			}
 		});
 		
@@ -349,6 +474,16 @@ public class Main_Cust extends JFrame {
 		ButtonMenu.add(btnMovies);
 		ButtonMenu.add(btnLogout);
 		
+		contentPane.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				panelCards.removeAll();
+				panelCards.add(panelWelcome);
+				panelCards.repaint();
+				panelCards.revalidate();
+			}
+		});
+		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setBounds(0, 494, 963, 29);
@@ -371,7 +506,11 @@ public class Main_Cust extends JFrame {
 		panel.add(label_3);
 		
 		lbCurrentUserIDCust = new JLabel();
+		lbCurrentUserIDCust.setText("22");
 		lbCurrentUserIDCust.setBounds(408, 7, 55, 16);
 		panel.add(lbCurrentUserIDCust);
+		
+		tableCurrentUsername = new JTable();
+		contentPane.add(tableCurrentUsername);
 	}
 }
