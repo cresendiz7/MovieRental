@@ -584,7 +584,17 @@ public class Main_Admin extends JFrame {
 		JButton button = new JButton("Submit");
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new customer?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
+				String empty = "";
+				String first = tfFirstName.getText();
+				String last = tfLastName.getText();
+				String age = tfAge.getText();
+				String username = tfUsername.getText();
+				String password = tfPassword.getText();
+			  if(first.equals(empty) || last.equals(empty) || age.equals(empty) || username.equals(empty) || password.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
+				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new customer?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
 				  try{
 				      String query3 = ("SELECT username from customers");
@@ -772,6 +782,16 @@ public class Main_Admin extends JFrame {
 		JButton button_1 = new JButton("Submit");
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String empty = "";
+				String first = tfFirstName2.getText();
+				String last = tfLastName2.getText();
+				String age = tfAge2.getText();
+				String username = tfUsername2.getText();
+				String password = tfPassword2.getText();
+			  if(first.equals(empty) || last.equals(empty) || age.equals(empty) || username.equals(empty) || password.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 			  if(action == 0){
 				  try{
@@ -1003,6 +1023,15 @@ public class Main_Admin extends JFrame {
 		JButton button_2 = new JButton("Submit");
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String empty = "";
+				String title = tfTitle.getText();
+				String descrp = taDescriptionNew.getText();
+				String rent = tfRentRateNew.getText();
+			    String replc = tfReplaceNew.getText();
+			  if(title.equals(empty)|| descrp.equals(empty) || rent.equals(empty) || replc.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new movie?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				 if(action == 0){
 					try{
@@ -1177,6 +1206,15 @@ public class Main_Admin extends JFrame {
 		JButton button_4 = new JButton("Submit");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String empty = "";
+				String title = tfTitle2.getText();
+				String descrp = taDescriptionEdit.getText();
+				String rent = tfRentRateEdit.getText();
+			    String replc = tfReplaceEdit.getText();
+			  if(title.equals(empty)|| descrp.equals(empty) || rent.equals(empty) || replc.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
 			  int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 				 if(action == 0){
 					try{
@@ -1297,9 +1335,6 @@ public class Main_Admin extends JFrame {
 		panelEditMov.add(lblMinutes);
 		
 		tfmovieID = new JTextField();
-	//	tfmovieID.setEditable(false);
-	//	tfmovieID.setColumns(10);
-	//	tfmovieID.setBounds(70, 285, 54, 29);
 		panelEditMov.add(tfmovieID);
 		
 		JLabel lblRentalRate = new JLabel("Rental Rate:");
@@ -1489,6 +1524,16 @@ public class Main_Admin extends JFrame {
 		JButton button_7 = new JButton("Submit");
 		button_7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String empty = "";
+				String first = tfFirstName3.getText();
+				String last = tfLastName3.getText();
+				String age = tfAge3.getText();
+				String username = tfUsername3.getText();
+				String password = tfPassword3.getText();
+			  if(first.equals(empty) || last.equals(empty) || age.equals(empty) || username.equals(empty) || password.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to add a new administrator?", "Confirm Submission", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
 					  try{
@@ -1692,6 +1737,16 @@ public class Main_Admin extends JFrame {
 		JButton button_9 = new JButton("Submit");
 		button_9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String empty = "";
+				String first = tfFirstName4.getText();
+				String last = tfLastName4.getText();
+				String age = tfAge4.getText();
+				String username = tfUsername4.getText();
+				String password = tfPassword4.getText();
+			  if(first.equals(empty) || last.equals(empty) || age.equals(empty) || username.equals(empty) || password.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to edit?", "Confirm Edit", JOptionPane.YES_NO_OPTION);
 				  if(action == 0){
 					  try{

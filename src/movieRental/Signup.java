@@ -21,7 +21,7 @@ public class Signup extends JFrame {
 	private String currentCust;
 	private JTable tableCurrentUsernameAdmin;
 	private String currentAdmin;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -42,7 +42,7 @@ public class Signup extends JFrame {
 			}
 		});
 	}
-	
+
 	Connection connection = null;
 
 	/**
@@ -60,76 +60,86 @@ public class Signup extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
+
 		JLabel lblCustomerSignUp = new JLabel("Sign Up");
 		lblCustomerSignUp.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomerSignUp.setFont(new Font("Tahoma", Font.BOLD, 50));
 		lblCustomerSignUp.setBounds(6, 13, 482, 73);
 		contentPane.add(lblCustomerSignUp);
-		
+
 		JLabel lblFirstName = new JLabel("First Name:");
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFirstName.setBounds(10, 117, 110, 29);
 		contentPane.add(lblFirstName);
-		
+
 		tfFirstName = new JTextField();
 		tfFirstName.setBounds(130, 117, 145, 29);
 		contentPane.add(tfFirstName);
 		tfFirstName.setColumns(10);
-		
+
 		JLabel lblLastName = new JLabel("Last Name:");
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLastName.setBounds(10, 157, 110, 29);
 		contentPane.add(lblLastName);
-		
+
 		tfLastName = new JTextField();
 		tfLastName.setColumns(10);
 		tfLastName.setBounds(130, 157, 145, 29);
 		contentPane.add(tfLastName);
-		
+
 		JLabel lblAge = new JLabel("Age:");
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblAge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAge.setBounds(10, 197, 110, 29);
 		contentPane.add(lblAge);
-		
+
 		tfAge = new JTextField();
 		tfAge.setColumns(10);
 		tfAge.setBounds(130, 197, 145, 29);
 		contentPane.add(tfAge);
-		
+
 		JLabel lblUsername = new JLabel("Username:");
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsername.setBounds(10, 237, 110, 29);
 		contentPane.add(lblUsername);
-		
+
 		tfUsername = new JTextField();
 		tfUsername.setColumns(10);
 		tfUsername.setBounds(130, 237, 145, 29);
 		contentPane.add(tfUsername);
-		
+
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setBounds(10, 277, 110, 29);
 		contentPane.add(lblPassword);
-		
+
 		tfPassword = new JPasswordField();
 		tfPassword.setBounds(130, 277, 145, 29);
 		contentPane.add(tfPassword);
-		
+
 		JCheckBox checkBoxAdmin = new JCheckBox("Admin?");
 		checkBoxAdmin.setBounds(130, 318, 75, 29);
 		contentPane.add(checkBoxAdmin);
-		
+
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setIcon(new ImageIcon(Signup.class.getResource("/twentyfour/sign-check.png")));
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-			  if(checkBoxAdmin.isSelected()){
+				String empty = "";
+				String first = tfFirstName.getText();
+				String last = tfLastName.getText();
+				String age = tfAge.getText();
+				String username = tfUsername.getText();
+				String password = tfPassword.getText();
+			  if(first.equals(empty) || last.equals(empty) || age.equals(empty) || username.equals(empty) || password.equals(empty)){
+				  JOptionPane.showMessageDialog(null,"Must fill out all fields");
+				  return;
+				  }
+				if(checkBoxAdmin.isSelected()){
 				  try{
 				      String query3 = ("SELECT username FROM admins");
 				      PreparedStatement pst3 = connection.prepareStatement(query3);
@@ -164,17 +174,17 @@ public class Signup extends JFrame {
 					pst.setString(3, tfAge.getText() );
 					pst.setString(4, tfUsername.getText() );
 					pst.setString(5, tfPassword.getText() );
-					
+
 					pst.execute();
-					
+
 					JOptionPane.showMessageDialog(null, "Profile Created.");
-					
+
 					pst.close();
-					
+
 					contentPane.setVisible(false);
 					dispose();
 					Login.main(null);
-					
+
 				}catch(Exception ex){
 					ex.printStackTrace();
 				}
@@ -213,27 +223,26 @@ public class Signup extends JFrame {
 						pst.setString(3, tfAge.getText() );
 						pst.setString(4, tfUsername.getText() );
 						pst.setString(5, tfPassword.getText() );
-						
+
 						pst.execute();
-						
+
 						JOptionPane.showMessageDialog(null, "Profile Created.");
-						
+
 						pst.close();
-						
+
 						contentPane.setVisible(false);
 						dispose();
 						Login.main(null);
-						
+
 					}catch(Exception ex){
 						ex.printStackTrace();
 					}
 			  }
-				
 			}
 		});
 		btnSubmit.setBounds(328, 117, 102, 29);
 		contentPane.add(btnSubmit);
-		
+
 		JButton btnLoginPage = new JButton("Cancel");
 		btnLoginPage.setIcon(new ImageIcon(Signup.class.getResource("/twentyfour/sign-ban.png")));
 		btnLoginPage.addActionListener(new ActionListener() {
@@ -248,10 +257,10 @@ public class Signup extends JFrame {
 		});
 		btnLoginPage.setBounds(328, 157, 102, 29);
 		contentPane.add(btnLoginPage);
-		
+
 		tableCurrentUsernameCust = new JTable();
 		contentPane.add(tableCurrentUsernameCust);
-		
+
 		tableCurrentUsernameAdmin = new JTable();
 		contentPane.add(tableCurrentUsernameAdmin);
 	}
