@@ -8,6 +8,9 @@ import javax.swing.event.*;
 import java.sql.*;
 import javax.swing.border.*;
 import net.proteanit.sql.DbUtils;
+import com.toedter.components.JLocaleChooser;
+import com.toedter.calendar.JDayChooser;
+import com.toedter.calendar.JDateChooser;
 
 public class Main_Cust extends JFrame {
 
@@ -28,13 +31,18 @@ public class Main_Cust extends JFrame {
 	private JTextField textField;
 	private JTable tableCurrentRentals;
 	private JTable tableCart;
+	private JTextField tfRentMovieSearch;
+	private JComboBox<String> comboBoxRentMov;
+	private JTable tableCheckout;
+	private JTextField textField_1;
+	private JTextField textField_2;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -138,6 +146,22 @@ public class Main_Cust extends JFrame {
 		}
 	}
 	
+	public void refCheckoutTbl(){
+		try{
+			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate', replacement_cost as 'Replacement Cost' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+				
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableCheckout.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
 	public void refCurrentRentalsTbl(){
 		try{
 			String query = "SELECT userid as 'Customer ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
@@ -153,6 +177,20 @@ public class Main_Cust extends JFrame {
 			ex.printStackTrace();
 		}
 	}
+	
+	public void fillComboRentMov(){
+		try{
+			comboBoxRentMov.removeAllItems();
+			comboBoxRentMov.addItem("movieid");
+			comboBoxRentMov.addItem("title");
+			comboBoxRentMov.addItem("genre");
+			comboBoxRentMov.addItem("rating");
+			comboBoxRentMov.addItem("rental_rate");
+			comboBoxRentMov.addItem("release_year");
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex);
+		}
+	}
 
 	/**
 	 * Create the frame.
@@ -164,7 +202,7 @@ public class Main_Cust extends JFrame {
 		
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 969, 552);
+		setBounds(100, 100, 969, 627);
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.textHighlight);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -177,7 +215,7 @@ public class Main_Cust extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JPanel panelCards = new JPanel();
-		panelCards.setBounds(150, 79, 793, 412);
+		panelCards.setBounds(152, 80, 805, 477);
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 		
@@ -197,7 +235,7 @@ public class Main_Cust extends JFrame {
 		panelCust.setLayout(null);
 		
 		JTabbedPane tabbedPaneCust = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneCust.setBounds(0, 0, 793, 412);
+		tabbedPaneCust.setBounds(0, 0, 793, 471);
 		panelCust.add(tabbedPaneCust);
 		
 		JPanel panelEditCust = new JPanel();
@@ -325,16 +363,7 @@ public class Main_Cust extends JFrame {
 		lblEditCustomerInformation.setBounds(6, 6, 237, 28);
 		panelEditCust.add(lblEditCustomerInformation);
 		
-		JLabel lblId = new JLabel("ID:");
-		lblId.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblId.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblId.setBounds(31, 303, 82, 29);
-		panelEditCust.add(lblId);
-		
 		tfUserID = new JTextField();
-		tfUserID.setEditable(false);
-		tfUserID.setColumns(10);
-		tfUserID.setBounds(125, 304, 145, 29);
 		panelEditCust.add(tfUserID);
 		
 		JPanel panelMov = new JPanel();
@@ -343,7 +372,7 @@ public class Main_Cust extends JFrame {
 		panelMov.setLayout(null);
 		
 		JTabbedPane tabbedPaneMov = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneMov.setBounds(0, 0, 793, 412);
+		tabbedPaneMov.setBounds(0, 0, 793, 471);
 		panelMov.add(tabbedPaneMov);
 		
 		JPanel panelRentMovie = new JPanel();
@@ -351,17 +380,17 @@ public class Main_Cust extends JFrame {
 		panelRentMovie.setLayout(null);
 		
 		JPanel panelRentCards = new JPanel();
-		panelRentCards.setBounds(0, 0, 793, 382);
+		panelRentCards.setBounds(0, 0, 793, 441);
 		panelRentMovie.add(panelRentCards);
 		panelRentCards.setLayout(new CardLayout(0, 0));
 		
-		JPanel panelSelectMovies = new JPanel();
-		panelRentCards.add(panelSelectMovies);
-		panelSelectMovies.setLayout(null);
+		JPanel panelSelectMov = new JPanel();
+		panelRentCards.add(panelSelectMov);
+		panelSelectMov.setLayout(null);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(6, 6, 769, 324);
-		panelSelectMovies.add(scrollPane_4);
+		scrollPane_4.setBounds(6, 48, 769, 347);
+		panelSelectMov.add(scrollPane_4);
 		
 		tableViewMov = new JTable();
 		scrollPane_4.setViewportView(tableViewMov);
@@ -374,28 +403,69 @@ public class Main_Cust extends JFrame {
 		btnReturnToMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRentCards.removeAll();
-				panelRentCards.add(panelSelectMovies);
+				panelRentCards.add(panelSelectMov);
 				panelRentCards.repaint();
 				panelRentCards.revalidate();
 			}
 		});
-		btnReturnToMovies.setBounds(6, 348, 119, 28);
+		btnReturnToMovies.setBounds(6, 407, 119, 28);
 		panelCart.add(btnReturnToMovies);
 		
+		JPanel panelCheckout = new JPanel();
+		panelRentCards.add(panelCheckout, "name_40668533167542");
+		panelCheckout.setLayout(null);
+		
 		JButton btnCheckout = new JButton("Checkout");
-		btnCheckout.setBounds(697, 348, 90, 28);
+		btnCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int count= tableCart.getModel().getRowCount();
+				if(count<1){
+					JOptionPane.showMessageDialog(null, "You have no items in your cart.");
+					return;
+				}
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCheckout);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+				refCheckoutTbl();
+			}
+		});
+		btnCheckout.setBounds(697, 407, 90, 28);
 		panelCart.add(btnCheckout);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(6, 46, 781, 282);
+		scrollPane_1.setBounds(6, 46, 781, 349);
 		panelCart.add(scrollPane_1);
 		
 		tableCart = new JTable();
 		scrollPane_1.setViewportView(tableCart);
 		
 		JButton btnRemoveFromCart = new JButton("Remove from Cart");
-		btnRemoveFromCart.setBounds(250, 348, 128, 28);
+		btnRemoveFromCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					int row = tableCart.getSelectedRow();
+					String Table_click = (tableCart.getModel().getValueAt(row, 1).toString());
+					
+					String query = "DELETE FROM cart WHERE movieid = '"+Table_click+"' ";
+					
+					PreparedStatement pst = connection.prepareStatement(query);
+					pst.execute();
+				
+				}catch (Exception ex) { 
+					JOptionPane.showMessageDialog(null, "Select the movie you wish to remove from your cart.");
+				}
+				refCartTbl();
+			}
+		});
+		btnRemoveFromCart.setBounds(137, 407, 128, 28);
 		panelCart.add(btnRemoveFromCart);
+		
+		JLabel lblCart = new JLabel("Cart");
+		lblCart.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCart.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCart.setBounds(6, 6, 781, 39);
+		panelCart.add(lblCart);
 		
 		JButton btnViewCart = new JButton("View Cart");
 		btnViewCart.addActionListener(new ActionListener() {
@@ -406,12 +476,171 @@ public class Main_Cust extends JFrame {
 				panelRentCards.revalidate();
 			}
 		});
-		btnViewCart.setBounds(685, 342, 90, 28);
-		panelSelectMovies.add(btnViewCart);
+		btnViewCart.setBounds(685, 407, 90, 28);
+		panelSelectMov.add(btnViewCart);
 		
 		JButton btnAddToCart = new JButton("Add to Cart");
-		btnAddToCart.setBounds(6, 342, 90, 28);
-		panelSelectMovies.add(btnAddToCart);
+		btnAddToCart.setBounds(6, 407, 90, 28);
+		panelSelectMov.add(btnAddToCart);
+		
+		JLabel label = new JLabel("Search Movie:");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label.setBounds(6, 8, 174, 28);
+		panelSelectMov.add(label);
+		
+		comboBoxRentMov = new JComboBox<String>();
+		comboBoxRentMov.setBounds(190, 8, 145, 29);
+		panelSelectMov.add(comboBoxRentMov);
+		
+		tfRentMovieSearch = new JTextField();
+		tfRentMovieSearch.setColumns(10);
+		tfRentMovieSearch.setBounds(345, 8, 145, 29);
+		panelSelectMov.add(tfRentMovieSearch);
+		
+		JButton btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					String value0 = (String)comboBoxRentMov.getSelectedItem();
+					String value1 = tfRentMovieSearch.getText()+"%";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
+							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+					
+					PreparedStatement pst = connection.prepareStatement(query);
+					ResultSet rs = pst.executeQuery();
+					tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+
+					pst.close();
+					rs.close();
+
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		});
+		btnSearch.setBounds(676, 8, 102, 29);
+		panelSelectMov.add(btnSearch);
+		
+		
+		JLabel lblCheckout = new JLabel("Checkout");
+		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCheckout.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCheckout.setBounds(6, 6, 781, 39);
+		panelCheckout.add(lblCheckout);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBounds(6, 46, 781, 175);
+		panelCheckout.add(scrollPane_3);
+		
+		tableCheckout = new JTable();
+		scrollPane_3.setViewportView(tableCheckout);
+		
+		JButton btnReturnToCart = new JButton("Return to Cart");
+		btnReturnToCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCart);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnReturnToCart.setBounds(6, 407, 104, 28);
+		panelCheckout.add(btnReturnToCart);
+		
+		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/*int count = tableCheckout.getModel().getRowCount();
+				
+				try{
+					int userid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+					int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 1).toString());
+					String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
+					String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
+					String return_date = (tableViewMov.getModel().getValueAt(row, 7).toString());
+					
+					String query = "INSERT INTO rentals (userid,movieid,rental_rate,return_date) VALUES (?,?,?,?)";
+					PreparedStatement pst = connection.prepareStatement(query);
+					
+					pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+					pst.setInt(2, movieid);
+					pst.setString(3, rent_rate);
+					pst.setString(4, return_date);
+					
+					pst.execute();
+					
+					JOptionPane.showMessageDialog(null, "Transaction Complete");
+					
+					pst.close();
+					
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, ex);
+				}
+				delCart();
+			  }*/
+			}
+		});
+		btnSubmit.setBounds(697, 407, 90, 28);
+		panelCheckout.add(btnSubmit);
+		
+		JLabel lblDaysToBe = new JLabel("Days to be Rented:");
+		lblDaysToBe.setBounds(411, 233, 104, 16);
+		panelCheckout.add(lblDaysToBe);
+		
+		JRadioButton radioButton = new JRadioButton("1");
+		radioButton.setBounds(411, 254, 115, 18);
+		panelCheckout.add(radioButton);
+		
+		JRadioButton radioButton_1 = new JRadioButton("3");
+		radioButton_1.setBounds(411, 284, 115, 18);
+		panelCheckout.add(radioButton_1);
+		
+		JRadioButton radioButton_2 = new JRadioButton("5");
+		radioButton_2.setBounds(411, 314, 115, 18);
+		panelCheckout.add(radioButton_2);
+		
+		JRadioButton radioButton_3 = new JRadioButton("7");
+		radioButton_3.setBounds(411, 344, 115, 18);
+		panelCheckout.add(radioButton_3);
+		
+		JLabel lblReturnDate = new JLabel("Return Date:");
+		lblReturnDate.setBounds(601, 233, 104, 16);
+		panelCheckout.add(lblReturnDate);
+		
+		textField_1 = new JTextField();
+		textField_1.setBounds(601, 249, 122, 28);
+		panelCheckout.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JLabel lblBalance = new JLabel("Balance:");
+		lblBalance.setBounds(443, 374, 55, 16);
+		panelCheckout.add(lblBalance);
+		
+		textField_2 = new JTextField();
+		textField_2.setBounds(443, 396, 122, 28);
+		panelCheckout.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JLabel lblNewLabel_2 = new JLabel("Customer Information:");
+		lblNewLabel_2.setBounds(6, 233, 131, 16);
+		panelCheckout.add(lblNewLabel_2);
+		
+		JLabel lblFirstName = new JLabel("First Name");
+		lblFirstName.setBounds(6, 255, 61, 16);
+		panelCheckout.add(lblFirstName);
+		
+		JLabel lblLastName = new JLabel("Last Name");
+		lblLastName.setBounds(6, 285, 61, 16);
+		panelCheckout.add(lblLastName);
+		
+		JLabel lblId_1 = new JLabel("ID:");
+		lblId_1.setBounds(6, 315, 15, 16);
+		panelCheckout.add(lblId_1);
+		
+		JLabel lblID = new JLabel("ID");
+		lblID.setBounds(33, 315, 15, 16);
+		panelCheckout.add(lblID);
 		btnAddToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 					try{
@@ -473,7 +702,7 @@ public class Main_Cust extends JFrame {
 		
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(SystemColor.textHighlight);
-		ButtonMenu.setBounds(10, 79, 130, 412);
+		ButtonMenu.setBounds(10, 79, 130, 478);
 		contentPane.add(ButtonMenu);
 		
 		JButton btnCustomers = new JButton("Edit Profile");
@@ -504,15 +733,15 @@ public class Main_Cust extends JFrame {
 				panelCards.repaint();
 				panelCards.revalidate();
 				refAllMovTbl();
+				refCartTbl();
 				refCurrentRentalsTbl();
+				fillComboRentMov();
 			}
 		});
 		
 		JButton btnLogout = new JButton("Logout");
-		btnLogout.setBounds(10, 312, 100, 90);
-		btnLogout.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-ban48.png")));
-		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnLogout.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btnLogout.setBounds(10, 415, 100, 57);
+		btnLogout.setIcon(new ImageIcon(Main_Cust.class.getResource("/twentyfour/sign-ban.png")));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
@@ -541,7 +770,7 @@ public class Main_Cust extends JFrame {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBounds(0, 494, 963, 29);
+		panel.setBounds(0, 569, 963, 29);
 		contentPane.add(panel);
 		
 		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in as Customer");

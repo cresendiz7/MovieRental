@@ -87,7 +87,7 @@ public class Main_Admin extends JFrame {
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -487,7 +487,7 @@ public class Main_Admin extends JFrame {
 		contentPane.add(lblNewLabel);
 		
 		JPanel panelCards = new JPanel();
-		panelCards.setBounds(150, 79, 793, 478);
+		panelCards.setBounds(150, 79, 807, 478);
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 		
