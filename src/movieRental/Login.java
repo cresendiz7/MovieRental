@@ -21,7 +21,7 @@ public class Login{
 	 */
 	public static void main(String[] args) {
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
@@ -82,6 +82,7 @@ public class Login{
 		frmLogin.getContentPane().add(checkBoxAdmin);
 		
 		JButton btnLogin = new JButton("Login");
+		btnLogin.setBackground(Color.DARK_GRAY);
 		btnLogin.setIcon(new ImageIcon(Login.class.getResource("/twentyfour/sign-check.png")));
 		btnLogin.setBounds(130, 187, 145, 29);
 		frmLogin.getContentPane().add(btnLogin);
