@@ -1,22 +1,19 @@
 package movieRental;
 
 import java.awt.*;
-import java.util.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.sql.*;
-
 import javax.swing.border.*;
 import net.proteanit.sql.DbUtils;
-import com.toedter.calendar.JDateChooser;
-import com.toedter.components.JSpinField;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import com.toedter.calendar.JYearChooser;
 
 public class Main_Admin extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3524921925112957488L;
 	Connection connection = null;
 	private JPanel contentPane;
 	private JTextField tfFirstName;
@@ -583,6 +580,7 @@ public class Main_Admin extends JFrame {
 		
 		JButton button = new JButton("Submit");
 		button.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				String empty = "";
 				String first = tfFirstName.getText();
@@ -781,6 +779,7 @@ public class Main_Admin extends JFrame {
 		
 		JButton button_1 = new JButton("Submit");
 		button_1.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				String empty = "";
 				String first = tfFirstName2.getText();
@@ -1523,6 +1522,7 @@ public class Main_Admin extends JFrame {
 		
 		JButton button_7 = new JButton("Submit");
 		button_7.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				String empty = "";
 				String first = tfFirstName3.getText();
@@ -1736,6 +1736,7 @@ public class Main_Admin extends JFrame {
 		
 		JButton button_9 = new JButton("Submit");
 		button_9.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				String empty = "";
 				String first = tfFirstName4.getText();

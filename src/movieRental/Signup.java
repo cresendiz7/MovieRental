@@ -11,6 +11,10 @@ import net.proteanit.sql.DbUtils;
 
 public class Signup extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2960040697415967502L;
 	private JPanel contentPane;
 	private JTextField tfFirstName;
 	private JTextField tfLastName;
@@ -128,6 +132,7 @@ public class Signup extends JFrame {
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.setIcon(new ImageIcon(Signup.class.getResource("/twentyfour/sign-check.png")));
 		btnSubmit.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				String empty = "";
 				String first = tfFirstName.getText();

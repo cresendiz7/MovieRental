@@ -48,6 +48,11 @@ public class Login{
 	}
 	
 	Action signup = new AbstractAction() {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -999937965029355453L;
+
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			frmLogin.dispose();
@@ -81,6 +86,7 @@ public class Login{
 		btnLogin.setBounds(130, 187, 145, 29);
 		frmLogin.getContentPane().add(btnLogin);
 		btnLogin.addActionListener(new ActionListener(){
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				if(checkBoxAdmin.isSelected()){
 					try{

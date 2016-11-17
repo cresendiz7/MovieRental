@@ -2,19 +2,26 @@ package movieRental;
 
 import java.awt.*;
 import java.util.*;
+import java.util.Date;
 import java.awt.event.*;
+import java.math.BigDecimal;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.sql.*;
 import javax.swing.border.*;
 import net.proteanit.sql.DbUtils;
-import com.toedter.components.JLocaleChooser;
 import com.toedter.calendar.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Main_Cust extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4395387123685247355L;
 	static Connection connection = null;
 	private JPanel contentPane;
 	private JTable tableViewEditCust;
@@ -29,16 +36,18 @@ public class Main_Cust extends JFrame {
 	private String current;
 	public static JLabel lbCurrentUsernameCust;
 	public static JLabel lbCurrentUserIDCust;
-	private JTextField textField;
-	private JTable tableCurrentRentals;
+	private JTable tableRentalHistory;
 	private JTable tableCart;
 	private JTextField tfRentMovieSearch;
 	private JComboBox<String> comboBoxRentMov;
 	private JTable tableCheckout;
-	private JTextField textField_2;
+	private JTextField tfBalance;
 	private JLabel lblFirstName;
 	private JLabel lblLastName;
 	private JLabel lblID;
+	private JDateChooser ReturnDateChooser;
+	private JTable tableCurrentRentals;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -121,9 +130,10 @@ public class Main_Cust extends JFrame {
 			rs.close();
 
 		}catch(Exception ex){
-			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, ex);
 		}
 	}
+	
 	public static void delCart(){
 		try{
 			String query = "TRUNCATE TABLE cart";
@@ -132,7 +142,7 @@ public class Main_Cust extends JFrame {
 			pst.close();
 
 		}catch(Exception ex){
-			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, ex);
 		}
 	}
 
@@ -148,10 +158,42 @@ public class Main_Cust extends JFrame {
 			rs.close();
 
 		}catch(Exception ex){
-			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, ex);
 		}
 	}
 
+	public void refRentalHistoryTbl(){
+		try{
+			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date', returned as 'Returned?' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableRentalHistory.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex);
+		}
+	}
+	
+	public void refCurrentRentalsTbl(){
+		try{
+			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date', returned as 'Returned?' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"' AND returned = 'NO'";
+
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex);
+		}
+	}
+	
 	public void refCheckoutTbl(){
 		try{
 			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate', replacement_cost as 'Replacement Cost' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
@@ -164,23 +206,40 @@ public class Main_Cust extends JFrame {
 			rs.close();
 
 		}catch(Exception ex){
-			ex.printStackTrace();
+			JOptionPane.showMessageDialog(null, ex);
 		}
 	}
-
-	public void refCurrentRentalsTbl(){
+	
+	public void CalculateBalance(){
 		try{
-			String query = "SELECT userid as 'Customer ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
-
-			PreparedStatement pst = connection.prepareStatement(query);
-			ResultSet rs = pst.executeQuery();
-			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
-
-			pst.close();
-			rs.close();
+			//Calculate total rent amount 
+			int rowcount = tableCheckout.getModel().getRowCount();
+			BigDecimal newbalance = BigDecimal.ZERO;
+			for(int row =0; row < rowcount; row++){
+				try{
+					newbalance = newbalance.add(new BigDecimal(tableCheckout.getModel().getValueAt(row, 3).toString()));
+				}catch(Exception ex){
+				JOptionPane.showMessageDialog(null, ex);
+				}				
+			}
+			
+			//Calculate number of days to be rented
+			String return_date = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
+			DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
+			format = format.withLocale( Locale.US );
+			LocalDate date = LocalDate.parse(return_date, format);
+			LocalDate today = LocalDate.now();
+			int days = (int) ChronoUnit.DAYS.between(today,date);
+			BigDecimal days2 = BigDecimal.valueOf(days);
+			
+			//Calculate total balance 
+			BigDecimal total_cost = newbalance.multiply(days2);
+			
+			//Set Balance into textfield
+			tfBalance.setText(total_cost.toString());
 
 		}catch(Exception ex){
-			ex.printStackTrace();
+			
 		}
 	}
 
@@ -310,6 +369,7 @@ public class Main_Cust extends JFrame {
 
 		JButton button_1 = new JButton("Submit");
 		button_1.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				try{
 				      String query3 = ("SELECT username from customers");
@@ -418,7 +478,7 @@ public class Main_Cust extends JFrame {
 		panelCart.add(btnReturnToMovies);
 
 		JPanel panelCheckout = new JPanel();
-		panelRentCards.add(panelCheckout, "name_40668533167542");
+		panelRentCards.add(panelCheckout);
 		panelCheckout.setLayout(null);
 
 		JButton btnCheckout = new JButton("Checkout");
@@ -429,11 +489,11 @@ public class Main_Cust extends JFrame {
 					JOptionPane.showMessageDialog(null, "You have no items in your cart.");
 					return;
 				}
+				refCheckoutTbl();
 				panelRentCards.removeAll();
 				panelRentCards.add(panelCheckout);
 				panelRentCards.repaint();
 				panelRentCards.revalidate();
-				refCheckoutTbl();
 			}
 		});
 		btnCheckout.setBounds(697, 407, 90, 28);
@@ -581,42 +641,73 @@ public class Main_Cust extends JFrame {
 		btnReturnToCart.setBounds(6, 407, 104, 28);
 		panelCheckout.add(btnReturnToCart);
 		
-		JDateChooser ReturnDateChooser = new JDateChooser();
-		ReturnDateChooser.setBounds(212, 262, 104, 20);
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
+		Date date = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
+	    ReturnDateChooser = new JDateChooser();
+		ReturnDateChooser.setBounds(212, 262, 122, 28);
+		ReturnDateChooser.setMinSelectableDate(date);
+		ReturnDateChooser.getDateEditor().addPropertyChangeListener(
+			    new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent ex) {
+						CalculateBalance();
+					}
+			    });
 		panelCheckout.add(ReturnDateChooser);
+		
 
 		JButton btnSubmit = new JButton("Submit");
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int count = tableCheckout.getModel().getRowCount();
-				int row = 0;
-				while(row<count){
-				try{
-					LocalDate today = LocalDate.now();
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
-					String date = today.format(formatter);
-					int movieid = Integer.parseInt(tableCheckout.getModel().getValueAt(row, 1).toString());
-					String return_date = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();;
+				String empty = "";
+				String date2 = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
+				  if(date2.equals(empty)){
+					  JOptionPane.showMessageDialog(null,"Must select a return date");
+					  return;
+					  }
+				int action = JOptionPane.showConfirmDialog(null, "Has the customer paid?", "Confirm Payment", JOptionPane.YES_NO_OPTION);
+				 if(action == 0){
+					 int count = tableCheckout.getModel().getRowCount();
+						int row = 0;
+						while(row<count){
+						try{
+							LocalDate today = LocalDate.now();
+							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+							String date = today.format(formatter);
+							int movieid = Integer.parseInt(tableCheckout.getModel().getValueAt(row, 1).toString());
+							String return_date = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
 
-					String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
-					PreparedStatement pst = connection.prepareStatement(query);
+							String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
+							PreparedStatement pst = connection.prepareStatement(query);
 
-					pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
-					pst.setInt(2, movieid);
-					pst.setString(3, date);
-					pst.setString(4, return_date);
+							pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+							pst.setInt(2, movieid);
+							pst.setString(3, date);
+							pst.setString(4, return_date);
 
-					pst.execute();
-					pst.close();
-					row++;
+							pst.execute();
+							pst.close();
+							row++;
 
-				}catch(Exception ex){
-					JOptionPane.showMessageDialog(null, ex);
-				}
-				}
-				JOptionPane.showMessageDialog(null, "Transaction Complete");
-				delCart();
-				refCurrentRentalsTbl();
+						}catch(Exception ex){
+							JOptionPane.showMessageDialog(null, ex);
+						}
+						}
+						
+						JOptionPane.showMessageDialog(null, "Transaction Complete");
+						delCart();
+						ReturnDateChooser.setCalendar(null);
+						tfBalance.setText("");
+						refCurrentRentalsTbl();
+						refRentalHistoryTbl();
+						refCheckoutTbl();
+						refCartTbl();
+						panelRentCards.removeAll();
+						panelRentCards.add(panelCart);
+						panelRentCards.repaint();
+						panelRentCards.revalidate();
+				 }
 			  }
 		});
 		btnSubmit.setBounds(697, 407, 90, 28);
@@ -630,10 +721,11 @@ public class Main_Cust extends JFrame {
 		lblBalance.setBounds(411, 232, 55, 16);
 		panelCheckout.add(lblBalance);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(408, 254, 122, 28);
-		panelCheckout.add(textField_2);
-		textField_2.setColumns(10);
+		tfBalance = new JTextField();
+		tfBalance.setEditable(false);
+		tfBalance.setBounds(408, 254, 122, 28);
+		panelCheckout.add(tfBalance);
+		tfBalance.setColumns(10);
 
 		JLabel lblNewLabel_2 = new JLabel("Customer Information:");
 		lblNewLabel_2.setBounds(6, 233, 131, 16);
@@ -654,33 +746,65 @@ public class Main_Cust extends JFrame {
 		lblID = new JLabel("ID");
 		lblID.setBounds(33, 315, 15, 16);
 		panelCheckout.add(lblID);
-
-		JPanel panelReturnMovie = new JPanel();
-		tabbedPaneMov.addTab("Return Movie", null, panelReturnMovie, null);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(411, 337, 122, 28);
+		panelCheckout.add(textField);
+		
+		JLabel lblCashToBe = new JLabel("Cash to be paid:");
+		lblCashToBe.setBounds(414, 315, 79, 16);
+		panelCheckout.add(lblCashToBe);
 
 		JPanel panelAccount = new JPanel();
 		tabbedPaneMov.addTab("Account Summary", null, panelAccount, null);
 		panelAccount.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Account Balance:");
-		lblNewLabel_1.setBounds(6, 6, 94, 16);
-		panelAccount.add(lblNewLabel_1);
-
-		textField = new JTextField();
-		textField.setBounds(6, 25, 122, 28);
-		panelAccount.add(textField);
-		textField.setColumns(10);
-
-		JLabel lblCurrentRentals = new JLabel("Current Rentals");
-		lblCurrentRentals.setBounds(6, 65, 94, 16);
+		JLabel lblCurrentRentals = new JLabel("Rental History");
+		lblCurrentRentals.setBounds(13, 253, 94, 16);
 		panelAccount.add(lblCurrentRentals);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 93, 366, 162);
+		scrollPane.setBounds(10, 270, 390, 162);
 		panelAccount.add(scrollPane);
 
+		tableRentalHistory = new JTable();
+		scrollPane.setViewportView(tableRentalHistory);
+		
+		JButton btnReturnMovie = new JButton("Return Movie");
+		btnReturnMovie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					int row = tableCurrentRentals.getSelectedRow();
+					String movieid = (tableCurrentRentals.getModel().getValueAt(row, 1).toString());
+					String rentid = (tableCurrentRentals.getModel().getValueAt(row, 0).toString());
+					
+					String query = "UPDATE rentals SET returned = 'YES' WHERE rentid = '"+ rentid +"' AND movieid = '"+ movieid +"' AND userid = '"+ lbCurrentUserIDCust.getText() +"'";
+					
+					PreparedStatement pst = connection.prepareStatement(query);
+					pst.execute();
+					pst.close();
+				
+				}catch (Exception ex) { 
+					JOptionPane.showMessageDialog(null, "Please select the movie you wish to return");
+				}
+				refCurrentRentalsTbl();
+				refRentalHistoryTbl();
+			}
+		});
+		btnReturnMovie.setBounds(10, 208, 97, 23);
+		panelAccount.add(btnReturnMovie);
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(10, 35, 390, 162);
+		panelAccount.add(scrollPane_5);
+		
 		tableCurrentRentals = new JTable();
-		scrollPane.setViewportView(tableCurrentRentals);
+		scrollPane_5.setViewportView(tableCurrentRentals);
+		
+		JLabel lblCurrentRentals_1 = new JLabel("Current Rentals");
+		lblCurrentRentals_1.setBounds(13, 15, 94, 16);
+		panelAccount.add(lblCurrentRentals_1);
 
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(SystemColor.textHighlight);
@@ -718,6 +842,7 @@ public class Main_Cust extends JFrame {
 				refCartTbl();
 				refEditCustTbl();
 				refCurrentRentalsTbl();
+				refRentalHistoryTbl();
 				fillComboRentMov();
 			}
 		});
