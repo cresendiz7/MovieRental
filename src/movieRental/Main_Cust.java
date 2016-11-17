@@ -447,7 +447,8 @@ public class Main_Cust extends JFrame {
 		panelSelectMov.setLayout(null);		
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(6, 48, 951, 347);
+		scrollPane_4.setBounds(0, 97, 963, 317);
+		scrollPane_4.getViewport().setBackground(Color.GRAY);
 		panelSelectMov.add(scrollPane_4);				
 		
 		tableViewMov = new JTable();
@@ -503,7 +504,8 @@ public class Main_Cust extends JFrame {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBackground(Color.GRAY);
-		scrollPane_1.setBounds(6, 46, 951, 368);
+		scrollPane_1.setBounds(0, 46, 963, 368);
+		scrollPane_1.getViewport().setBackground(Color.GRAY);
 		panelCart.add(scrollPane_1);																		
 		
 		tableCart = new JTable();
@@ -537,9 +539,11 @@ public class Main_Cust extends JFrame {
 		panelCart.add(btnRemoveFromCart);																						
 		
 		JLabel lblCart = new JLabel("Cart");
+		lblCart.setOpaque(true);
+		lblCart.setBackground(Color.GRAY);
 		lblCart.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCart.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCart.setBounds(6, 6, 951, 39);
+		lblCart.setBounds(0, 0, 963, 45);
 		panelCart.add(lblCart);																								
 		
 		JButton btnViewCart = new JButton("View Cart");
@@ -553,13 +557,13 @@ public class Main_Cust extends JFrame {
 				panelRentCards.revalidate();
 			}
 		});
-		btnViewCart.setBounds(867, 407, 90, 28);
+		btnViewCart.setBounds(867, 426, 90, 28);
 		panelSelectMov.add(btnViewCart);																										
 		
 		JButton btnAddToCart = new JButton("Add to Cart");
 		btnAddToCart.setForeground(Color.WHITE);
 		btnAddToCart.setBackground(Color.DARK_GRAY);
-		btnAddToCart.setBounds(6, 407, 90, 28);
+		btnAddToCart.setBounds(6, 426, 90, 28);
 		panelSelectMov.add(btnAddToCart);
 		btnAddToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -591,17 +595,17 @@ public class Main_Cust extends JFrame {
 		
 		JLabel label = new JLabel("Search Movie:");
 		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label.setBounds(6, 8, 174, 28);
+		label.setBounds(6, 57, 174, 28);
 		panelSelectMov.add(label);
 		
 		comboBoxRentMov = new JComboBox<String>();
 		comboBoxRentMov.setBackground(Color.GRAY);
-		comboBoxRentMov.setBounds(140, 9, 145, 29);
+		comboBoxRentMov.setBounds(142, 58, 145, 29);
 		panelSelectMov.add(comboBoxRentMov);		
 		
 		tfRentMovieSearch = new JTextField();
 		tfRentMovieSearch.setColumns(10);
-		tfRentMovieSearch.setBounds(297, 9, 145, 29);
+		tfRentMovieSearch.setBounds(299, 58, 145, 29);
 		panelSelectMov.add(tfRentMovieSearch);																																		
 		
 		JButton btnSearch = new JButton("Search");
@@ -628,19 +632,30 @@ public class Main_Cust extends JFrame {
 				}
 			}
 		});
-		btnSearch.setBounds(855, 9, 102, 29);
+		btnSearch.setBounds(855, 58, 102, 29);
 		panelSelectMov.add(btnSearch);
 		
+		JLabel lblFindMovies = new JLabel("Find Movies");
+		lblFindMovies.setOpaque(true);
+		lblFindMovies.setBackground(Color.GRAY);
+		lblFindMovies.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFindMovies.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblFindMovies.setBounds(0, 0, 963, 45);
+		panelSelectMov.add(lblFindMovies);
+		
 		JLabel lblCheckout = new JLabel("Checkout");
+		lblCheckout.setBackground(Color.GRAY);
+		lblCheckout.setOpaque(true);
 		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCheckout.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCheckout.setBounds(6, 6, 951, 39);
+		lblCheckout.setBounds(0, 0, 963, 48);
 		panelCheckout.add(lblCheckout);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
 		scrollPane_3.setBackground(Color.GRAY);
 		scrollPane_3.setForeground(Color.WHITE);
-		scrollPane_3.setBounds(6, 46, 951, 175);
+		scrollPane_3.getViewport().setBackground(Color.GRAY);
+		scrollPane_3.setBounds(0, 46, 963, 175);
 		panelCheckout.add(scrollPane_3);																																						
 		
 		tableCheckout = new JTable();
@@ -790,7 +805,8 @@ public class Main_Cust extends JFrame {
 		panelAccount.add(lblCurrentRentals);		
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 270, 390, 162);
+		scrollPane.getViewport().setBackground(Color.GRAY);
+		scrollPane.setBounds(10, 270, 456, 162);
 		panelAccount.add(scrollPane);				
 		
 		tableRentalHistory = new JTable();
@@ -827,7 +843,8 @@ public class Main_Cust extends JFrame {
 		panelAccount.add(btnReturnMovie);						
 		
 		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(10, 35, 390, 162);
+		scrollPane_5.setBounds(10, 35, 456, 162);
+		scrollPane_5.getViewport().setBackground(Color.GRAY);
 		panelAccount.add(scrollPane_5);
 		
 		tableCurrentRentals = new JTable();
