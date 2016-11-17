@@ -463,6 +463,8 @@ public class Main_Cust extends JFrame {
 		panelCart.setLayout(null);								
 		
 				JButton btnReturnToMovies = new JButton("Return to Movies");
+				btnReturnToMovies.setBackground(Color.DARK_GRAY);
+				btnReturnToMovies.setForeground(Color.WHITE);
 				btnReturnToMovies.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						panelRentCards.removeAll();
@@ -471,7 +473,7 @@ public class Main_Cust extends JFrame {
 						panelRentCards.revalidate();
 					}
 				});
-				btnReturnToMovies.setBounds(6, 407, 119, 28);
+				btnReturnToMovies.setBounds(6, 426, 119, 28);
 				panelCart.add(btnReturnToMovies);												
 				
 		JPanel panelCheckout = new JPanel();
@@ -480,6 +482,8 @@ public class Main_Cust extends JFrame {
 		panelCheckout.setLayout(null);														
 		
 		JButton btnCheckout = new JButton("Checkout");
+		btnCheckout.setBackground(Color.DARK_GRAY);
+		btnCheckout.setForeground(Color.WHITE);
 		btnCheckout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int count= tableCart.getModel().getRowCount();
@@ -494,17 +498,24 @@ public class Main_Cust extends JFrame {
 				panelRentCards.revalidate();
 			}
 		});
-		btnCheckout.setBounds(697, 407, 90, 28);
+		btnCheckout.setBounds(867, 426, 90, 28);
 		panelCart.add(btnCheckout);																
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(6, 46, 781, 349);
+		scrollPane_1.setBackground(Color.GRAY);
+		scrollPane_1.setBounds(6, 46, 951, 368);
 		panelCart.add(scrollPane_1);																		
 		
 		tableCart = new JTable();
+		tableCart.setSelectionForeground(Color.BLACK);
+		tableCart.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCart.setForeground(Color.WHITE);
+		tableCart.setBackground(Color.GRAY);
 		scrollPane_1.setViewportView(tableCart);																				
 		
 		JButton btnRemoveFromCart = new JButton("Remove from Cart");
+		btnRemoveFromCart.setForeground(Color.WHITE);
+		btnRemoveFromCart.setBackground(Color.DARK_GRAY);
 		btnRemoveFromCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
@@ -522,16 +533,18 @@ public class Main_Cust extends JFrame {
 				refCartTbl();
 			}
 		});
-		btnRemoveFromCart.setBounds(137, 407, 128, 28);
+		btnRemoveFromCart.setBounds(137, 426, 128, 28);
 		panelCart.add(btnRemoveFromCart);																						
 		
 		JLabel lblCart = new JLabel("Cart");
 		lblCart.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCart.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCart.setBounds(6, 6, 781, 39);
+		lblCart.setBounds(6, 6, 951, 39);
 		panelCart.add(lblCart);																								
 		
 		JButton btnViewCart = new JButton("View Cart");
+		btnViewCart.setForeground(Color.WHITE);
+		btnViewCart.setBackground(Color.DARK_GRAY);
 		btnViewCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelRentCards.removeAll();
@@ -544,6 +557,8 @@ public class Main_Cust extends JFrame {
 		panelSelectMov.add(btnViewCart);																										
 		
 		JButton btnAddToCart = new JButton("Add to Cart");
+		btnAddToCart.setForeground(Color.WHITE);
+		btnAddToCart.setBackground(Color.DARK_GRAY);
 		btnAddToCart.setBounds(6, 407, 90, 28);
 		panelSelectMov.add(btnAddToCart);
 		btnAddToCart.addActionListener(new ActionListener() {
@@ -580,6 +595,7 @@ public class Main_Cust extends JFrame {
 		panelSelectMov.add(label);
 		
 		comboBoxRentMov = new JComboBox<String>();
+		comboBoxRentMov.setBackground(Color.GRAY);
 		comboBoxRentMov.setBounds(140, 9, 145, 29);
 		panelSelectMov.add(comboBoxRentMov);		
 		
@@ -589,6 +605,8 @@ public class Main_Cust extends JFrame {
 		panelSelectMov.add(tfRentMovieSearch);																																		
 		
 		JButton btnSearch = new JButton("Search");
+		btnSearch.setBackground(Color.DARK_GRAY);
+		btnSearch.setForeground(Color.WHITE);
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try{
@@ -616,17 +634,25 @@ public class Main_Cust extends JFrame {
 		JLabel lblCheckout = new JLabel("Checkout");
 		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCheckout.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCheckout.setBounds(6, 6, 781, 39);
+		lblCheckout.setBounds(6, 6, 951, 39);
 		panelCheckout.add(lblCheckout);
 		
 		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBounds(6, 46, 781, 175);
+		scrollPane_3.setBackground(Color.GRAY);
+		scrollPane_3.setForeground(Color.WHITE);
+		scrollPane_3.setBounds(6, 46, 951, 175);
 		panelCheckout.add(scrollPane_3);																																						
 		
 		tableCheckout = new JTable();
+		tableCheckout.setSelectionForeground(Color.BLACK);
+		tableCheckout.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCheckout.setForeground(Color.WHITE);
+		tableCheckout.setBackground(Color.GRAY);
 		scrollPane_3.setViewportView(tableCheckout);
 		
 		JButton btnReturnToCart = new JButton("Return to Cart");
+		btnReturnToCart.setForeground(Color.WHITE);
+		btnReturnToCart.setBackground(Color.DARK_GRAY);
 		btnReturnToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelRentCards.removeAll();
@@ -635,11 +661,13 @@ public class Main_Cust extends JFrame {
 				panelRentCards.revalidate();
 			}
 		});
-		btnReturnToCart.setBounds(6, 407, 104, 28);
+		btnReturnToCart.setBounds(6, 426, 104, 28);
 		panelCheckout.add(btnReturnToCart);
 		
 		ReturnDateChooser = new JDateChooser();
-		ReturnDateChooser.setBounds(212, 262, 122, 28);
+		ReturnDateChooser.setForeground(Color.WHITE);
+		ReturnDateChooser.setBackground(Color.GRAY);
+		ReturnDateChooser.setBounds(475, 262, 122, 28);
 		ReturnDateChooser.setMinSelectableDate(date);
 		ReturnDateChooser.getDateEditor().addPropertyChangeListener(
 			    new PropertyChangeListener() {
@@ -651,6 +679,8 @@ public class Main_Cust extends JFrame {
 		panelCheckout.add(ReturnDateChooser);																																										
 		
 		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.setBackground(Color.DARK_GRAY);
+		btnSubmit.setForeground(Color.WHITE);
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String empty = "";
@@ -704,50 +734,50 @@ public class Main_Cust extends JFrame {
 			  }
 		});																																												
 		
-				btnSubmit.setBounds(697, 407, 90, 28);
+				btnSubmit.setBounds(867, 426, 90, 28);
 				panelCheckout.add(btnSubmit);
 				
 				JLabel lblReturnDate = new JLabel("Return Date:");
-				lblReturnDate.setBounds(212, 233, 104, 16);
+				lblReturnDate.setBounds(475, 233, 104, 16);
 				panelCheckout.add(lblReturnDate);		
 				
 		JLabel lblBalance = new JLabel("Balance:");
-		lblBalance.setBounds(411, 232, 55, 16);
+		lblBalance.setBounds(657, 233, 55, 16);
 		panelCheckout.add(lblBalance);				
 		
 		tfBalance = new JTextField();
 		tfBalance.setEditable(false);
-		tfBalance.setBounds(408, 254, 122, 28);
+		tfBalance.setBounds(657, 262, 122, 28);
 		panelCheckout.add(tfBalance);
 		tfBalance.setColumns(10);						
 		
 		JLabel lblNewLabel_2 = new JLabel("Customer Information:");
-		lblNewLabel_2.setBounds(6, 233, 131, 16);
+		lblNewLabel_2.setBounds(54, 233, 131, 16);
 		panelCheckout.add(lblNewLabel_2);								
 		
 		lblFirstName = new JLabel("First Name");
-		lblFirstName.setBounds(6, 255, 61, 16);
+		lblFirstName.setBounds(54, 262, 61, 16);
 		panelCheckout.add(lblFirstName);										
 		
 		lblLastName = new JLabel("Last Name");
-		lblLastName.setBounds(6, 285, 61, 16);
+		lblLastName.setBounds(54, 290, 61, 16);
 		panelCheckout.add(lblLastName);																																																								
 		
 		JLabel lblId_1 = new JLabel("ID:");
-		lblId_1.setBounds(6, 315, 15, 16);
+		lblId_1.setBounds(54, 318, 15, 16);
 		panelCheckout.add(lblId_1);
 		
 		lblID = new JLabel("ID");
-		lblID.setBounds(33, 315, 15, 16);
+		lblID.setBounds(81, 318, 15, 16);
 		panelCheckout.add(lblID);
 		
 		textField = new JTextField();
 		textField.setColumns(10);
-		textField.setBounds(411, 337, 122, 28);
+		textField.setBounds(657, 330, 122, 28);
 		panelCheckout.add(textField);
 		
 		JLabel lblCashToBe = new JLabel("Cash to be paid:");
-		lblCashToBe.setBounds(414, 315, 104, 16);
+		lblCashToBe.setBounds(657, 302, 104, 16);
 		panelCheckout.add(lblCashToBe);																																																								
 		
 		JPanel panelAccount = new JPanel();
@@ -764,9 +794,15 @@ public class Main_Cust extends JFrame {
 		panelAccount.add(scrollPane);				
 		
 		tableRentalHistory = new JTable();
+		tableRentalHistory.setBackground(Color.GRAY);
+		tableRentalHistory.setForeground(Color.WHITE);
+		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
+		tableRentalHistory.setSelectionForeground(Color.BLACK);
 		scrollPane.setViewportView(tableRentalHistory);						
 		
 		JButton btnReturnMovie = new JButton("Return Movie");
+		btnReturnMovie.setForeground(Color.WHITE);
+		btnReturnMovie.setBackground(Color.DARK_GRAY);
 		btnReturnMovie.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
@@ -795,6 +831,10 @@ public class Main_Cust extends JFrame {
 		panelAccount.add(scrollPane_5);
 		
 		tableCurrentRentals = new JTable();
+		tableCurrentRentals.setSelectionForeground(Color.BLACK);
+		tableCurrentRentals.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCurrentRentals.setForeground(Color.WHITE);
+		tableCurrentRentals.setBackground(Color.GRAY);
 		scrollPane_5.setViewportView(tableCurrentRentals);
 		
 		JLabel lblCurrentRentals_1 = new JLabel("Current Rentals");
