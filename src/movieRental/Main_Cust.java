@@ -47,7 +47,8 @@ public class Main_Cust extends JFrame {
 	private JLabel lblID;
 	private JDateChooser ReturnDateChooser;
 	private JTable tableCurrentRentals;
-	private JTextField textField;
+	private JTextField tfCash;
+	private BigDecimal total_cost;
 
 	/**
 	 * Launch the application.
@@ -233,7 +234,7 @@ public class Main_Cust extends JFrame {
 			BigDecimal days2 = BigDecimal.valueOf(days);
 			
 			//Calculate total balance 
-			BigDecimal total_cost = newbalance.multiply(days2);
+			total_cost = newbalance.multiply(days2);
 			
 			//Set Balance into textfield
 			tfBalance.setText(total_cost.toString());
@@ -241,6 +242,45 @@ public class Main_Cust extends JFrame {
 		}catch(Exception ex){
 			
 		}
+	}
+	
+	public void Payment(){
+		int count = tableCheckout.getModel().getRowCount();
+		 int row = 0;
+		 while(row<count){
+			try{
+				LocalDate today = LocalDate.now();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
+				String date = today.format(formatter);
+				int movieid = Integer.parseInt(tableCheckout.getModel().getValueAt(row, 1).toString());
+				String return_date = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
+
+				String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
+				PreparedStatement pst = connection.prepareStatement(query);
+
+				pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+				pst.setInt(2, movieid);
+				pst.setString(3, date);
+				pst.setString(4, return_date);
+
+				pst.execute();
+				pst.close();
+				row++;
+
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(null, ex);
+			}
+			}
+			JOptionPane.showMessageDialog(null, "Thank you for your business!");
+			JOptionPane.showMessageDialog(null, "Transaction Complete");
+			delCart();
+			ReturnDateChooser.setCalendar(null);
+			tfBalance.setText(null);
+			tfCash.setText(null);
+			refCurrentRentalsTbl();
+			refRentalHistoryTbl();
+			refCheckoutTbl();
+			refCartTbl();
 	}
 
 	public void fillComboRentMov(){
@@ -704,49 +744,30 @@ public class Main_Cust extends JFrame {
 					  JOptionPane.showMessageDialog(null,"Must select a return date");
 					  return;
 					  }
-				int action = JOptionPane.showConfirmDialog(null, "Has the customer paid?", "Confirm Payment", JOptionPane.YES_NO_OPTION);
-				 if(action == 0){
-					 int count = tableCheckout.getModel().getRowCount();
-						int row = 0;
-						while(row<count){
-						try{
-							LocalDate today = LocalDate.now();
-							DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
-							String date = today.format(formatter);
-							int movieid = Integer.parseInt(tableCheckout.getModel().getValueAt(row, 1).toString());
-							String return_date = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
-
-							String query = "INSERT INTO rentals (userid,movieid,rental_date,return_date) VALUES (?,?,?,?)";
-							PreparedStatement pst = connection.prepareStatement(query);
-
-							pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
-							pst.setInt(2, movieid);
-							pst.setString(3, date);
-							pst.setString(4, return_date);
-
-							pst.execute();
-							pst.close();
-							row++;
-
-						}catch(Exception ex){
-							JOptionPane.showMessageDialog(null, ex);
-						}
-						}
-						
-						JOptionPane.showMessageDialog(null, "Transaction Complete");
-						delCart();
-						ReturnDateChooser.setCalendar(null);
-						tfBalance.setText("");
-						refCurrentRentalsTbl();
-						refRentalHistoryTbl();
-						refCheckoutTbl();
-						refCartTbl();
-						panelRentCards.removeAll();
-						panelRentCards.add(panelCart);
-						panelRentCards.repaint();
-						panelRentCards.revalidate();
+				String cash3 = tfCash.getText();
+				  if(cash3.equals(empty)){
+					  JOptionPane.showMessageDialog(null,"Give me some money!");
+					  return;
+					  }
+				  
+				  BigDecimal cash = new BigDecimal(tfCash.getText());
+				  boolean equal = total_cost.compareTo(cash) == 0;
+				  boolean more = total_cost.compareTo(cash) == 1;
+				  boolean change = total_cost.compareTo(cash) == -1;
+				  if(equal){
+					 Payment();
+					 panelRentCards.removeAll();
+					 panelRentCards.add(panelCart);
+					 panelRentCards.repaint();
+					 panelRentCards.revalidate();
+				 }else if(more){
+					 JOptionPane.showMessageDialog(null, "More MONEY!");
+				 }else if(change){
+					 BigDecimal change2 = cash.subtract(total_cost);
+					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2);
+					 Payment();
 				 }
-			  }
+			}
 		});																																												
 		
 				btnSubmit.setBounds(867, 426, 90, 28);
@@ -786,10 +807,10 @@ public class Main_Cust extends JFrame {
 		lblID.setBounds(81, 318, 15, 16);
 		panelCheckout.add(lblID);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(657, 330, 122, 28);
-		panelCheckout.add(textField);
+		tfCash = new JTextField();
+		tfCash.setColumns(10);
+		tfCash.setBounds(657, 330, 122, 28);
+		panelCheckout.add(tfCash);
 		
 		JLabel lblCashToBe = new JLabel("Cash to be paid:");
 		lblCashToBe.setBounds(657, 302, 104, 16);

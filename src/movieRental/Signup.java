@@ -162,8 +162,7 @@ public class Signup extends JFrame {
 				      pst2.setString(1, tfUsername.getText());
 				      ResultSet rs2 = pst2.executeQuery();
 				      if(rs2.next()){
-				       if(currentAdmin.equals(tfUsername.getText())){}
-				       else{
+				       if(currentAdmin.equals(tfUsername.getText())){
 				        JOptionPane.showMessageDialog(null, "Username already exists.");
 				       return;
 				       }
