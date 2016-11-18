@@ -310,89 +310,595 @@ public class Main_Cust extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 969, 627);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.textHighlight);
+		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JPanel panelCards = new JPanel();
-		panelCards.setBounds(0, 80, 963, 490);
+		panelCards.setBounds(0, 90, 963, 479);
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 
 		JPanel panelWelcome = new JPanel();
 		panelWelcome.setBackground(Color.DARK_GRAY);
 		panelCards.add(panelWelcome, "name_145839516092709");
-		panelWelcome.setLayout(new BorderLayout(0, 0));
+		panelWelcome.setLayout(null);
 		
-		JPanel panelEditCust = new JPanel();
-		panelEditCust.setBackground(Color.LIGHT_GRAY);
-		panelCards.add(panelEditCust, "name_42682709774829");
-		panelEditCust.setLayout(null);
+		LocalDate today = LocalDate.now();
+		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
+		Date date = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
+		
+		JPanel panelMov = new JPanel();
+		panelMov.setBackground(Color.DARK_GRAY);
+		panelCards.add(panelMov, "Movies");
+		panelMov.setLayout(null);
+		
+		JPanel panelMovCards = new JPanel();
+		panelMovCards.setBounds(0, 30, 963, 449);
+		panelMov.add(panelMovCards);
+		panelMovCards.setLayout(new CardLayout(0, 0));
+		
+				JPanel panelRentMovie = new JPanel();
+				panelMovCards.add(panelRentMovie, "name_45118157024435");
+				panelRentMovie.setBackground(Color.LIGHT_GRAY);
+				panelRentMovie.setLayout(null);
 				
+				JPanel panelRentCards = new JPanel();
+				panelRentCards.setBounds(0, 0, 963, 449);
+				panelRentMovie.add(panelRentCards);
+				panelRentCards.setLayout(new CardLayout(0, 0));
+				
+		JPanel panelSelectMov = new JPanel();
+		panelSelectMov.setBackground(Color.LIGHT_GRAY);
+		panelRentCards.add(panelSelectMov);
+		panelSelectMov.setLayout(null);		
+		
+		JScrollPane scrollPane_4 = new JScrollPane();
+		scrollPane_4.setBounds(0, 97, 963, 288);
+		scrollPane_4.getViewport().setBackground(Color.GRAY);
+		panelSelectMov.add(scrollPane_4);				
+		
+		tableViewMov = new JTable();
+		tableViewMov.setSelectionForeground(Color.BLACK);
+		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
+		tableViewMov.setForeground(Color.WHITE);
+		tableViewMov.setBackground(Color.GRAY);
+		scrollPane_4.setViewportView(tableViewMov);						
+		
+		JPanel panelCart = new JPanel();
+		panelCart.setBackground(Color.LIGHT_GRAY);
+		panelRentCards.add(panelCart);
+		panelCart.setLayout(null);								
+		
+				JButton btnReturnToMovies = new JButton("");
+				btnReturnToMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				btnReturnToMovies.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left2.png")));
+				btnReturnToMovies.setContentAreaFilled(false);
+				btnReturnToMovies.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left.png")));
+				btnReturnToMovies.setBackground(Color.DARK_GRAY);
+				btnReturnToMovies.setForeground(Color.WHITE);
+				btnReturnToMovies.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						panelRentCards.removeAll();
+						panelRentCards.add(panelSelectMov);
+						panelRentCards.repaint();
+						panelRentCards.revalidate();
+					}
+				});
+				btnReturnToMovies.setBounds(10, 393, 50, 50);
+				panelCart.add(btnReturnToMovies);												
+				
+		JPanel panelCheckout = new JPanel();
+		panelCheckout.setBackground(Color.LIGHT_GRAY);
+		panelRentCards.add(panelCheckout);
+		panelCheckout.setLayout(null);														
+		
+		JButton btnCheckout = new JButton("");
+		btnCheckout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCheckout.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/money2.png")));
+		btnCheckout.setContentAreaFilled(false);
+		btnCheckout.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/money.png")));
+		btnCheckout.setBackground(Color.DARK_GRAY);
+		btnCheckout.setForeground(Color.WHITE);
+		btnCheckout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int count= tableCart.getModel().getRowCount();
+				if(count<1){
+					JOptionPane.showMessageDialog(null, "You have no items in your cart.");
+					return;
+				}
+				refCheckoutTbl();
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCheckout);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnCheckout.setBounds(907, 393, 50, 50);
+		panelCart.add(btnCheckout);																
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBackground(Color.GRAY);
+		scrollPane_1.setBounds(0, 46, 963, 342);
+		scrollPane_1.getViewport().setBackground(Color.GRAY);
+		panelCart.add(scrollPane_1);																		
+		
+		tableCart = new JTable();
+		tableCart.setSelectionForeground(Color.BLACK);
+		tableCart.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCart.setForeground(Color.WHITE);
+		tableCart.setBackground(Color.GRAY);
+		scrollPane_1.setViewportView(tableCart);																				
+		
+		JButton btnRemoveFromCart = new JButton("");
+		btnRemoveFromCart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnRemoveFromCart.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/box-out2.png")));
+		btnRemoveFromCart.setContentAreaFilled(false);
+		btnRemoveFromCart.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/box-out.png")));
+		btnRemoveFromCart.setForeground(Color.WHITE);
+		btnRemoveFromCart.setBackground(Color.DARK_GRAY);
+		btnRemoveFromCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					int row = tableCart.getSelectedRow();
+					String Table_click = (tableCart.getModel().getValueAt(row, 1).toString());
+
+					String query = "DELETE FROM cart WHERE movieid = '"+Table_click+"' ";
+
+					PreparedStatement pst = connection.prepareStatement(query);
+					pst.execute();
+
+				}catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Select the movie you wish to remove from your cart.");
+				}
+				refCartTbl();
+			}
+		});
+		btnRemoveFromCart.setBounds(131, 393, 50, 50);
+		panelCart.add(btnRemoveFromCart);																						
+		
+		JLabel lblCart = new JLabel("Cart");
+		lblCart.setOpaque(true);
+		lblCart.setBackground(Color.GRAY);
+		lblCart.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCart.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCart.setBounds(0, 0, 963, 48);
+		panelCart.add(lblCart);																								
+		
+		JLabel lblBack = new JLabel("Back");
+		lblBack.setBounds(65, 410, 27, 16);
+		panelCart.add(lblBack);
+		
+		JLabel lblRemoveFromCart = new JLabel("Remove from Cart");
+		lblRemoveFromCart.setBounds(193, 410, 100, 16);
+		panelCart.add(lblRemoveFromCart);
+		
+		JLabel lblCheckout_1 = new JLabel("Checkout");
+		lblCheckout_1.setBounds(843, 410, 60, 16);
+		panelCart.add(lblCheckout_1);
+		
+		JButton btnViewCart = new JButton("");
+		btnViewCart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnViewCart.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-right2.png")));
+		btnViewCart.setContentAreaFilled(false);
+		btnViewCart.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-right.png")));
+		btnViewCart.setForeground(Color.WHITE);
+		btnViewCart.setBackground(Color.DARK_GRAY);
+		btnViewCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCart);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnViewCart.setBounds(907, 393, 50, 50);
+		panelSelectMov.add(btnViewCart);																										
+		
+		JButton btnAddToCart = new JButton("");
+		btnAddToCart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnAddToCart.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/box-in2.png")));
+		btnAddToCart.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/box-in.png")));
+		btnAddToCart.setContentAreaFilled(false);
+		btnAddToCart.setForeground(Color.WHITE);
+		btnAddToCart.setBackground(Color.DARK_GRAY);
+		btnAddToCart.setBounds(10, 393, 50, 50);
+		panelSelectMov.add(btnAddToCart);
+		btnAddToCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					try{
+						int row = tableViewMov.getSelectedRow();
+						int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+						String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
+						String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
+						String repl_cost = (tableViewMov.getModel().getValueAt(row, 7).toString());
+
+						String query = "INSERT INTO cart (userid,movieid,title,rental_rate,replacement_cost) VALUES (?,?,?,?,?)";
+						PreparedStatement pst = connection.prepareStatement(query);
+
+						pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+						pst.setInt(2, movieid);
+						pst.setString(3, title);
+						pst.setString(4, rent_rate);
+						pst.setString(5, repl_cost);
+
+						pst.execute();
+						pst.close();
+
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, "Select the movie you wish to add to your cart.");
+					}
+					refCartTbl();
+				  }
+		});																												
+		
+		JLabel label = new JLabel("Search Movie:");
+		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label.setBounds(6, 57, 174, 28);
+		panelSelectMov.add(label);
+		
+		comboBoxRentMov = new JComboBox<String>();
+		comboBoxRentMov.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		comboBoxRentMov.setBackground(Color.GRAY);
+		comboBoxRentMov.setBounds(142, 58, 145, 29);
+		panelSelectMov.add(comboBoxRentMov);		
+		
+		tfRentMovieSearch = new JTextField();
+		tfRentMovieSearch.setColumns(10);
+		tfRentMovieSearch.setBounds(299, 58, 145, 29);
+		panelSelectMov.add(tfRentMovieSearch);																																		
+		
+		JButton btnSearch = new JButton("");
+		btnSearch.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSearch.setIcon(new ImageIcon(Main_Cust.class.getResource("/twentyfour/search.png")));
+		btnSearch.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/twentyfour/search-hover.png")));
+		btnSearch.setContentAreaFilled(false);
+		btnSearch.setBackground(Color.DARK_GRAY);
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					String value0 = (String)comboBoxRentMov.getSelectedItem();
+					String value1 = tfRentMovieSearch.getText()+"%";
+					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
+							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+
+					PreparedStatement pst = connection.prepareStatement(query);
+					ResultSet rs = pst.executeQuery();
+					tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+
+					pst.close();
+					rs.close();
+
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		});
+		btnSearch.setBounds(446, 56, 30, 29);
+		panelSelectMov.add(btnSearch);
+		
+		JLabel lblFindMovies = new JLabel("Find Movies");
+		lblFindMovies.setOpaque(true);
+		lblFindMovies.setBackground(Color.GRAY);
+		lblFindMovies.setHorizontalAlignment(SwingConstants.CENTER);
+		lblFindMovies.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblFindMovies.setBounds(0, 0, 963, 45);
+		panelSelectMov.add(lblFindMovies);
+		
+		JLabel lblAddToCart = new JLabel("Add to Cart");
+		lblAddToCart.setBounds(72, 413, 60, 16);
+		panelSelectMov.add(lblAddToCart);
+		
+		JLabel lblViewCart = new JLabel("View Cart");
+		lblViewCart.setBounds(848, 413, 60, 16);
+		panelSelectMov.add(lblViewCart);
+		
+		JLabel lblCheckout = new JLabel("Checkout");
+		lblCheckout.setBackground(Color.GRAY);
+		lblCheckout.setOpaque(true);
+		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCheckout.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCheckout.setBounds(0, 0, 963, 48);
+		panelCheckout.add(lblCheckout);
+		
+		JScrollPane scrollPane_3 = new JScrollPane();
+		scrollPane_3.setBackground(Color.GRAY);
+		scrollPane_3.setForeground(Color.WHITE);
+		scrollPane_3.getViewport().setBackground(Color.GRAY);
+		scrollPane_3.setBounds(0, 46, 963, 175);
+		panelCheckout.add(scrollPane_3);																																						
+		
+		tableCheckout = new JTable();
+		tableCheckout.setSelectionForeground(Color.BLACK);
+		tableCheckout.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCheckout.setForeground(Color.WHITE);
+		tableCheckout.setBackground(Color.GRAY);
+		scrollPane_3.setViewportView(tableCheckout);
+		
+		JButton btnReturnToCart = new JButton("");
+		btnReturnToCart.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnReturnToCart.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left2.png")));
+		btnReturnToCart.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left.png")));
+		btnReturnToCart.setContentAreaFilled(false);
+		btnReturnToCart.setForeground(Color.WHITE);
+		btnReturnToCart.setBackground(Color.DARK_GRAY);
+		btnReturnToCart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelCart);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnReturnToCart.setBounds(10, 393, 50, 50);
+		panelCheckout.add(btnReturnToCart);
+		
+		ReturnDateChooser = new JDateChooser();
+		ReturnDateChooser.getCalendarButton().setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		ReturnDateChooser.setForeground(Color.WHITE);
+		ReturnDateChooser.setBackground(Color.GRAY);
+		ReturnDateChooser.setBounds(466, 262, 131, 28);
+		ReturnDateChooser.setMinSelectableDate(date);
+		ReturnDateChooser.getDateEditor().addPropertyChangeListener(
+			    new PropertyChangeListener() {
+					@Override
+					public void propertyChange(PropertyChangeEvent ex) {
+						CalculateBalance();
+					}
+			    });
+		panelCheckout.add(ReturnDateChooser);																																										
+		
+		JButton btnSubmit = new JButton("");
+		btnSubmit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSubmit.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/basket2.png")));
+		btnSubmit.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/basket.png")));
+		btnSubmit.setContentAreaFilled(false);
+		btnSubmit.setBackground(Color.DARK_GRAY);
+		btnSubmit.setForeground(Color.WHITE);
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String empty = "";
+				String date2 = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
+				  if(date2.equals(empty)){
+					  JOptionPane.showMessageDialog(null,"Must select a return date");
+					  return;
+					  }
+				String cash3 = tfCash.getText();
+				  if(cash3.equals(empty)){
+					  JOptionPane.showMessageDialog(null,"Give me some money!");
+					  return;
+					  }
+				  
+				  BigDecimal cash = new BigDecimal(tfCash.getText());
+				  boolean equal = total_cost.compareTo(cash) == 0;
+				  boolean more = total_cost.compareTo(cash) == 1;
+				  boolean change = total_cost.compareTo(cash) == -1;
+				  if(equal){
+					 Payment();
+					 panelRentCards.removeAll();
+					 panelRentCards.add(panelCart);
+					 panelRentCards.repaint();
+					 panelRentCards.revalidate();
+				 }else if(more){
+					 JOptionPane.showMessageDialog(null, "More MONEY!");
+				 }else if(change){
+					 BigDecimal change2 = cash.subtract(total_cost);
+					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2);
+					 Payment();
+				 }
+			}
+		});																																												
+		
+				btnSubmit.setBounds(907, 393, 50, 50);
+				panelCheckout.add(btnSubmit);
+				
+				JLabel lblReturnDate = new JLabel("Return Date:");
+				lblReturnDate.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				lblReturnDate.setBounds(475, 233, 104, 16);
+				panelCheckout.add(lblReturnDate);		
+				
+		JLabel lblBalance = new JLabel("Balance:");
+		lblBalance.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblBalance.setBounds(657, 233, 61, 16);
+		panelCheckout.add(lblBalance);				
+		
+		tfBalance = new JTextField();
+		tfBalance.setEditable(false);
+		tfBalance.setBounds(657, 262, 122, 28);
+		panelCheckout.add(tfBalance);
+		tfBalance.setColumns(10);						
+		
+		JLabel lblNewLabel_2 = new JLabel("Customer Information:");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_2.setBounds(98, 233, 163, 16);
+		panelCheckout.add(lblNewLabel_2);								
+		
+		lblFirstName = new JLabel("First Name");
+		lblFirstName.setBounds(98, 262, 61, 16);
+		panelCheckout.add(lblFirstName);										
+		
+		lblLastName = new JLabel("Last Name");
+		lblLastName.setBounds(98, 290, 61, 16);
+		panelCheckout.add(lblLastName);																																																								
+		
+		JLabel lblId_1 = new JLabel("ID:");
+		lblId_1.setBounds(98, 318, 15, 16);
+		panelCheckout.add(lblId_1);
+		
+		lblID = new JLabel("ID");
+		lblID.setBounds(125, 318, 15, 16);
+		panelCheckout.add(lblID);
+		
+		tfCash = new JTextField();
+		tfCash.setColumns(10);
+		tfCash.setBounds(657, 330, 122, 28);
+		panelCheckout.add(tfCash);
+		
+		JLabel lblCashToBe = new JLabel("Cash to be paid:");
+		lblCashToBe.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCashToBe.setBounds(657, 302, 122, 16);
+		panelCheckout.add(lblCashToBe);																																																								
+		
+		JLabel lblBack_1 = new JLabel("Back");
+		lblBack_1.setBounds(72, 410, 60, 16);
+		panelCheckout.add(lblBack_1);
+		
+		JLabel lblSubmit = new JLabel("Submit");
+		lblSubmit.setBounds(851, 410, 44, 16);
+		panelCheckout.add(lblSubmit);
+		
+		JPanel panelAccount = new JPanel();
+		panelAccount.setBackground(Color.LIGHT_GRAY);
+		panelMovCards.add(panelAccount, "name_45120651096660");
+		panelAccount.setLayout(null);
+		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		panelEditCust.add(scrollPane_2);
-						
-		tfFirstName = new JTextField();
-		tfFirstName.setColumns(10);
-		tfFirstName.setBounds(125, 99, 145, 29);
-		panelEditCust.add(tfFirstName);
-								
-		tfLastName = new JTextField();
-		tfLastName.setColumns(10);
-		tfLastName.setBounds(125, 140, 145, 29);
-		panelEditCust.add(tfLastName);
-										
-		tfAge = new JTextField();
-		tfAge.setColumns(10);
-		tfAge.setBounds(125, 263, 145, 29);
-		panelEditCust.add(tfAge);
-												
-		tfUsername = new JTextField();
-		tfUsername.setColumns(10);
-		tfUsername.setBounds(125, 181, 145, 29);
-		panelEditCust.add(tfUsername);
-														
-		tfPassword = new JPasswordField();
-		tfPassword.setBounds(125, 222, 145, 29);
-		panelEditCust.add(tfPassword);
-																
+		scrollPane_2.setBounds(0, 0, 0, 0);
+		panelAccount.add(scrollPane_2);
+		
 		tableViewEditCust = new JTable();
 		scrollPane_2.setViewportView(tableViewEditCust);
-																		
+		
+		tfUserID = new JTextField();
+		tfUserID.setBounds(0, 0, 0, 0);
+		panelAccount.add(tfUserID);
+		
+		JLabel lblCurrentRentals = new JLabel("Rental History");
+		lblCurrentRentals.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCurrentRentals.setBounds(13, 253, 107, 16);
+		panelAccount.add(lblCurrentRentals);		
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.getViewport().setBackground(Color.GRAY);
+		scrollPane.setBounds(10, 270, 456, 162);
+		panelAccount.add(scrollPane);				
+		
+		tableRentalHistory = new JTable();
+		tableRentalHistory.setBackground(Color.GRAY);
+		tableRentalHistory.setForeground(Color.WHITE);
+		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
+		tableRentalHistory.setSelectionForeground(Color.BLACK);
+		scrollPane.setViewportView(tableRentalHistory);						
+		
+		JButton btnReturnMovie = new JButton("");
+		btnReturnMovie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnReturnMovie.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left2.png")));
+		btnReturnMovie.setContentAreaFilled(false);
+		btnReturnMovie.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left.png")));
+		btnReturnMovie.setForeground(Color.WHITE);
+		btnReturnMovie.setBackground(Color.DARK_GRAY);
+		btnReturnMovie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					int row = tableCurrentRentals.getSelectedRow();
+					String movieid = (tableCurrentRentals.getModel().getValueAt(row, 1).toString());
+					String rentid = (tableCurrentRentals.getModel().getValueAt(row, 0).toString());
+					
+					String query = "UPDATE rentals SET returned = 'YES' WHERE rentid = '"+ rentid +"' AND movieid = '"+ movieid +"' AND userid = '"+ lbCurrentUserIDCust.getText() +"'";
+					
+					PreparedStatement pst = connection.prepareStatement(query);
+					pst.execute();
+					pst.close();
+				
+				}catch (Exception ex) { 
+					JOptionPane.showMessageDialog(null, "Please select the movie you wish to return");
+				}
+				refCurrentRentalsTbl();
+				refRentalHistoryTbl();
+			}
+		});
+		btnReturnMovie.setBounds(13, 195, 50, 50);
+		panelAccount.add(btnReturnMovie);						
+		
+		JScrollPane scrollPane_5 = new JScrollPane();
+		scrollPane_5.setBounds(10, 35, 456, 162);
+		scrollPane_5.getViewport().setBackground(Color.GRAY);
+		panelAccount.add(scrollPane_5);
+		
+		tableCurrentRentals = new JTable();
+		tableCurrentRentals.setSelectionForeground(Color.BLACK);
+		tableCurrentRentals.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCurrentRentals.setForeground(Color.WHITE);
+		tableCurrentRentals.setBackground(Color.GRAY);
+		scrollPane_5.setViewportView(tableCurrentRentals);
+		
+		JLabel lblCurrentRentals_1 = new JLabel("Current Rentals");
+		lblCurrentRentals_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCurrentRentals_1.setBounds(13, 15, 114, 16);
+		panelAccount.add(lblCurrentRentals_1);						
+		
+		JLabel lblEditCustomerInformation = new JLabel("Edit Profile Information:");
+		lblEditCustomerInformation.setBounds(528, 8, 237, 28);
+		panelAccount.add(lblEditCustomerInformation);
+		lblEditCustomerInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
 		JLabel label_9 = new JLabel("First Name:");
+		label_9.setBounds(528, 50, 82, 29);
+		panelAccount.add(label_9);
 		label_9.setHorizontalAlignment(SwingConstants.RIGHT);
 		label_9.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_9.setBounds(31, 98, 82, 29);
-		panelEditCust.add(label_9);
-																				
-		JLabel label_8 = new JLabel("Last Name:");
-		label_8.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_8.setBounds(31, 139, 82, 29);
-		panelEditCust.add(label_8);
-																						
-		JLabel label_7 = new JLabel("Age:");
-		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_7.setBounds(31, 262, 82, 29);
-		panelEditCust.add(label_7);
-																								
-		JLabel label_6 = new JLabel("Username:");
-		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_6.setBounds(31, 180, 82, 29);
-		panelEditCust.add(label_6);
-																										
-		JLabel label_5 = new JLabel("Password:");
-		label_5.setHorizontalAlignment(SwingConstants.RIGHT);
-		label_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_5.setBounds(31, 221, 82, 29);
-		panelEditCust.add(label_5);
-																												
-		JButton button_1 = new JButton("Submit");
+		
+		tfFirstName = new JTextField();
+		tfFirstName.setBounds(622, 48, 145, 29);
+		panelAccount.add(tfFirstName);
+		tfFirstName.setColumns(10);
+		
+		JButton button_1 = new JButton("");
+		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		button_1.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-check2.png")));
+		button_1.setContentAreaFilled(false);
+		button_1.setSelected(true);
+		button_1.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-check.png")));
+		button_1.setBounds(779, 51, 50, 50);
+		panelAccount.add(button_1);
 		button_1.setForeground(Color.WHITE);
 		button_1.setBackground(Color.DARK_GRAY);
+		
+		JLabel label_8 = new JLabel("Last Name:");
+		label_8.setBounds(528, 91, 82, 29);
+		panelAccount.add(label_8);
+		label_8.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_8.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		tfLastName = new JTextField();
+		tfLastName.setBounds(622, 89, 145, 29);
+		panelAccount.add(tfLastName);
+		tfLastName.setColumns(10);
+		
+		JLabel label_6 = new JLabel("Username:");
+		label_6.setBounds(528, 132, 82, 29);
+		panelAccount.add(label_6);
+		label_6.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		tfUsername = new JTextField();
+		tfUsername.setBounds(622, 130, 145, 29);
+		panelAccount.add(tfUsername);
+		tfUsername.setColumns(10);
+		
+		JLabel label_5 = new JLabel("Password:");
+		label_5.setBounds(528, 173, 82, 29);
+		panelAccount.add(label_5);
+		label_5.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		tfPassword = new JPasswordField();
+		tfPassword.setBounds(622, 168, 145, 29);
+		panelAccount.add(tfPassword);
+		
+		JLabel label_7 = new JLabel("Age:");
+		label_7.setBounds(528, 214, 82, 29);
+		panelAccount.add(label_7);
+		label_7.setHorizontalAlignment(SwingConstants.RIGHT);
+		label_7.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		tfAge = new JTextField();
+		tfAge.setBounds(622, 209, 145, 29);
+		panelAccount.add(tfAge);
+		tfAge.setColumns(10);
 		button_1.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
@@ -446,440 +952,9 @@ public class Main_Cust extends JFrame {
 
 			}
 		});
-		button_1.setBounds(282, 99, 102, 29);
-		panelEditCust.add(button_1);
-		
-		JLabel lblEditCustomerInformation = new JLabel("Edit Profile Information:");
-		lblEditCustomerInformation.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEditCustomerInformation.setBounds(6, 6, 237, 28);
-		panelEditCust.add(lblEditCustomerInformation);
-		
-		tfUserID = new JTextField();
-		panelEditCust.add(tfUserID);
-		
-		LocalDate today = LocalDate.now();
-		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
-		Date date = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
-		
-		JPanel panelMov = new JPanel();
-		panelMov.setBackground(Color.DARK_GRAY);
-		panelCards.add(panelMov, "Movies");
-		panelMov.setLayout(null);
-		
-		JPanel panelMovCards = new JPanel();
-		panelMovCards.setBounds(0, 30, 963, 460);
-		panelMov.add(panelMovCards);
-		panelMovCards.setLayout(new CardLayout(0, 0));
-		
-				JPanel panelRentMovie = new JPanel();
-				panelMovCards.add(panelRentMovie, "name_45118157024435");
-				panelRentMovie.setBackground(Color.LIGHT_GRAY);
-				panelRentMovie.setLayout(null);
-				
-				JPanel panelRentCards = new JPanel();
-				panelRentCards.setBounds(0, 0, 963, 460);
-				panelRentMovie.add(panelRentCards);
-				panelRentCards.setLayout(new CardLayout(0, 0));
-				
-		JPanel panelSelectMov = new JPanel();
-		panelSelectMov.setBackground(Color.LIGHT_GRAY);
-		panelRentCards.add(panelSelectMov);
-		panelSelectMov.setLayout(null);		
-		
-		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(0, 97, 963, 317);
-		scrollPane_4.getViewport().setBackground(Color.GRAY);
-		panelSelectMov.add(scrollPane_4);				
-		
-		tableViewMov = new JTable();
-		tableViewMov.setSelectionForeground(Color.BLACK);
-		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
-		tableViewMov.setForeground(Color.WHITE);
-		tableViewMov.setBackground(Color.GRAY);
-		scrollPane_4.setViewportView(tableViewMov);						
-		
-		JPanel panelCart = new JPanel();
-		panelCart.setBackground(Color.LIGHT_GRAY);
-		panelRentCards.add(panelCart);
-		panelCart.setLayout(null);								
-		
-				JButton btnReturnToMovies = new JButton("Return to Movies");
-				btnReturnToMovies.setBackground(Color.DARK_GRAY);
-				btnReturnToMovies.setForeground(Color.WHITE);
-				btnReturnToMovies.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						panelRentCards.removeAll();
-						panelRentCards.add(panelSelectMov);
-						panelRentCards.repaint();
-						panelRentCards.revalidate();
-					}
-				});
-				btnReturnToMovies.setBounds(6, 426, 119, 28);
-				panelCart.add(btnReturnToMovies);												
-				
-		JPanel panelCheckout = new JPanel();
-		panelCheckout.setBackground(Color.LIGHT_GRAY);
-		panelRentCards.add(panelCheckout);
-		panelCheckout.setLayout(null);														
-		
-		JButton btnCheckout = new JButton("Checkout");
-		btnCheckout.setBackground(Color.DARK_GRAY);
-		btnCheckout.setForeground(Color.WHITE);
-		btnCheckout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int count= tableCart.getModel().getRowCount();
-				if(count<1){
-					JOptionPane.showMessageDialog(null, "You have no items in your cart.");
-					return;
-				}
-				refCheckoutTbl();
-				panelRentCards.removeAll();
-				panelRentCards.add(panelCheckout);
-				panelRentCards.repaint();
-				panelRentCards.revalidate();
-			}
-		});
-		btnCheckout.setBounds(867, 426, 90, 28);
-		panelCart.add(btnCheckout);																
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBackground(Color.GRAY);
-		scrollPane_1.setBounds(0, 46, 963, 368);
-		scrollPane_1.getViewport().setBackground(Color.GRAY);
-		panelCart.add(scrollPane_1);																		
-		
-		tableCart = new JTable();
-		tableCart.setSelectionForeground(Color.BLACK);
-		tableCart.setSelectionBackground(Color.LIGHT_GRAY);
-		tableCart.setForeground(Color.WHITE);
-		tableCart.setBackground(Color.GRAY);
-		scrollPane_1.setViewportView(tableCart);																				
-		
-		JButton btnRemoveFromCart = new JButton("Remove from Cart");
-		btnRemoveFromCart.setForeground(Color.WHITE);
-		btnRemoveFromCart.setBackground(Color.DARK_GRAY);
-		btnRemoveFromCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try{
-					int row = tableCart.getSelectedRow();
-					String Table_click = (tableCart.getModel().getValueAt(row, 1).toString());
-
-					String query = "DELETE FROM cart WHERE movieid = '"+Table_click+"' ";
-
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.execute();
-
-				}catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Select the movie you wish to remove from your cart.");
-				}
-				refCartTbl();
-			}
-		});
-		btnRemoveFromCart.setBounds(137, 426, 128, 28);
-		panelCart.add(btnRemoveFromCart);																						
-		
-		JLabel lblCart = new JLabel("Cart");
-		lblCart.setOpaque(true);
-		lblCart.setBackground(Color.GRAY);
-		lblCart.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCart.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCart.setBounds(0, 0, 963, 45);
-		panelCart.add(lblCart);																								
-		
-		JButton btnViewCart = new JButton("View Cart");
-		btnViewCart.setForeground(Color.WHITE);
-		btnViewCart.setBackground(Color.DARK_GRAY);
-		btnViewCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				panelRentCards.removeAll();
-				panelRentCards.add(panelCart);
-				panelRentCards.repaint();
-				panelRentCards.revalidate();
-			}
-		});
-		btnViewCart.setBounds(867, 426, 90, 28);
-		panelSelectMov.add(btnViewCart);																										
-		
-		JButton btnAddToCart = new JButton("Add to Cart");
-		btnAddToCart.setForeground(Color.WHITE);
-		btnAddToCart.setBackground(Color.DARK_GRAY);
-		btnAddToCart.setBounds(6, 426, 90, 28);
-		panelSelectMov.add(btnAddToCart);
-		btnAddToCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-					try{
-						int row = tableViewMov.getSelectedRow();
-						int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
-						String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
-						String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
-						String repl_cost = (tableViewMov.getModel().getValueAt(row, 7).toString());
-
-						String query = "INSERT INTO cart (userid,movieid,title,rental_rate,replacement_cost) VALUES (?,?,?,?,?)";
-						PreparedStatement pst = connection.prepareStatement(query);
-
-						pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
-						pst.setInt(2, movieid);
-						pst.setString(3, title);
-						pst.setString(4, rent_rate);
-						pst.setString(5, repl_cost);
-
-						pst.execute();
-						pst.close();
-
-					}catch(Exception ex){
-						JOptionPane.showMessageDialog(null, "Select the movie you wish to add to your cart.");
-					}
-					refCartTbl();
-				  }
-		});																												
-		
-		JLabel label = new JLabel("Search Movie:");
-		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label.setBounds(6, 57, 174, 28);
-		panelSelectMov.add(label);
-		
-		comboBoxRentMov = new JComboBox<String>();
-		comboBoxRentMov.setBackground(Color.GRAY);
-		comboBoxRentMov.setBounds(142, 58, 145, 29);
-		panelSelectMov.add(comboBoxRentMov);		
-		
-		tfRentMovieSearch = new JTextField();
-		tfRentMovieSearch.setColumns(10);
-		tfRentMovieSearch.setBounds(299, 58, 145, 29);
-		panelSelectMov.add(tfRentMovieSearch);																																		
-		
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setBackground(Color.DARK_GRAY);
-		btnSearch.setForeground(Color.WHITE);
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				try{
-					String value0 = (String)comboBoxRentMov.getSelectedItem();
-					String value1 = tfRentMovieSearch.getText()+"%";
-					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
-							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
-							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
-
-					PreparedStatement pst = connection.prepareStatement(query);
-					ResultSet rs = pst.executeQuery();
-					tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
-
-					pst.close();
-					rs.close();
-
-				}catch(Exception ex){
-					JOptionPane.showMessageDialog(null, ex);
-				}
-			}
-		});
-		btnSearch.setBounds(855, 58, 102, 29);
-		panelSelectMov.add(btnSearch);
-		
-		JLabel lblFindMovies = new JLabel("Find Movies");
-		lblFindMovies.setOpaque(true);
-		lblFindMovies.setBackground(Color.GRAY);
-		lblFindMovies.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFindMovies.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblFindMovies.setBounds(0, 0, 963, 45);
-		panelSelectMov.add(lblFindMovies);
-		
-		JLabel lblCheckout = new JLabel("Checkout");
-		lblCheckout.setBackground(Color.GRAY);
-		lblCheckout.setOpaque(true);
-		lblCheckout.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCheckout.setFont(new Font("Tahoma", Font.PLAIN, 39));
-		lblCheckout.setBounds(0, 0, 963, 48);
-		panelCheckout.add(lblCheckout);
-		
-		JScrollPane scrollPane_3 = new JScrollPane();
-		scrollPane_3.setBackground(Color.GRAY);
-		scrollPane_3.setForeground(Color.WHITE);
-		scrollPane_3.getViewport().setBackground(Color.GRAY);
-		scrollPane_3.setBounds(0, 46, 963, 175);
-		panelCheckout.add(scrollPane_3);																																						
-		
-		tableCheckout = new JTable();
-		tableCheckout.setSelectionForeground(Color.BLACK);
-		tableCheckout.setSelectionBackground(Color.LIGHT_GRAY);
-		tableCheckout.setForeground(Color.WHITE);
-		tableCheckout.setBackground(Color.GRAY);
-		scrollPane_3.setViewportView(tableCheckout);
-		
-		JButton btnReturnToCart = new JButton("Return to Cart");
-		btnReturnToCart.setForeground(Color.WHITE);
-		btnReturnToCart.setBackground(Color.DARK_GRAY);
-		btnReturnToCart.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelRentCards.removeAll();
-				panelRentCards.add(panelCart);
-				panelRentCards.repaint();
-				panelRentCards.revalidate();
-			}
-		});
-		btnReturnToCart.setBounds(6, 426, 104, 28);
-		panelCheckout.add(btnReturnToCart);
-		
-		ReturnDateChooser = new JDateChooser();
-		ReturnDateChooser.setForeground(Color.WHITE);
-		ReturnDateChooser.setBackground(Color.GRAY);
-		ReturnDateChooser.setBounds(475, 262, 122, 28);
-		ReturnDateChooser.setMinSelectableDate(date);
-		ReturnDateChooser.getDateEditor().addPropertyChangeListener(
-			    new PropertyChangeListener() {
-					@Override
-					public void propertyChange(PropertyChangeEvent ex) {
-						CalculateBalance();
-					}
-			    });
-		panelCheckout.add(ReturnDateChooser);																																										
-		
-		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setBackground(Color.DARK_GRAY);
-		btnSubmit.setForeground(Color.WHITE);
-		btnSubmit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String empty = "";
-				String date2 = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
-				  if(date2.equals(empty)){
-					  JOptionPane.showMessageDialog(null,"Must select a return date");
-					  return;
-					  }
-				String cash3 = tfCash.getText();
-				  if(cash3.equals(empty)){
-					  JOptionPane.showMessageDialog(null,"Give me some money!");
-					  return;
-					  }
-				  
-				  BigDecimal cash = new BigDecimal(tfCash.getText());
-				  boolean equal = total_cost.compareTo(cash) == 0;
-				  boolean more = total_cost.compareTo(cash) == 1;
-				  boolean change = total_cost.compareTo(cash) == -1;
-				  if(equal){
-					 Payment();
-					 panelRentCards.removeAll();
-					 panelRentCards.add(panelCart);
-					 panelRentCards.repaint();
-					 panelRentCards.revalidate();
-				 }else if(more){
-					 JOptionPane.showMessageDialog(null, "More MONEY!");
-				 }else if(change){
-					 BigDecimal change2 = cash.subtract(total_cost);
-					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2);
-					 Payment();
-				 }
-			}
-		});																																												
-		
-				btnSubmit.setBounds(867, 426, 90, 28);
-				panelCheckout.add(btnSubmit);
-				
-				JLabel lblReturnDate = new JLabel("Return Date:");
-				lblReturnDate.setBounds(475, 233, 104, 16);
-				panelCheckout.add(lblReturnDate);		
-				
-		JLabel lblBalance = new JLabel("Balance:");
-		lblBalance.setBounds(657, 233, 55, 16);
-		panelCheckout.add(lblBalance);				
-		
-		tfBalance = new JTextField();
-		tfBalance.setEditable(false);
-		tfBalance.setBounds(657, 262, 122, 28);
-		panelCheckout.add(tfBalance);
-		tfBalance.setColumns(10);						
-		
-		JLabel lblNewLabel_2 = new JLabel("Customer Information:");
-		lblNewLabel_2.setBounds(54, 233, 131, 16);
-		panelCheckout.add(lblNewLabel_2);								
-		
-		lblFirstName = new JLabel("First Name");
-		lblFirstName.setBounds(54, 262, 61, 16);
-		panelCheckout.add(lblFirstName);										
-		
-		lblLastName = new JLabel("Last Name");
-		lblLastName.setBounds(54, 290, 61, 16);
-		panelCheckout.add(lblLastName);																																																								
-		
-		JLabel lblId_1 = new JLabel("ID:");
-		lblId_1.setBounds(54, 318, 15, 16);
-		panelCheckout.add(lblId_1);
-		
-		lblID = new JLabel("ID");
-		lblID.setBounds(81, 318, 15, 16);
-		panelCheckout.add(lblID);
-		
-		tfCash = new JTextField();
-		tfCash.setColumns(10);
-		tfCash.setBounds(657, 330, 122, 28);
-		panelCheckout.add(tfCash);
-		
-		JLabel lblCashToBe = new JLabel("Cash to be paid:");
-		lblCashToBe.setBounds(657, 302, 104, 16);
-		panelCheckout.add(lblCashToBe);																																																								
-		
-		JPanel panelAccount = new JPanel();
-		panelAccount.setBackground(Color.LIGHT_GRAY);
-		panelMovCards.add(panelAccount, "name_45120651096660");
-		panelAccount.setLayout(null);
-		
-		JLabel lblCurrentRentals = new JLabel("Rental History");
-		lblCurrentRentals.setBounds(13, 253, 94, 16);
-		panelAccount.add(lblCurrentRentals);		
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.getViewport().setBackground(Color.GRAY);
-		scrollPane.setBounds(10, 270, 456, 162);
-		panelAccount.add(scrollPane);				
-		
-		tableRentalHistory = new JTable();
-		tableRentalHistory.setBackground(Color.GRAY);
-		tableRentalHistory.setForeground(Color.WHITE);
-		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
-		tableRentalHistory.setSelectionForeground(Color.BLACK);
-		scrollPane.setViewportView(tableRentalHistory);						
-		
-		JButton btnReturnMovie = new JButton("Return Movie");
-		btnReturnMovie.setForeground(Color.WHITE);
-		btnReturnMovie.setBackground(Color.DARK_GRAY);
-		btnReturnMovie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
-					int row = tableCurrentRentals.getSelectedRow();
-					String movieid = (tableCurrentRentals.getModel().getValueAt(row, 1).toString());
-					String rentid = (tableCurrentRentals.getModel().getValueAt(row, 0).toString());
-					
-					String query = "UPDATE rentals SET returned = 'YES' WHERE rentid = '"+ rentid +"' AND movieid = '"+ movieid +"' AND userid = '"+ lbCurrentUserIDCust.getText() +"'";
-					
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.execute();
-					pst.close();
-				
-				}catch (Exception ex) { 
-					JOptionPane.showMessageDialog(null, "Please select the movie you wish to return");
-				}
-				refCurrentRentalsTbl();
-				refRentalHistoryTbl();
-			}
-		});
-		btnReturnMovie.setBounds(13, 195, 107, 23);
-		panelAccount.add(btnReturnMovie);						
-		
-		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(10, 35, 456, 162);
-		scrollPane_5.getViewport().setBackground(Color.GRAY);
-		panelAccount.add(scrollPane_5);
-		
-		tableCurrentRentals = new JTable();
-		tableCurrentRentals.setSelectionForeground(Color.BLACK);
-		tableCurrentRentals.setSelectionBackground(Color.LIGHT_GRAY);
-		tableCurrentRentals.setForeground(Color.WHITE);
-		tableCurrentRentals.setBackground(Color.GRAY);
-		scrollPane_5.setViewportView(tableCurrentRentals);
-		
-		JLabel lblCurrentRentals_1 = new JLabel("Current Rentals");
-		lblCurrentRentals_1.setBounds(13, 15, 94, 16);
-		panelAccount.add(lblCurrentRentals_1);						
 		
 		JButton btnNewButton = new JButton("Rent Movie");
+		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnNewButton.setForeground(Color.WHITE);
 		btnNewButton.setBackground(Color.DARK_GRAY);
 		btnNewButton.setOpaque(true);
@@ -895,6 +970,7 @@ public class Main_Cust extends JFrame {
 		panelMov.add(btnNewButton);
 		
 		JButton btnAccount = new JButton("Account");
+		btnAccount.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelMovCards.removeAll();
@@ -911,22 +987,25 @@ public class Main_Cust extends JFrame {
 
 		JPanel ButtonMenu = new JPanel();
 		ButtonMenu.setBackground(Color.DARK_GRAY);
-		ButtonMenu.setBounds(0, 0, 963, 80);
+		ButtonMenu.setBounds(0, 0, 963, 90);
 		contentPane.add(ButtonMenu);
 
 		JButton btnCustomers = new JButton("");
+		btnCustomers.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCustomers.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/house2.png")));
+		btnCustomers.setContentAreaFilled(false);
 		btnCustomers.setFocusPainted(false);
 		btnCustomers.setOpaque(true);
 		btnCustomers.setForeground(Color.WHITE);
 		btnCustomers.setBackground(Color.DARK_GRAY);
-		btnCustomers.setBounds(603, 0, 120, 80);
+		btnCustomers.setBounds(603, 0, 120, 90);
 		btnCustomers.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnCustomers.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnCustomers.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/user-male.png")));
+		btnCustomers.setIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/house.png")));
 		btnCustomers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelCards.removeAll();
-				panelCards.add(panelEditCust);
+				panelCards.add(panelWelcome);
 				panelCards.repaint();
 				panelCards.revalidate();
 				refEditCustTbl();
@@ -935,14 +1014,17 @@ public class Main_Cust extends JFrame {
 		});
 
 		JButton btnMovies = new JButton("");
+		btnMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnMovies.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/device-tv2.png")));
+		btnMovies.setContentAreaFilled(false);
 		btnMovies.setFocusPainted(false);
 		btnMovies.setOpaque(true);
 		btnMovies.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnMovies.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnMovies.setForeground(Color.WHITE);
 		btnMovies.setBackground(Color.DARK_GRAY);
-		btnMovies.setBounds(723, 0, 120, 80);
-		btnMovies.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/device-tv.png")));
+		btnMovies.setBounds(723, 0, 120, 90);
+		btnMovies.setIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/device-tv.png")));
 		btnMovies.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelCards.removeAll();
@@ -959,15 +1041,17 @@ public class Main_Cust extends JFrame {
 		});
 
 		JButton btnLogout = new JButton("");
+		btnLogout.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/sign-ban2.png")));
+		btnLogout.setContentAreaFilled(false);
 		btnLogout.setFocusPainted(false);
 		btnLogout.setOpaque(true);
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogout.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnLogout.setBounds(843, 0, 120, 80);
+		btnLogout.setBounds(843, 0, 120, 90);
 		btnLogout.setBackground(Color.DARK_GRAY);
-		btnLogout.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-ban48.png")));
+		btnLogout.setIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/sign-ban.png")));
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
