@@ -362,6 +362,9 @@ public class Main_Cust extends JFrame {
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewMov.setForeground(Color.WHITE);
 		tableViewMov.setBackground(Color.GRAY);
+		tableViewMov.getTableHeader().setReorderingAllowed(false);
+		tableViewMov.getTableHeader().setResizingAllowed(false);
+		tableViewMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_4.setViewportView(tableViewMov);						
 		
 		JPanel panelCart = new JPanel();
@@ -427,6 +430,9 @@ public class Main_Cust extends JFrame {
 		tableCart.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCart.setForeground(Color.WHITE);
 		tableCart.setBackground(Color.GRAY);
+		tableCart.getTableHeader().setReorderingAllowed(false);
+		tableCart.getTableHeader().setResizingAllowed(false);
+		tableCart.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(tableCart);																				
 		
 		JButton btnRemoveFromCart = new JButton("");
@@ -614,6 +620,9 @@ public class Main_Cust extends JFrame {
 		tableCheckout.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCheckout.setForeground(Color.WHITE);
 		tableCheckout.setBackground(Color.GRAY);
+		tableCheckout.getTableHeader().setReorderingAllowed(false);
+		tableCheckout.getTableHeader().setResizingAllowed(false);
+		tableCheckout.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_3.setViewportView(tableCheckout);
 		
 		JButton btnReturnToCart = new JButton("");
@@ -780,6 +789,9 @@ public class Main_Cust extends JFrame {
 		tableRentalHistory.setForeground(Color.WHITE);
 		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
 		tableRentalHistory.setSelectionForeground(Color.BLACK);
+		tableRentalHistory.getTableHeader().setReorderingAllowed(false);
+		tableRentalHistory.getTableHeader().setResizingAllowed(false);
+		tableRentalHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(tableRentalHistory);						
 		
 		JButton btnReturnMovie = new JButton("");
@@ -822,6 +834,9 @@ public class Main_Cust extends JFrame {
 		tableCurrentRentals.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCurrentRentals.setForeground(Color.WHITE);
 		tableCurrentRentals.setBackground(Color.GRAY);
+		tableCurrentRentals.getTableHeader().setReorderingAllowed(false);
+		tableCurrentRentals.getTableHeader().setResizingAllowed(false);
+		tableCurrentRentals.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_5.setViewportView(tableCurrentRentals);
 		
 		JLabel lblCurrentRentals_1 = new JLabel("Current Rentals");

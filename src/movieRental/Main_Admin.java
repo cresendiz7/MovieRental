@@ -544,6 +544,9 @@ public class Main_Admin extends JFrame {
 		tableViewCust.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewCust.setForeground(Color.WHITE);
 		tableViewCust.setBackground(Color.GRAY);
+		tableViewCust.getTableHeader().setReorderingAllowed(false);
+		tableViewCust.getTableHeader().setResizingAllowed(false);
+		tableViewCust.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(tableViewCust);
 		
 		JLabel lblCustomers = new JLabel("Customers");
@@ -568,6 +571,9 @@ public class Main_Admin extends JFrame {
 		tableNewCust.setForeground(Color.WHITE);
 		tableNewCust.setSelectionForeground(Color.BLACK);
 		tableNewCust.setSelectionBackground(Color.LIGHT_GRAY);
+		tableNewCust.getTableHeader().setReorderingAllowed(false);
+		tableNewCust.getTableHeader().setResizingAllowed(false);
+		tableNewCust.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableNewCust.setRowSelectionAllowed(true);
 		scrollPane_1.setViewportView(tableNewCust);
 		
@@ -774,6 +780,9 @@ public class Main_Admin extends JFrame {
 		tableEditCust.setSelectionBackground(Color.LIGHT_GRAY);
 		tableEditCust.setBackground(Color.GRAY);
 		tableEditCust.setForeground(Color.WHITE);
+		tableEditCust.getTableHeader().setReorderingAllowed(false);
+		tableEditCust.getTableHeader().setResizingAllowed(false);
+		tableEditCust.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableEditCust.setRowSelectionAllowed(true);
 		tableEditCust.addMouseListener(new MouseAdapter() {
 			@Override
@@ -953,6 +962,9 @@ public class Main_Admin extends JFrame {
 						tableDelCust.setForeground(Color.WHITE);
 						tableDelCust.setSelectionBackground(Color.LIGHT_GRAY);
 						tableDelCust.setSelectionForeground(Color.BLACK);
+						tableDelCust.getTableHeader().setReorderingAllowed(false);
+						tableDelCust.getTableHeader().setResizingAllowed(false);
+						tableDelCust.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 						scrollPane_3.setViewportView(tableDelCust);
 						
 						tfDelUserSearch = new JTextField();
@@ -1112,6 +1124,8 @@ public class Main_Admin extends JFrame {
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewMov.setForeground(Color.WHITE);
 		tableViewMov.setBackground(Color.GRAY);
+		tableViewMov.getTableHeader().setReorderingAllowed(false);
+		tableViewMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_4.setViewportView(tableViewMov);
 		
 		JLabel lblMovies = new JLabel("Movies");
@@ -1136,6 +1150,8 @@ public class Main_Admin extends JFrame {
 		tableNewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableNewMov.setForeground(Color.WHITE);
 		tableNewMov.setBackground(Color.GRAY);
+		tableNewMov.getTableHeader().setReorderingAllowed(false);
+		tableNewMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_5.setViewportView(tableNewMov);
 		
 		tfTitle = new JTextField();
@@ -1339,6 +1355,8 @@ public class Main_Admin extends JFrame {
 		tableEditMov.setForeground(Color.WHITE);
 		tableEditMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableEditMov.setSelectionForeground(Color.BLACK);
+		tableEditMov.getTableHeader().setReorderingAllowed(false);
+		tableEditMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableEditMov.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -1555,6 +1573,8 @@ public class Main_Admin extends JFrame {
 		tableDelMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableDelMov.setForeground(Color.WHITE);
 		tableDelMov.setBackground(Color.GRAY);
+		tableDelMov.getTableHeader().setReorderingAllowed(false);
+		tableDelMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_7.setViewportView(tableDelMov);
 		
 		JButton button_5 = new JButton("");
@@ -1726,6 +1746,10 @@ public class Main_Admin extends JFrame {
 		tableViewAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewAdm.setForeground(Color.WHITE);
 		tableViewAdm.setBackground(Color.GRAY);
+		tableViewAdm.getTableHeader().setReorderingAllowed(false);
+		tableViewAdm.getTableHeader().setResizingAllowed(false);
+		tableViewAdm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableViewAdm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_8.setViewportView(tableViewAdm);
 		
 		JLabel lblAdministrators = new JLabel("Administrators");
@@ -1750,6 +1774,9 @@ public class Main_Admin extends JFrame {
 		tableNewAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableNewAdm.setForeground(Color.WHITE);
 		tableNewAdm.setBackground(Color.GRAY);
+		tableNewAdm.getTableHeader().setReorderingAllowed(false);
+		tableNewAdm.getTableHeader().setResizingAllowed(false);
+		tableNewAdm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_9.setViewportView(tableNewAdm);
 		
 		JLabel label_26 = new JLabel("First Name:");
@@ -1906,6 +1933,9 @@ public class Main_Admin extends JFrame {
 		tableEditAdm.setForeground(Color.WHITE);
 		tableEditAdm.setSelectionForeground(Color.BLACK);
 		tableEditAdm.setSelectionBackground(Color.LIGHT_GRAY);
+		tableEditAdm.getTableHeader().setReorderingAllowed(false);
+		tableEditAdm.getTableHeader().setResizingAllowed(false);
+		tableEditAdm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableEditAdm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -2134,6 +2164,9 @@ public class Main_Admin extends JFrame {
 		tableDelAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableDelAdm.setForeground(Color.WHITE);
 		tableDelAdm.setBackground(Color.GRAY);
+		tableDelAdm.getTableHeader().setReorderingAllowed(false);
+		tableDelAdm.getTableHeader().setResizingAllowed(false);
+		tableDelAdm.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_11.setViewportView(tableDelAdm);
 		
 		JLabel lblSearchAdministrator_1 = new JLabel("Search Administrator:");
@@ -2303,6 +2336,9 @@ public class Main_Admin extends JFrame {
 		tableViewRent.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewRent.setForeground(Color.WHITE);
 		tableViewRent.setBackground(Color.GRAY);
+		tableViewRent.getTableHeader().setReorderingAllowed(false);
+		tableViewRent.getTableHeader().setResizingAllowed(false);
+		tableViewRent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_12.setViewportView(tableViewRent);
 		
 		JLabel lblRentalHistory = new JLabel("Rental History");
