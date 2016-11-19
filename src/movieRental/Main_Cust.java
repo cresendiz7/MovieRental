@@ -122,16 +122,48 @@ public class Main_Cust extends JFrame {
 
 	public void refAllMovTbl(){
 		try{
-			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+			String query;
+			if(Integer.parseInt(lbCurrentCustAge.getText()) > 17){
+			query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
 					+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
-
 			pst.close();
 			rs.close();
+			}else if(Integer.parseInt(lbCurrentCustAge.getText()) == 17){
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13' OR rating = 'R'";
+
+				PreparedStatement pst = connection.prepareStatement(query);
+				ResultSet rs = pst.executeQuery();
+				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				pst.close();
+				rs.close();
+			}else if(Integer.parseInt(lbCurrentCustAge.getText()) < 17 && Integer.parseInt(lbCurrentCustAge.getText()) >= 13){
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13'";
+
+				PreparedStatement pst = connection.prepareStatement(query);
+				ResultSet rs = pst.executeQuery();
+				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				pst.close();
+				rs.close();
+			}else if(Integer.parseInt(lbCurrentCustAge.getText()) < 13){
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
+						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG'";
+
+				PreparedStatement pst = connection.prepareStatement(query);
+				ResultSet rs = pst.executeQuery();
+				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				pst.close();
+				rs.close();
+			}
 
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
@@ -157,6 +189,7 @@ public class Main_Cust extends JFrame {
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableCart.setModel(DbUtils.resultSetToTableModel(rs));
+			tableCart.getModel();
 
 			pst.close();
 			rs.close();
@@ -358,15 +391,15 @@ public class Main_Cust extends JFrame {
 		panelMov.add(panelMovCards);
 		panelMovCards.setLayout(new CardLayout(0, 0));
 		
-				JPanel panelRentMovie = new JPanel();
-				panelMovCards.add(panelRentMovie, "name_45118157024435");
-				panelRentMovie.setBackground(Color.LIGHT_GRAY);
-				panelRentMovie.setLayout(null);
-				
-				JPanel panelRentCards = new JPanel();
-				panelRentCards.setBounds(0, 0, 963, 449);
-				panelRentMovie.add(panelRentCards);
-				panelRentCards.setLayout(new CardLayout(0, 0));
+		JPanel panelRentMovie = new JPanel();
+		panelMovCards.add(panelRentMovie, "name_45118157024435");
+		panelRentMovie.setBackground(Color.LIGHT_GRAY);
+		panelRentMovie.setLayout(null);
+		
+		JPanel panelRentCards = new JPanel();
+		panelRentCards.setBounds(0, 0, 963, 449);
+		panelRentMovie.add(panelRentCards);
+		panelRentCards.setLayout(new CardLayout(0, 0));		
 				
 		JPanel panelSelectMov = new JPanel();
 		panelSelectMov.setBackground(Color.LIGHT_GRAY);
@@ -393,23 +426,23 @@ public class Main_Cust extends JFrame {
 		panelRentCards.add(panelCart);
 		panelCart.setLayout(null);								
 		
-				JButton btnReturnToMovies = new JButton("");
-				btnReturnToMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-				btnReturnToMovies.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left2.png")));
-				btnReturnToMovies.setContentAreaFilled(false);
-				btnReturnToMovies.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left.png")));
-				btnReturnToMovies.setBackground(Color.DARK_GRAY);
-				btnReturnToMovies.setForeground(Color.WHITE);
-				btnReturnToMovies.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						panelRentCards.removeAll();
-						panelRentCards.add(panelSelectMov);
-						panelRentCards.repaint();
-						panelRentCards.revalidate();
-					}
-				});
-				btnReturnToMovies.setBounds(10, 393, 50, 50);
-				panelCart.add(btnReturnToMovies);												
+		JButton btnReturnToMovies = new JButton("");
+		btnReturnToMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnReturnToMovies.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left2.png")));
+		btnReturnToMovies.setContentAreaFilled(false);
+		btnReturnToMovies.setIcon(new ImageIcon(Main_Cust.class.getResource("/fortyeight/sign-left.png")));
+		btnReturnToMovies.setBackground(Color.DARK_GRAY);
+		btnReturnToMovies.setForeground(Color.WHITE);
+		btnReturnToMovies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelSelectMov);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnReturnToMovies.setBounds(10, 393, 50, 50);
+		panelCart.add(btnReturnToMovies);												
 				
 		JPanel panelCheckout = new JPanel();
 		panelCheckout.setBackground(Color.LIGHT_GRAY);
