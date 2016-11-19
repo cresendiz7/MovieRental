@@ -50,6 +50,8 @@ public class Main_Cust extends JFrame {
 	private JTextField tfCash;
 	private BigDecimal total_cost;
 	private LocalDate today = LocalDate.now();
+	public static JLabel lbNameCust;
+	public static JLabel lbCurrentCustAge;
 
 	/**
 	 * Launch the application.
@@ -323,6 +325,25 @@ public class Main_Cust extends JFrame {
 		panelWelcome.setBackground(Color.DARK_GRAY);
 		panelCards.add(panelWelcome, "name_145839516092709");
 		panelWelcome.setLayout(null);
+		
+		JLabel label_2 = new JLabel("Welcome");
+		label_2.setForeground(Color.WHITE);
+		label_2.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 33));
+		label_2.setBounds(0, 0, 164, 40);
+		panelWelcome.add(label_2);
+		
+		lbNameCust = new JLabel("Name");
+		lbNameCust.setForeground(Color.WHITE);
+		lbNameCust.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 33));
+		lbNameCust.setBounds(68, 48, 164, 40);
+		panelWelcome.add(lbNameCust);
+		
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setVerticalAlignment(SwingConstants.BOTTOM);
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setIcon(new ImageIcon(Main_Cust.class.getResource("/Logo/movie-vector-icons.png")));
+		lblNewLabel.setBounds(0, 6, 963, 473);
+		panelWelcome.add(lblNewLabel);
 		
 		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
 		Date date = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -1120,6 +1141,16 @@ public class Main_Cust extends JFrame {
 		lbCurrentUserIDCust.setText("22");
 		lbCurrentUserIDCust.setBounds(408, 7, 55, 16);
 		panelStatusBar.add(lbCurrentUserIDCust);
+		
+		JLabel lblAge = new JLabel("Age:");
+		lblAge.setForeground(Color.WHITE);
+		lblAge.setBounds(523, 7, 27, 16);
+		panelStatusBar.add(lblAge);
+		
+		lbCurrentCustAge = new JLabel();
+		lbCurrentCustAge.setForeground(Color.WHITE);
+		lbCurrentCustAge.setBounds(550, 7, 55, 16);
+		panelStatusBar.add(lbCurrentCustAge);
 
 		tableCurrentUsername = new JTable();
 		contentPane.add(tableCurrentUsername);

@@ -53,6 +53,7 @@ public class Signup extends JFrame {
 	 * Create the frame.
 	 */
 	public Signup() {
+		setBackground(Color.DARK_GRAY);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Signup.class.getResource("/fortyeight/user-id.png")));
 		setTitle("Sign Up");
 		setResizable(false);
@@ -60,18 +61,22 @@ public class Signup extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 500, 400);
 		contentPane = new JPanel();
-		contentPane.setBackground(SystemColor.textHighlight);
+		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JLabel lblCustomerSignUp = new JLabel("Sign Up");
+		lblCustomerSignUp.setForeground(Color.WHITE);
+		lblCustomerSignUp.setOpaque(true);
+		lblCustomerSignUp.setBackground(Color.GRAY);
 		lblCustomerSignUp.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCustomerSignUp.setFont(new Font("Tahoma", Font.BOLD, 50));
-		lblCustomerSignUp.setBounds(6, 13, 482, 73);
+		lblCustomerSignUp.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCustomerSignUp.setBounds(0, 0, 494, 86);
 		contentPane.add(lblCustomerSignUp);
 
 		JLabel lblFirstName = new JLabel("First Name:");
+		lblFirstName.setForeground(Color.WHITE);
 		lblFirstName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblFirstName.setBounds(10, 117, 110, 29);
@@ -83,6 +88,7 @@ public class Signup extends JFrame {
 		tfFirstName.setColumns(10);
 
 		JLabel lblLastName = new JLabel("Last Name:");
+		lblLastName.setForeground(Color.WHITE);
 		lblLastName.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblLastName.setBounds(10, 157, 110, 29);
@@ -94,6 +100,7 @@ public class Signup extends JFrame {
 		contentPane.add(tfLastName);
 
 		JLabel lblAge = new JLabel("Age:");
+		lblAge.setForeground(Color.WHITE);
 		lblAge.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblAge.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblAge.setBounds(10, 197, 110, 29);
@@ -105,6 +112,7 @@ public class Signup extends JFrame {
 		contentPane.add(tfAge);
 
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setForeground(Color.WHITE);
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsername.setBounds(10, 237, 110, 29);
@@ -116,6 +124,7 @@ public class Signup extends JFrame {
 		contentPane.add(tfUsername);
 
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setForeground(Color.WHITE);
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setBounds(10, 277, 110, 29);
@@ -126,11 +135,14 @@ public class Signup extends JFrame {
 		contentPane.add(tfPassword);
 
 		JCheckBox checkBoxAdmin = new JCheckBox("Admin?");
+		checkBoxAdmin.setForeground(Color.WHITE);
 		checkBoxAdmin.setBounds(130, 318, 75, 29);
 		contentPane.add(checkBoxAdmin);
 
-		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setIcon(new ImageIcon(Signup.class.getResource("/twentyfour/sign-check.png")));
+		JButton btnSubmit = new JButton("");
+		btnSubmit.setRolloverIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-check2.png")));
+		btnSubmit.setContentAreaFilled(false);
+		btnSubmit.setIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-check.png")));
 		btnSubmit.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
@@ -244,11 +256,13 @@ public class Signup extends JFrame {
 			  }
 			}
 		});
-		btnSubmit.setBounds(328, 117, 102, 29);
+		btnSubmit.setBounds(415, 111, 50, 50);
 		contentPane.add(btnSubmit);
 
-		JButton btnLoginPage = new JButton("Cancel");
-		btnLoginPage.setIcon(new ImageIcon(Signup.class.getResource("/twentyfour/sign-ban.png")));
+		JButton btnLoginPage = new JButton("");
+		btnLoginPage.setContentAreaFilled(false);
+		btnLoginPage.setRolloverIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-ban2.png")));
+		btnLoginPage.setIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-ban48.png")));
 		btnLoginPage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to cancel?", "Cancel", JOptionPane.YES_NO_OPTION);
@@ -259,7 +273,7 @@ public class Signup extends JFrame {
 				}
 			}
 		});
-		btnLoginPage.setBounds(328, 157, 102, 29);
+		btnLoginPage.setBounds(415, 173, 50, 50);
 		contentPane.add(btnLoginPage);
 
 		tableCurrentUsernameCust = new JTable();
@@ -267,5 +281,19 @@ public class Signup extends JFrame {
 
 		tableCurrentUsernameAdmin = new JTable();
 		contentPane.add(tableCurrentUsernameAdmin);
+		
+		JLabel lblSubmit = new JLabel("Submit");
+		lblSubmit.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblSubmit.setForeground(Color.WHITE);
+		lblSubmit.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSubmit.setBounds(340, 124, 75, 29);
+		contentPane.add(lblSubmit);
+		
+		JLabel lblCancel = new JLabel("Cancel");
+		lblCancel.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblCancel.setForeground(Color.WHITE);
+		lblCancel.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCancel.setBounds(340, 185, 75, 29);
+		contentPane.add(lblCancel);
 	}
 }

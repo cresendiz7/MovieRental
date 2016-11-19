@@ -98,6 +98,8 @@ public class Main_Admin extends JFrame {
 	private JTextField tfReplaceNew;
 	private JTextField tfRentRateEdit;
 	private JTextField tfReplaceEdit;
+	public static JLabel lbNameAdmin;
+	public static JLabel lbCurrentAdminAge;
 	
 	/**
 	 * Launch the application.
@@ -508,7 +510,26 @@ public class Main_Admin extends JFrame {
 		panelHome = new JPanel();
 		panelHome.setBackground(Color.DARK_GRAY);
 		panelCards.add(panelHome, "name_145839516092709");
-		panelHome.setLayout(new BorderLayout(0, 0));
+		panelHome.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Welcome");
+		lblNewLabel.setForeground(Color.WHITE);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 33));
+		lblNewLabel.setBounds(0, 0, 164, 40);
+		panelHome.add(lblNewLabel);
+		
+		lbNameAdmin = new JLabel("Name");
+		lbNameAdmin.setForeground(Color.WHITE);
+		lbNameAdmin.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 33));
+		lbNameAdmin.setBounds(69, 52, 164, 40);
+		panelHome.add(lbNameAdmin);
+		
+		JLabel label_24 = new JLabel("");
+		label_24.setIcon(new ImageIcon(Main_Admin.class.getResource("/Logo/movie-vector-icons.png")));
+		label_24.setVerticalAlignment(SwingConstants.BOTTOM);
+		label_24.setHorizontalAlignment(SwingConstants.CENTER);
+		label_24.setBounds(0, 0, 963, 473);
+		panelHome.add(label_24);
 		
 		panelCust = new JPanel();
 		panelCust.setBackground(Color.DARK_GRAY);
@@ -531,6 +552,7 @@ public class Main_Admin extends JFrame {
 		panelCustCards.setLayout(new CardLayout(0, 0));
 		
 		panelViewCust = new JPanel();
+		panelViewCust.setBackground(Color.LIGHT_GRAY);
 		panelCustCards.add(panelViewCust, "name_12324793501895");
 		panelViewCust.setLayout(null);
 		
@@ -550,6 +572,7 @@ public class Main_Admin extends JFrame {
 		scrollPane.setViewportView(tableViewCust);
 		
 		JLabel lblCustomers = new JLabel("Customers");
+		lblCustomers.setForeground(Color.WHITE);
 		lblCustomers.setOpaque(true);
 		lblCustomers.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCustomers.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -558,6 +581,7 @@ public class Main_Admin extends JFrame {
 		panelViewCust.add(lblCustomers);
 		
 		panelAddCust = new JPanel();
+		panelAddCust.setBackground(Color.LIGHT_GRAY);
 		panelCustCards.add(panelAddCust, "name_12332862391272");
 		panelAddCust.setLayout(null);
 		
@@ -705,6 +729,7 @@ public class Main_Admin extends JFrame {
 		panelAddCust.add(label);
 		
 		JLabel lblAddCustomer = new JLabel("Add Customer");
+		lblAddCustomer.setForeground(Color.WHITE);
 		lblAddCustomer.setOpaque(true);
 		lblAddCustomer.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -718,6 +743,7 @@ public class Main_Admin extends JFrame {
 		panelAddCust.add(label_15);
 		
 		panelEditCust = new JPanel();
+		panelEditCust.setBackground(Color.LIGHT_GRAY);
 		panelCustCards.add(panelEditCust, "name_12336283601299");
 		panelEditCust.setLayout(null);
 		
@@ -936,6 +962,7 @@ public class Main_Admin extends JFrame {
 						panelEditCust.add(comboBoxEditCust);
 						
 						JLabel lblEditCustomer = new JLabel("Edit Customer");
+						lblEditCustomer.setForeground(Color.WHITE);
 						lblEditCustomer.setOpaque(true);
 						lblEditCustomer.setHorizontalAlignment(SwingConstants.CENTER);
 						lblEditCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -949,6 +976,7 @@ public class Main_Admin extends JFrame {
 						panelEditCust.add(lblSubmit);
 						
 						panelDelCust = new JPanel();
+						panelDelCust.setBackground(Color.LIGHT_GRAY);
 						panelCustCards.add(panelDelCust, "name_12338691653946");
 						panelDelCust.setLayout(null);
 						
@@ -1038,6 +1066,7 @@ public class Main_Admin extends JFrame {
 						panelDelCust.add(comboBoxDelCust);
 						
 						JLabel lblDeleteCustomer = new JLabel("Delete Customer");
+						lblDeleteCustomer.setForeground(Color.WHITE);
 						lblDeleteCustomer.setOpaque(true);
 						lblDeleteCustomer.setHorizontalAlignment(SwingConstants.CENTER);
 						lblDeleteCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1111,6 +1140,7 @@ public class Main_Admin extends JFrame {
 		panelMovCards.setLayout(new CardLayout(0, 0));
 		
 		panelViewMov = new JPanel();
+		panelViewMov.setBackground(Color.LIGHT_GRAY);
 		panelMovCards.add(panelViewMov, "name_13855558412619");
 		panelViewMov.setLayout(null);
 		
@@ -1129,6 +1159,7 @@ public class Main_Admin extends JFrame {
 		scrollPane_4.setViewportView(tableViewMov);
 		
 		JLabel lblMovies = new JLabel("Movies");
+		lblMovies.setForeground(Color.WHITE);
 		lblMovies.setOpaque(true);
 		lblMovies.setHorizontalAlignment(SwingConstants.CENTER);
 		lblMovies.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1137,6 +1168,7 @@ public class Main_Admin extends JFrame {
 		panelViewMov.add(lblMovies);
 		
 		panelAddMov = new JPanel();
+		panelAddMov.setBackground(Color.LIGHT_GRAY);
 		panelMovCards.add(panelAddMov, "name_13863670380272");
 		panelAddMov.setLayout(null);
 		
@@ -1296,6 +1328,7 @@ public class Main_Admin extends JFrame {
 		panelAddMov.add(label_19);
 		
 		JLabel lblAddMovie = new JLabel("Add Movie");
+		lblAddMovie.setForeground(Color.WHITE);
 		lblAddMovie.setOpaque(true);
 		lblAddMovie.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1309,6 +1342,7 @@ public class Main_Admin extends JFrame {
 		panelAddMov.add(label_22);
 		
 		panelEditMov = new JPanel();
+		panelEditMov.setBackground(Color.LIGHT_GRAY);
 		panelMovCards.add(panelEditMov, "name_13866982324442");
 		panelEditMov.setLayout(null);
 		
@@ -1547,6 +1581,7 @@ public class Main_Admin extends JFrame {
 		panelEditMov.add(lblReplacementCost);
 		
 		JLabel lblEditMovie = new JLabel("Edit Movie");
+		lblEditMovie.setForeground(Color.WHITE);
 		lblEditMovie.setOpaque(true);
 		lblEditMovie.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEditMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1560,6 +1595,7 @@ public class Main_Admin extends JFrame {
 		panelEditMov.add(label_23);
 		
 		panelDelMov = new JPanel();
+		panelDelMov.setBackground(Color.LIGHT_GRAY);
 		panelMovCards.add(panelDelMov, "name_13869062679929");
 		panelDelMov.setLayout(null);
 		
@@ -1650,6 +1686,7 @@ public class Main_Admin extends JFrame {
 		panelDelMov.add(button_3);
 		
 		JLabel lblDeleteMovie = new JLabel("Delete Movie");
+		lblDeleteMovie.setForeground(Color.WHITE);
 		lblDeleteMovie.setOpaque(true);
 		lblDeleteMovie.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDeleteMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1733,6 +1770,7 @@ public class Main_Admin extends JFrame {
 		panelAdmCards.setLayout(new CardLayout(0, 0));
 		
 		panelViewAdm = new JPanel();
+		panelViewAdm.setBackground(Color.LIGHT_GRAY);
 		panelAdmCards.add(panelViewAdm, "name_14212581228389");
 		panelViewAdm.setLayout(null);
 		
@@ -1753,6 +1791,7 @@ public class Main_Admin extends JFrame {
 		scrollPane_8.setViewportView(tableViewAdm);
 		
 		JLabel lblAdministrators = new JLabel("Administrators");
+		lblAdministrators.setForeground(Color.WHITE);
 		lblAdministrators.setOpaque(true);
 		lblAdministrators.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAdministrators.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1761,6 +1800,7 @@ public class Main_Admin extends JFrame {
 		panelViewAdm.add(lblAdministrators);
 		
 		panelAddAdm = new JPanel();
+		panelAddAdm.setBackground(Color.LIGHT_GRAY);
 		panelAdmCards.add(panelAddAdm, "name_14216324656918");
 		panelAddAdm.setLayout(null);
 		
@@ -1907,6 +1947,7 @@ public class Main_Admin extends JFrame {
 		panelAddAdm.add(button_7);
 		
 		JLabel lblAddAdministrator = new JLabel("Add Administrator");
+		lblAddAdministrator.setForeground(Color.WHITE);
 		lblAddAdministrator.setOpaque(true);
 		lblAddAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAddAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -1920,6 +1961,7 @@ public class Main_Admin extends JFrame {
 		panelAddAdm.add(label_20);
 		
 		panelEditAdm = new JPanel();
+		panelEditAdm.setBackground(Color.LIGHT_GRAY);
 		panelAdmCards.add(panelEditAdm, "name_14218286520278");
 		panelEditAdm.setLayout(null);
 		
@@ -2138,6 +2180,7 @@ public class Main_Admin extends JFrame {
 		panelEditAdm.add(comboBoxEditAdm);
 		
 		JLabel lblEditAdministrator = new JLabel("Edit Administrator");
+		lblEditAdministrator.setForeground(Color.WHITE);
 		lblEditAdministrator.setOpaque(true);
 		lblEditAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
 		lblEditAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -2151,6 +2194,7 @@ public class Main_Admin extends JFrame {
 		panelEditAdm.add(label_21);
 		
 		panelDelAdm = new JPanel();
+		panelDelAdm.setBackground(Color.LIGHT_GRAY);
 		panelAdmCards.add(panelDelAdm, "name_14219930632628");
 		panelDelAdm.setLayout(null);
 		
@@ -2240,6 +2284,7 @@ public class Main_Admin extends JFrame {
 		panelDelAdm.add(comboBoxDelAdm);
 		
 		JLabel lblDeleteAdministrator = new JLabel("Delete Administrator");
+		lblDeleteAdministrator.setForeground(Color.WHITE);
 		lblDeleteAdministrator.setOpaque(true);
 		lblDeleteAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDeleteAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -2323,6 +2368,7 @@ public class Main_Admin extends JFrame {
 		panelRentCards.setLayout(new CardLayout(0, 0));
 		
 		JPanel panelViewRentals = new JPanel();
+		panelViewRentals.setBackground(Color.LIGHT_GRAY);
 		panelRentCards.add(panelViewRentals, "name_17670032545699");
 		panelViewRentals.setLayout(null);
 		
@@ -2342,6 +2388,7 @@ public class Main_Admin extends JFrame {
 		scrollPane_12.setViewportView(tableViewRent);
 		
 		JLabel lblRentalHistory = new JLabel("Rental History");
+		lblRentalHistory.setForeground(Color.WHITE);
 		lblRentalHistory.setOpaque(true);
 		lblRentalHistory.setHorizontalAlignment(SwingConstants.CENTER);
 		lblRentalHistory.setFont(new Font("Tahoma", Font.PLAIN, 39));
@@ -2350,6 +2397,7 @@ public class Main_Admin extends JFrame {
 		panelViewRentals.add(lblRentalHistory);
 		
 		JPanel panelOverdue = new JPanel();
+		panelOverdue.setBackground(Color.LIGHT_GRAY);
 		panelRentCards.add(panelOverdue, "name_17671714306749");
 		panelOverdue.setLayout(null);
 		
@@ -2547,6 +2595,16 @@ public class Main_Admin extends JFrame {
 		panelStatusBar.add(lbCurrentUsernameAdmin);
 		panelStatusBar.add(lblId_2);
 		panelStatusBar.add(lbCurrentUserIDAdmin);
+		
+		JLabel lblAge = new JLabel("Age:");
+		lblAge.setForeground(Color.WHITE);
+		lblAge.setBounds(563, 7, 27, 16);
+		panelStatusBar.add(lblAge);
+		
+		lbCurrentAdminAge = new JLabel();
+		lbCurrentAdminAge.setForeground(Color.WHITE);
+		lbCurrentAdminAge.setBounds(591, 7, 55, 16);
+		panelStatusBar.add(lbCurrentAdminAge);
 		
 		tableCurrentUsername = new JTable();
 		contentPane.add(tableCurrentUsername);

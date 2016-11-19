@@ -15,6 +15,8 @@ public class Login{
 	private JTable tableCurrentIDAdmin;
 	private JTable tableCurrentIDCust;
 	private String str;
+	private String name;
+	private String age;
 
 	/**
 	 * Launch the application.
@@ -69,22 +71,26 @@ public class Login{
 	}
 	private void initialize() {
 		frmLogin =  new JFrame();
+		frmLogin.setBackground(Color.DARK_GRAY);
 		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/fortyeight/device-tv.png")));
 		frmLogin.setResizable(false);
 		frmLogin.setTitle("Login");
 		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.setBounds(100, 100, 400, 300);
-		frmLogin.getContentPane().setBackground(SystemColor.textHighlight);
+		frmLogin.getContentPane().setBackground(Color.DARK_GRAY);
 		frmLogin.getContentPane().setLayout(null);
 		
 		JCheckBox checkBoxAdmin = new JCheckBox("Admin?");
+		checkBoxAdmin.setForeground(Color.WHITE);
 		checkBoxAdmin.setBounds(287, 107, 75, 29);
 		frmLogin.getContentPane().add(checkBoxAdmin);
 		
-		JButton btnLogin = new JButton("Login");
+		JButton btnLogin = new JButton("");
+		btnLogin.setContentAreaFilled(false);
+		btnLogin.setRolloverIcon(new ImageIcon(Login.class.getResource("/twentyfour/sign-check2.png")));
 		btnLogin.setBackground(Color.DARK_GRAY);
 		btnLogin.setIcon(new ImageIcon(Login.class.getResource("/twentyfour/sign-check.png")));
-		btnLogin.setBounds(130, 187, 145, 29);
+		btnLogin.setBounds(130, 187, 30, 30);
 		frmLogin.getContentPane().add(btnLogin);
 		btnLogin.addActionListener(new ActionListener(){
 			@SuppressWarnings("deprecation")
@@ -103,14 +109,18 @@ public class Login{
 						}
 						if(count == 1){
 							try{
-								String query2 = "SELECT adminid from admins where username = '"+ Username.getText() +"'";
+								String query2 = "SELECT adminid,first_name,age from admins where username = '"+ Username.getText() +"'";
 								PreparedStatement pst2 = connection.prepareStatement(query2);
 								ResultSet rs2 = pst2.executeQuery();
 									
 								tableCurrentIDAdmin.setModel(DbUtils.resultSetToTableModel(rs2));
 								int row =0;
 								int column = 0;
+								int column2 = 1;
+								int column3 = 2;
 								str = (tableCurrentIDAdmin.getModel().getValueAt(row,column).toString());
+								name = (tableCurrentIDAdmin.getModel().getValueAt(row,column2).toString());
+								age = (tableCurrentIDAdmin.getModel().getValueAt(row,column3).toString());
 								
 							}catch (Exception ex) { 
 								JOptionPane.showMessageDialog(null, ex);
@@ -119,7 +129,9 @@ public class Login{
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
 							Main_Admin wel = new Main_Admin();
 							Main_Admin.lbCurrentUserIDAdmin.setText(str);
+							Main_Admin.lbNameAdmin.setText(name);
 							Main_Admin.lbCurrentUsernameAdmin.setText(Username.getText());
+							Main_Admin.lbCurrentAdminAge.setText(age);
 							wel.setVisible(true);
 							frmLogin.dispose();
 						}
@@ -148,14 +160,18 @@ public class Login{
 						}
 						if(count == 1){
 							try{
-								String query2 = "SELECT userid from customers where username = '"+ Username.getText() +"'";
+								String query2 = "SELECT userid,first_name,age from customers where username = '"+ Username.getText() +"'";
 								PreparedStatement pst2 = connection.prepareStatement(query2);
 								ResultSet rs2 = pst2.executeQuery();
 									
 								tableCurrentIDCust.setModel(DbUtils.resultSetToTableModel(rs2));
 								int row =0;
 								int column = 0;
-								str = (tableCurrentIDCust.getModel().getValueAt(row,column).toString());
+								int column2 = 1;
+								int column3 = 2;
+								str = (tableCurrentIDCust.getModel().getValueAt(row,column).toString());toString();
+								name = (tableCurrentIDCust.getModel().getValueAt(row,column2).toString());
+								age = (tableCurrentIDCust.getModel().getValueAt(row,column3).toString());
 								
 							}catch (Exception ex) { 
 								JOptionPane.showMessageDialog(null, ex);
@@ -164,7 +180,9 @@ public class Login{
 							JOptionPane.showMessageDialog(null, "Username and Password is correct");
 							Main_Cust window = new Main_Cust();
 							Main_Cust.lbCurrentUserIDCust.setText(str);
+							Main_Cust.lbNameCust.setText(name);
 							Main_Cust.lbCurrentUsernameCust.setText(Username.getText());
+							Main_Cust.lbCurrentCustAge.setText(age);
 							window.setVisible(true);
 							frmLogin.dispose();
 						}
@@ -194,27 +212,34 @@ public class Login{
 		Username.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setForeground(Color.WHITE);
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblPassword.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblPassword.setBounds(10, 147, 110, 29);
 		frmLogin.getContentPane().add(lblPassword);
 		
 		JLabel lblUsername = new JLabel("Username:");
+		lblUsername.setForeground(Color.WHITE);
 		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblUsername.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUsername.setBounds(10, 107, 110, 29);
 		frmLogin.getContentPane().add(lblUsername);
 		
 		JLabel lblUserLogin = new JLabel("Login");
+		lblUserLogin.setBackground(Color.GRAY);
+		lblUserLogin.setForeground(Color.WHITE);
+		lblUserLogin.setOpaque(true);
 		lblUserLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUserLogin.setFont(new Font("Tahoma", Font.BOLD, 50));
-		lblUserLogin.setBounds(10, 11, 374, 61);
+		lblUserLogin.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblUserLogin.setBounds(0, 0, 394, 72);
 		frmLogin.getContentPane().add(lblUserLogin);
 		
-		JButton btnCustomerSignUp = new JButton("Sign up");
+		JButton btnCustomerSignUp = new JButton("");
+		btnCustomerSignUp.setRolloverIcon(new ImageIcon(Login.class.getResource("/twentyfour/user-id2.png")));
+		btnCustomerSignUp.setContentAreaFilled(false);
 		btnCustomerSignUp.setIcon(new ImageIcon(Login.class.getResource("/twentyfour/user-id.png")));
 		btnCustomerSignUp.addActionListener(signup); 
-		btnCustomerSignUp.setBounds(130, 227, 145, 29);
+		btnCustomerSignUp.setBounds(130, 227, 30, 30);
 		frmLogin.getContentPane().add(btnCustomerSignUp);
 		
 		tableCurrentIDAdmin = new JTable();
@@ -222,5 +247,17 @@ public class Login{
 		
 		tableCurrentIDCust = new JTable();
 		frmLogin.getContentPane().add(tableCurrentIDCust);
+		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setForeground(Color.WHITE);
+		lblLogin.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblLogin.setBounds(160, 188, 110, 29);
+		frmLogin.getContentPane().add(lblLogin);
+		
+		JLabel lblSignUp = new JLabel("Sign Up");
+		lblSignUp.setForeground(Color.WHITE);
+		lblSignUp.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSignUp.setBounds(160, 228, 110, 29);
+		frmLogin.getContentPane().add(lblSignUp);
 	}
 }
