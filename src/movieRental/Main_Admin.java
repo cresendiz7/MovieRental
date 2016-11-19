@@ -17,7 +17,7 @@ public class Main_Admin extends JFrame {
 	Connection connection = null;
 	private JPanel contentPane;
 	private JPanel panelCards;
-	private JPanel panelWelcome;
+	private JPanel panelHome;
 	private JPanel panelCust;
 	private JPanel panelCustCards;
 	private JPanel panelViewCust;
@@ -25,13 +25,13 @@ public class Main_Admin extends JFrame {
 	private JPanel panelEditCust;
 	private JPanel panelDelCust;
 	private JPanel panelMov;
-	private JPanel panelMovCards1;
+	private JPanel panelMovCards;
 	private JPanel panelViewMov;
 	private JPanel panelAddMov;
 	private JPanel panelEditMov;
 	private JPanel panelDelMov;
 	private JPanel panelAdm;
-	private JPanel panelAdmCards1;
+	private JPanel panelAdmCards;
 	private JPanel panelViewAdm;
 	private JPanel panelAddAdm;
 	private JPanel panelEditAdm;
@@ -316,7 +316,7 @@ public class Main_Admin extends JFrame {
 	
 	public void refAllRentTbl(){
 		try{
-			String query = "SELECT * FROM rentals";
+			String query = "SELECT userid as 'User ID', rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -505,10 +505,10 @@ public class Main_Admin extends JFrame {
 		contentPane.add(panelCards);
 		panelCards.setLayout(new CardLayout(0, 0));
 		
-		panelWelcome = new JPanel();
-		panelWelcome.setBackground(Color.DARK_GRAY);
-		panelCards.add(panelWelcome, "name_145839516092709");
-		panelWelcome.setLayout(new BorderLayout(0, 0));
+		panelHome = new JPanel();
+		panelHome.setBackground(Color.DARK_GRAY);
+		panelCards.add(panelHome, "name_145839516092709");
+		panelHome.setLayout(new BorderLayout(0, 0));
 		
 		panelCust = new JPanel();
 		panelCust.setBackground(Color.DARK_GRAY);
@@ -524,56 +524,6 @@ public class Main_Admin extends JFrame {
 				panelCustCards.revalidate();
 			}
 		});
-		btnViewAllCustomers.setOpaque(true);
-		btnViewAllCustomers.setForeground(Color.WHITE);
-		btnViewAllCustomers.setBackground(Color.DARK_GRAY);
-		btnViewAllCustomers.setBounds(0, 0, 135, 30);
-		panelCust.add(btnViewAllCustomers);
-		
-		JButton btnAddNewCustomer = new JButton("Add New Customer");
-		btnAddNewCustomer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelCustCards.removeAll();
-				panelCustCards.add(panelAddCust);
-				panelCustCards.repaint();
-				panelCustCards.revalidate();
-			}
-		});
-		btnAddNewCustomer.setOpaque(true);
-		btnAddNewCustomer.setForeground(Color.WHITE);
-		btnAddNewCustomer.setBackground(Color.DARK_GRAY);
-		btnAddNewCustomer.setBounds(135, 0, 135, 30);
-		panelCust.add(btnAddNewCustomer);
-		
-		JButton btnEditCustomer = new JButton("Edit Customer");
-		btnEditCustomer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelCustCards.removeAll();
-				panelCustCards.add(panelEditCust);
-				panelCustCards.repaint();
-				panelCustCards.revalidate();
-			}
-		});
-		btnEditCustomer.setOpaque(true);
-		btnEditCustomer.setForeground(Color.WHITE);
-		btnEditCustomer.setBackground(Color.DARK_GRAY);
-		btnEditCustomer.setBounds(270, 0, 135, 30);
-		panelCust.add(btnEditCustomer);
-		
-		JButton btnDeleteCustomer = new JButton("Delete Customer");
-		btnDeleteCustomer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelCustCards.removeAll();
-				panelCustCards.add(panelDelCust);
-				panelCustCards.repaint();
-				panelCustCards.revalidate();
-			}
-		});
-		btnDeleteCustomer.setOpaque(true);
-		btnDeleteCustomer.setForeground(Color.WHITE);
-		btnDeleteCustomer.setBackground(Color.DARK_GRAY);
-		btnDeleteCustomer.setBounds(405, 0, 135, 30);
-		panelCust.add(btnDeleteCustomer);
 		
 		panelCustCards = new JPanel();
 		panelCustCards.setBounds(0, 30, 963, 439);
@@ -585,21 +535,39 @@ public class Main_Admin extends JFrame {
 		panelViewCust.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(6, 6, 780, 430);
+		scrollPane.setBounds(0, 45, 963, 394);
+		scrollPane.getViewport().setBackground(Color.GRAY);
 		panelViewCust.add(scrollPane);
 		
 		tableViewCust = new JTable();
+		tableViewCust.setSelectionForeground(Color.BLACK);
+		tableViewCust.setSelectionBackground(Color.LIGHT_GRAY);
+		tableViewCust.setForeground(Color.WHITE);
+		tableViewCust.setBackground(Color.GRAY);
 		scrollPane.setViewportView(tableViewCust);
+		
+		JLabel lblCustomers = new JLabel("Customers");
+		lblCustomers.setOpaque(true);
+		lblCustomers.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCustomers.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblCustomers.setBackground(Color.GRAY);
+		lblCustomers.setBounds(0, 0, 963, 45);
+		panelViewCust.add(lblCustomers);
 		
 		panelAddCust = new JPanel();
 		panelCustCards.add(panelAddCust, "name_12332862391272");
 		panelAddCust.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(6, 6, 780, 308);
+		scrollPane_1.setBounds(0, 46, 963, 268);
+		scrollPane_1.getViewport().setBackground(Color.GRAY);
 		panelAddCust.add(scrollPane_1);
 		
 		tableNewCust = new JTable();
+		tableNewCust.setBackground(Color.GRAY);
+		tableNewCust.setForeground(Color.WHITE);
+		tableNewCust.setSelectionForeground(Color.BLACK);
+		tableNewCust.setSelectionBackground(Color.LIGHT_GRAY);
 		tableNewCust.setRowSelectionAllowed(true);
 		scrollPane_1.setViewportView(tableNewCust);
 		
@@ -718,7 +686,7 @@ public class Main_Admin extends JFrame {
 			  }
 			}
 		});
-		button.setBounds(639, 327, 102, 29);
+		button.setBounds(861, 408, 102, 29);
 		panelAddCust.add(button);
 		
 		JLabel lblAddCustomerInformation = new JLabel("Add Customer Information:");
@@ -732,12 +700,21 @@ public class Main_Admin extends JFrame {
 		label.setBounds(6, 366, 82, 29);
 		panelAddCust.add(label);
 		
+		JLabel lblAddCustomer = new JLabel("Add Customer");
+		lblAddCustomer.setOpaque(true);
+		lblAddCustomer.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblAddCustomer.setBackground(Color.GRAY);
+		lblAddCustomer.setBounds(0, 0, 963, 45);
+		panelAddCust.add(lblAddCustomer);
+		
 		panelEditCust = new JPanel();
 		panelCustCards.add(panelEditCust, "name_12336283601299");
 		panelEditCust.setLayout(null);
 		
 		JScrollPane scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(6, 49, 780, 265);
+		scrollPane_2.getViewport().setBackground(Color.GRAY);
+		scrollPane_2.setBounds(0, 98, 963, 216);
 		panelEditCust.add(scrollPane_2);
 		
 		tfFirstName2 = new JTextField();
@@ -784,10 +761,14 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		btnSearch.setBounds(684, 8, 102, 29);
+		btnSearch.setBounds(502, 57, 102, 29);
 		panelEditCust.add(btnSearch);
 		
 		tableEditCust = new JTable();
+		tableEditCust.setSelectionForeground(Color.BLACK);
+		tableEditCust.setSelectionBackground(Color.LIGHT_GRAY);
+		tableEditCust.setBackground(Color.GRAY);
+		tableEditCust.setForeground(Color.WHITE);
 		tableEditCust.setRowSelectionAllowed(true);
 		tableEditCust.addMouseListener(new MouseAdapter() {
 			@Override
@@ -917,7 +898,7 @@ public class Main_Admin extends JFrame {
 							  }
 							}
 						});
-						button_1.setBounds(639, 327, 102, 29);
+						button_1.setBounds(861, 408, 102, 29);
 						panelEditCust.add(button_1);
 						
 						JLabel lblEditCustomerInformation = new JLabel("Edit Customer Information:");
@@ -927,7 +908,7 @@ public class Main_Admin extends JFrame {
 						
 						tfSearchEditCust = new JTextField();
 						tfSearchEditCust.setColumns(10);
-						tfSearchEditCust.setBounds(345, 8, 145, 29);
+						tfSearchEditCust.setBounds(345, 57, 145, 29);
 						panelEditCust.add(tfSearchEditCust);
 						
 						JLabel lblId = new JLabel("ID:");
@@ -944,27 +925,40 @@ public class Main_Admin extends JFrame {
 						
 						JLabel label_13 = new JLabel("Search Customer:");
 						label_13.setFont(new Font("Tahoma", Font.PLAIN, 16));
-						label_13.setBounds(6, 8, 174, 28);
+						label_13.setBounds(6, 57, 174, 28);
 						panelEditCust.add(label_13);
 						
 						comboBoxEditCust = new JComboBox<String>();
-						comboBoxEditCust.setBounds(190, 8, 145, 29);
+						comboBoxEditCust.setBounds(190, 57, 145, 29);
 						panelEditCust.add(comboBoxEditCust);
+						
+						JLabel lblEditCustomer = new JLabel("Edit Customer");
+						lblEditCustomer.setOpaque(true);
+						lblEditCustomer.setHorizontalAlignment(SwingConstants.CENTER);
+						lblEditCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
+						lblEditCustomer.setBackground(Color.GRAY);
+						lblEditCustomer.setBounds(0, 0, 963, 45);
+						panelEditCust.add(lblEditCustomer);
 						
 						panelDelCust = new JPanel();
 						panelCustCards.add(panelDelCust, "name_12338691653946");
 						panelDelCust.setLayout(null);
 						
 						JScrollPane scrollPane_3 = new JScrollPane();
-						scrollPane_3.setBounds(6, 50, 780, 386);
+						scrollPane_3.getViewport().setBackground(Color.GRAY);
+						scrollPane_3.setBounds(0, 98, 963, 338);
 						panelDelCust.add(scrollPane_3);
 						
 						tableDelCust = new JTable();
+						tableDelCust.setBackground(Color.GRAY);
+						tableDelCust.setForeground(Color.WHITE);
+						tableDelCust.setSelectionBackground(Color.LIGHT_GRAY);
+						tableDelCust.setSelectionForeground(Color.BLACK);
 						scrollPane_3.setViewportView(tableDelCust);
 						
 						tfDelUserSearch = new JTextField();
 						tfDelUserSearch.setColumns(10);
-						tfDelUserSearch.setBounds(345, 8, 145, 29);
+						tfDelUserSearch.setBounds(344, 57, 145, 29);
 						panelDelCust.add(tfDelUserSearch);
 						
 						JButton btnDelete = new JButton("Delete");
@@ -991,7 +985,7 @@ public class Main_Admin extends JFrame {
 							  }
 							}
 						});
-						btnDelete.setBounds(685, 8, 102, 29);
+						btnDelete.setBounds(684, 57, 102, 29);
 						panelDelCust.add(btnDelete);
 						
 						JButton button_6 = new JButton("Search");
@@ -1014,24 +1008,82 @@ public class Main_Admin extends JFrame {
 								}
 							}
 						});
-						button_6.setBounds(573, 8, 102, 29);
+						button_6.setBounds(572, 57, 102, 29);
 						panelDelCust.add(button_6);
 						
 						JLabel label_11 = new JLabel("Search Customer:");
 						label_11.setFont(new Font("Tahoma", Font.PLAIN, 16));
-						label_11.setBounds(6, 8, 237, 28);
+						label_11.setBounds(5, 57, 237, 28);
 						panelDelCust.add(label_11);
 						
 						comboBoxDelCust = new JComboBox<String>();
-						comboBoxDelCust.setBounds(190, 8, 145, 29);
+						comboBoxDelCust.setBounds(189, 57, 145, 29);
 						panelDelCust.add(comboBoxDelCust);
+						
+						JLabel lblDeleteCustomer = new JLabel("Delete Customer");
+						lblDeleteCustomer.setOpaque(true);
+						lblDeleteCustomer.setHorizontalAlignment(SwingConstants.CENTER);
+						lblDeleteCustomer.setFont(new Font("Tahoma", Font.PLAIN, 39));
+						lblDeleteCustomer.setBackground(Color.GRAY);
+						lblDeleteCustomer.setBounds(0, 0, 963, 45);
+						panelDelCust.add(lblDeleteCustomer);
+		btnViewAllCustomers.setOpaque(true);
+		btnViewAllCustomers.setForeground(Color.WHITE);
+		btnViewAllCustomers.setBackground(Color.DARK_GRAY);
+		btnViewAllCustomers.setBounds(0, 0, 135, 30);
+		panelCust.add(btnViewAllCustomers);
+		
+		JButton btnAddNewCustomer = new JButton("Add New Customer");
+		btnAddNewCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCustCards.removeAll();
+				panelCustCards.add(panelAddCust);
+				panelCustCards.repaint();
+				panelCustCards.revalidate();
+			}
+		});
+		btnAddNewCustomer.setOpaque(true);
+		btnAddNewCustomer.setForeground(Color.WHITE);
+		btnAddNewCustomer.setBackground(Color.DARK_GRAY);
+		btnAddNewCustomer.setBounds(135, 0, 135, 30);
+		panelCust.add(btnAddNewCustomer);
+		
+		JButton btnEditCustomer = new JButton("Edit Customer");
+		btnEditCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCustCards.removeAll();
+				panelCustCards.add(panelEditCust);
+				panelCustCards.repaint();
+				panelCustCards.revalidate();
+			}
+		});
+		btnEditCustomer.setOpaque(true);
+		btnEditCustomer.setForeground(Color.WHITE);
+		btnEditCustomer.setBackground(Color.DARK_GRAY);
+		btnEditCustomer.setBounds(270, 0, 135, 30);
+		panelCust.add(btnEditCustomer);
+		
+		JButton btnDeleteCustomer = new JButton("Delete Customer");
+		btnDeleteCustomer.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelCustCards.removeAll();
+				panelCustCards.add(panelDelCust);
+				panelCustCards.repaint();
+				panelCustCards.revalidate();
+			}
+		});
+		btnDeleteCustomer.setOpaque(true);
+		btnDeleteCustomer.setForeground(Color.WHITE);
+		btnDeleteCustomer.setBackground(Color.DARK_GRAY);
+		btnDeleteCustomer.setBounds(405, 0, 135, 30);
+		panelCust.add(btnDeleteCustomer);
 		
 		panelMov = new JPanel();
 		panelMov.setBackground(Color.DARK_GRAY);
 		panelCards.add(panelMov, "Movies");
 		panelMov.setLayout(null);
 		
-		JPanel panelMovCards = new JPanel();
+		panelMovCards = new JPanel();
 		panelMovCards.setBounds(0, 30, 963, 439);
 		panelMov.add(panelMovCards);
 		panelMovCards.setLayout(new CardLayout(0, 0));
@@ -1041,21 +1093,39 @@ public class Main_Admin extends JFrame {
 		panelViewMov.setLayout(null);
 		
 		JScrollPane scrollPane_4 = new JScrollPane();
-		scrollPane_4.setBounds(6, 6, 781, 430);
+		scrollPane_4.getViewport().setBackground(Color.GRAY);
+		scrollPane_4.setBounds(0, 44, 963, 392);
 		panelViewMov.add(scrollPane_4);
 		
 		tableViewMov = new JTable();
+		tableViewMov.setSelectionForeground(Color.BLACK);
+		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
+		tableViewMov.setForeground(Color.WHITE);
+		tableViewMov.setBackground(Color.GRAY);
 		scrollPane_4.setViewportView(tableViewMov);
+		
+		JLabel lblMovies = new JLabel("Movies");
+		lblMovies.setOpaque(true);
+		lblMovies.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMovies.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblMovies.setBackground(Color.GRAY);
+		lblMovies.setBounds(0, 0, 963, 45);
+		panelViewMov.add(lblMovies);
 		
 		panelAddMov = new JPanel();
 		panelMovCards.add(panelAddMov, "name_13863670380272");
 		panelAddMov.setLayout(null);
 		
 		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(6, 6, 781, 266);
+		scrollPane_5.getViewport().setBackground(Color.GRAY);
+		scrollPane_5.setBounds(0, 44, 963, 228);
 		panelAddMov.add(scrollPane_5);
 		
 		tableNewMov = new JTable();
+		tableNewMov.setSelectionForeground(Color.BLACK);
+		tableNewMov.setSelectionBackground(Color.LIGHT_GRAY);
+		tableNewMov.setForeground(Color.WHITE);
+		tableNewMov.setBackground(Color.GRAY);
 		scrollPane_5.setViewportView(tableNewMov);
 		
 		JLabel lblAddMovieInformation = new JLabel("Add Movie Information:");
@@ -1198,6 +1268,14 @@ public class Main_Admin extends JFrame {
 		label_19.setBounds(415, 296, 110, 29);
 		panelAddMov.add(label_19);
 		
+		JLabel lblAddMovie = new JLabel("Add Movie");
+		lblAddMovie.setOpaque(true);
+		lblAddMovie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblAddMovie.setBackground(Color.GRAY);
+		lblAddMovie.setBounds(0, 0, 963, 45);
+		panelAddMov.add(lblAddMovie);
+		
 		panelEditMov = new JPanel();
 		panelMovCards.add(panelEditMov, "name_13866982324442");
 		panelEditMov.setLayout(null);
@@ -1216,7 +1294,8 @@ public class Main_Admin extends JFrame {
 		panelEditMov.add(spinnerEditMin);
 		
 		JScrollPane scrollPane_6 = new JScrollPane();
-		scrollPane_6.setBounds(6, 47, 781, 225);
+		scrollPane_6.getViewport().setBackground(Color.GRAY);
+		scrollPane_6.setBounds(0, 97, 963, 175);
 		panelEditMov.add(scrollPane_6);
 		
 		JYearChooser yearChooserEdit = new JYearChooser();
@@ -1240,6 +1319,10 @@ public class Main_Admin extends JFrame {
 		panelEditMov.add(tfReplaceEdit);
 		
 		tableEditMov = new JTable();
+		tableEditMov.setBackground(Color.GRAY);
+		tableEditMov.setForeground(Color.WHITE);
+		tableEditMov.setSelectionBackground(Color.LIGHT_GRAY);
+		tableEditMov.setSelectionForeground(Color.BLACK);
 		tableEditMov.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -1353,16 +1436,16 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblSearchMovie_1 = new JLabel("Search Movie:");
 		lblSearchMovie_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchMovie_1.setBounds(6, 8, 174, 28);
+		lblSearchMovie_1.setBounds(6, 57, 174, 28);
 		panelEditMov.add(lblSearchMovie_1);
 		
 		comboBoxEditMov = new JComboBox<String>();
-		comboBoxEditMov.setBounds(190, 8, 145, 29);
+		comboBoxEditMov.setBounds(190, 57, 145, 29);
 		panelEditMov.add(comboBoxEditMov);
 		
 		tfEditMovSearch = new JTextField();
 		tfEditMovSearch.setColumns(10);
-		tfEditMovSearch.setBounds(345, 8, 145, 29);
+		tfEditMovSearch.setBounds(345, 57, 145, 29);
 		panelEditMov.add(tfEditMovSearch);
 		
 		JButton btnEditMovSearch = new JButton("Search");
@@ -1387,7 +1470,7 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		btnEditMovSearch.setBounds(676, 8, 102, 29);
+		btnEditMovSearch.setBounds(676, 57, 102, 29);
 		panelEditMov.add(btnEditMovSearch);
 		
 		JLabel label_12 = new JLabel("Rating:");
@@ -1427,15 +1510,28 @@ public class Main_Admin extends JFrame {
 		lblReplacementCost.setBounds(203, 408, 132, 29);
 		panelEditMov.add(lblReplacementCost);
 		
+		JLabel lblEditMovie = new JLabel("Edit Movie");
+		lblEditMovie.setOpaque(true);
+		lblEditMovie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblEditMovie.setBackground(Color.GRAY);
+		lblEditMovie.setBounds(0, 0, 963, 45);
+		panelEditMov.add(lblEditMovie);
+		
 		panelDelMov = new JPanel();
 		panelMovCards.add(panelDelMov, "name_13869062679929");
 		panelDelMov.setLayout(null);
 		
 		JScrollPane scrollPane_7 = new JScrollPane();
-		scrollPane_7.setBounds(6, 47, 781, 389);
+		scrollPane_7.getViewport().setBackground(Color.GRAY);
+		scrollPane_7.setBounds(0, 98, 963, 338);
 		panelDelMov.add(scrollPane_7);
 		
 		tableDelMov = new JTable();
+		tableDelMov.setSelectionForeground(Color.BLACK);
+		tableDelMov.setSelectionBackground(Color.LIGHT_GRAY);
+		tableDelMov.setForeground(Color.WHITE);
+		tableDelMov.setBackground(Color.GRAY);
 		scrollPane_7.setViewportView(tableDelMov);
 		
 		JButton button_5 = new JButton("Delete");
@@ -1462,21 +1558,21 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_5.setBounds(676, 8, 102, 29);
+		button_5.setBounds(676, 57, 102, 29);
 		panelDelMov.add(button_5);
 		
 		JLabel lblSearchMovie = new JLabel("Search Movie:");
 		lblSearchMovie.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchMovie.setBounds(6, 8, 174, 28);
+		lblSearchMovie.setBounds(6, 57, 174, 28);
 		panelDelMov.add(lblSearchMovie);
 		
 		comboBoxDelMov = new JComboBox<String>();
-		comboBoxDelMov.setBounds(190, 8, 145, 29);
+		comboBoxDelMov.setBounds(190, 57, 145, 29);
 		panelDelMov.add(comboBoxDelMov);
 		
 		tfDelMovSearch = new JTextField();
 		tfDelMovSearch.setColumns(10);
-		tfDelMovSearch.setBounds(345, 8, 145, 29);
+		tfDelMovSearch.setBounds(345, 57, 145, 29);
 		panelDelMov.add(tfDelMovSearch);
 		
 		JButton button_3 = new JButton("Search");
@@ -1501,10 +1597,26 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_3.setBounds(562, 8, 102, 29);
+		button_3.setBounds(562, 57, 102, 29);
 		panelDelMov.add(button_3);
 		
+		JLabel lblDeleteMovie = new JLabel("Delete Movie");
+		lblDeleteMovie.setOpaque(true);
+		lblDeleteMovie.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDeleteMovie.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblDeleteMovie.setBackground(Color.GRAY);
+		lblDeleteMovie.setBounds(0, 0, 963, 45);
+		panelDelMov.add(lblDeleteMovie);
+		
 		JButton btnViewAllMovies = new JButton("View All Movies");
+		btnViewAllMovies.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelMovCards.removeAll();
+				panelMovCards.add(panelViewMov);
+				panelMovCards.repaint();
+				panelMovCards.revalidate();
+			}
+		});
 		btnViewAllMovies.setOpaque(true);
 		btnViewAllMovies.setForeground(Color.WHITE);
 		btnViewAllMovies.setBackground(Color.DARK_GRAY);
@@ -1512,6 +1624,14 @@ public class Main_Admin extends JFrame {
 		panelMov.add(btnViewAllMovies);
 		
 		JButton btnAddNewMovie = new JButton("Add New Movie");
+		btnAddNewMovie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelMovCards.removeAll();
+				panelMovCards.add(panelAddMov);
+				panelMovCards.repaint();
+				panelMovCards.revalidate();
+			}
+		});
 		btnAddNewMovie.setOpaque(true);
 		btnAddNewMovie.setForeground(Color.WHITE);
 		btnAddNewMovie.setBackground(Color.DARK_GRAY);
@@ -1519,6 +1639,14 @@ public class Main_Admin extends JFrame {
 		panelMov.add(btnAddNewMovie);
 		
 		JButton btnEditMovie = new JButton("Edit Movie");
+		btnEditMovie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelMovCards.removeAll();
+				panelMovCards.add(panelEditMov);
+				panelMovCards.repaint();
+				panelMovCards.revalidate();
+			}
+		});
 		btnEditMovie.setOpaque(true);
 		btnEditMovie.setForeground(Color.WHITE);
 		btnEditMovie.setBackground(Color.DARK_GRAY);
@@ -1526,6 +1654,14 @@ public class Main_Admin extends JFrame {
 		panelMov.add(btnEditMovie);
 		
 		JButton btnDeleteMovie = new JButton("Delete Movie");
+		btnDeleteMovie.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelMovCards.removeAll();
+				panelMovCards.add(panelDelMov);
+				panelMovCards.repaint();
+				panelMovCards.revalidate();
+			}
+		});
 		btnDeleteMovie.setOpaque(true);
 		btnDeleteMovie.setForeground(Color.WHITE);
 		btnDeleteMovie.setBackground(Color.DARK_GRAY);
@@ -1537,30 +1673,49 @@ public class Main_Admin extends JFrame {
 		panelCards.add(panelAdm, "name_6980025516546");
 		panelAdm.setLayout(null);
 		
-		JTabbedPane tabbedPaneAdm = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPaneAdm.setBounds(0, 0, 793, 472);
-		panelAdm.add(tabbedPaneAdm);
+		panelAdmCards = new JPanel();
+		panelAdmCards.setBounds(0, 30, 963, 439);
+		panelAdm.add(panelAdmCards);
+		panelAdmCards.setLayout(new CardLayout(0, 0));
 		
 		panelViewAdm = new JPanel();
-		tabbedPaneAdm.addTab("View All Administrators", null, panelViewAdm, null);
+		panelAdmCards.add(panelViewAdm, "name_14212581228389");
 		panelViewAdm.setLayout(null);
 		
 		JScrollPane scrollPane_8 = new JScrollPane();
-		scrollPane_8.setBounds(6, 6, 780, 430);
+		scrollPane_8.getViewport().setBackground(Color.GRAY);
+		scrollPane_8.setBounds(0, 46, 963, 390);
 		panelViewAdm.add(scrollPane_8);
 		
 		tableViewAdm = new JTable();
+		tableViewAdm.setSelectionForeground(Color.BLACK);
+		tableViewAdm.setSelectionBackground(Color.LIGHT_GRAY);
+		tableViewAdm.setForeground(Color.WHITE);
+		tableViewAdm.setBackground(Color.GRAY);
 		scrollPane_8.setViewportView(tableViewAdm);
 		
+		JLabel lblAdministrators = new JLabel("Administrators");
+		lblAdministrators.setOpaque(true);
+		lblAdministrators.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAdministrators.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblAdministrators.setBackground(Color.GRAY);
+		lblAdministrators.setBounds(0, 0, 963, 45);
+		panelViewAdm.add(lblAdministrators);
+		
 		panelAddAdm = new JPanel();
-		tabbedPaneAdm.addTab("Add New Administrator", null, panelAddAdm, null);
+		panelAdmCards.add(panelAddAdm, "name_14216324656918");
 		panelAddAdm.setLayout(null);
 		
 		JScrollPane scrollPane_9 = new JScrollPane();
-		scrollPane_9.setBounds(6, 6, 780, 308);
+		scrollPane_9.getViewport().setBackground(Color.GRAY);
+		scrollPane_9.setBounds(0, 45, 963, 269);
 		panelAddAdm.add(scrollPane_9);
 		
 		tableNewAdm = new JTable();
+		tableNewAdm.setSelectionForeground(Color.BLACK);
+		tableNewAdm.setSelectionBackground(Color.LIGHT_GRAY);
+		tableNewAdm.setForeground(Color.WHITE);
+		tableNewAdm.setBackground(Color.GRAY);
 		scrollPane_9.setViewportView(tableNewAdm);
 		
 		JLabel lblAddAdministratorInformation = new JLabel("Add Administrator Information:");
@@ -1692,15 +1847,28 @@ public class Main_Admin extends JFrame {
 		button_7.setBounds(645, 326, 102, 29);
 		panelAddAdm.add(button_7);
 		
+		JLabel lblAddAdministrator = new JLabel("Add Administrator");
+		lblAddAdministrator.setOpaque(true);
+		lblAddAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAddAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblAddAdministrator.setBackground(Color.GRAY);
+		lblAddAdministrator.setBounds(0, 0, 963, 45);
+		panelAddAdm.add(lblAddAdministrator);
+		
 		panelEditAdm = new JPanel();
-		tabbedPaneAdm.addTab("Edit Administrator", null, panelEditAdm, null);
+		panelAdmCards.add(panelEditAdm, "name_14218286520278");
 		panelEditAdm.setLayout(null);
 		
 		JScrollPane scrollPane_10 = new JScrollPane();
-		scrollPane_10.setBounds(6, 50, 780, 264);
+		scrollPane_10.getViewport().setBackground(Color.GRAY);
+		scrollPane_10.setBounds(0, 97, 963, 217);
 		panelEditAdm.add(scrollPane_10);
 		
 		tableEditAdm = new JTable();
+		tableEditAdm.setBackground(Color.GRAY);
+		tableEditAdm.setForeground(Color.WHITE);
+		tableEditAdm.setSelectionForeground(Color.BLACK);
+		tableEditAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableEditAdm.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -1734,12 +1902,12 @@ public class Main_Admin extends JFrame {
 		
 		JLabel lblSearchAdministrator = new JLabel("Search Administrator:");
 		lblSearchAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchAdministrator.setBounds(6, 8, 174, 28);
+		lblSearchAdministrator.setBounds(6, 57, 174, 28);
 		panelEditAdm.add(lblSearchAdministrator);
 		
 		tfEditAdmSearch = new JTextField();
 		tfEditAdmSearch.setColumns(10);
-		tfEditAdmSearch.setBounds(345, 8, 145, 29);
+		tfEditAdmSearch.setBounds(345, 57, 145, 29);
 		panelEditAdm.add(tfEditAdmSearch);
 		
 		JButton button_8 = new JButton("Search");
@@ -1762,7 +1930,7 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_8.setBounds(684, 8, 102, 29);
+		button_8.setBounds(645, 56, 102, 29);
 		panelEditAdm.add(button_8);
 		
 		JLabel label_32 = new JLabel("Password:");
@@ -1907,28 +2075,41 @@ public class Main_Admin extends JFrame {
 		panelEditAdm.add(button_9);
 		
 		comboBoxEditAdm = new JComboBox<String>();
-		comboBoxEditAdm.setBounds(190, 8, 145, 29);
+		comboBoxEditAdm.setBounds(190, 57, 145, 29);
 		panelEditAdm.add(comboBoxEditAdm);
 		
+		JLabel lblEditAdministrator = new JLabel("Edit Administrator");
+		lblEditAdministrator.setOpaque(true);
+		lblEditAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
+		lblEditAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblEditAdministrator.setBackground(Color.GRAY);
+		lblEditAdministrator.setBounds(0, 0, 963, 45);
+		panelEditAdm.add(lblEditAdministrator);
+		
 		panelDelAdm = new JPanel();
-		tabbedPaneAdm.addTab("Delete Administrator", null, panelDelAdm, null);
+		panelAdmCards.add(panelDelAdm, "name_14219930632628");
 		panelDelAdm.setLayout(null);
 		
 		JScrollPane scrollPane_11 = new JScrollPane();
-		scrollPane_11.setBounds(6, 50, 780, 386);
+		scrollPane_11.getViewport().setBackground(Color.GRAY);
+		scrollPane_11.setBounds(0, 97, 963, 339);
 		panelDelAdm.add(scrollPane_11);
 		
 		tableDelAdm = new JTable();
+		tableDelAdm.setSelectionForeground(Color.BLACK);
+		tableDelAdm.setSelectionBackground(Color.LIGHT_GRAY);
+		tableDelAdm.setForeground(Color.WHITE);
+		tableDelAdm.setBackground(Color.GRAY);
 		scrollPane_11.setViewportView(tableDelAdm);
 		
 		JLabel lblSearchAdministrator_1 = new JLabel("Search Administrator:");
 		lblSearchAdministrator_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblSearchAdministrator_1.setBounds(6, 8, 237, 28);
+		lblSearchAdministrator_1.setBounds(6, 57, 237, 28);
 		panelDelAdm.add(lblSearchAdministrator_1);
 		
 		tfDelAdmSearch = new JTextField();
 		tfDelAdmSearch.setColumns(10);
-		tfDelAdmSearch.setBounds(345, 8, 145, 29);
+		tfDelAdmSearch.setBounds(345, 57, 145, 29);
 		panelDelAdm.add(tfDelAdmSearch);
 		
 		JButton button_10 = new JButton("Search");
@@ -1951,7 +2132,7 @@ public class Main_Admin extends JFrame {
 				}
 			}
 		});
-		button_10.setBounds(573, 8, 102, 29);
+		button_10.setBounds(573, 57, 102, 29);
 		panelDelAdm.add(button_10);
 		
 		JButton button_11 = new JButton("Delete");
@@ -1978,48 +2159,160 @@ public class Main_Admin extends JFrame {
 				  }
 			}
 		});
-		button_11.setBounds(684, 8, 102, 29);
+		button_11.setBounds(684, 57, 102, 29);
 		panelDelAdm.add(button_11);
 		
 		comboBoxDelAdm = new JComboBox<String>();
-		comboBoxDelAdm.setBounds(190, 8, 145, 29);
+		comboBoxDelAdm.setBounds(190, 57, 145, 29);
 		panelDelAdm.add(comboBoxDelAdm);
+		
+		JLabel lblDeleteAdministrator = new JLabel("Delete Administrator");
+		lblDeleteAdministrator.setOpaque(true);
+		lblDeleteAdministrator.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDeleteAdministrator.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblDeleteAdministrator.setBackground(Color.GRAY);
+		lblDeleteAdministrator.setBounds(0, 0, 963, 45);
+		panelDelAdm.add(lblDeleteAdministrator);
+		
+		JButton btnViewAllAdministrators = new JButton("View All Administrators");
+		btnViewAllAdministrators.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAdmCards.removeAll();
+				panelAdmCards.add(panelViewAdm);
+				panelAdmCards.repaint();
+				panelAdmCards.revalidate();
+			}
+		});
+		btnViewAllAdministrators.setOpaque(true);
+		btnViewAllAdministrators.setForeground(Color.WHITE);
+		btnViewAllAdministrators.setBackground(Color.DARK_GRAY);
+		btnViewAllAdministrators.setBounds(0, 0, 155, 30);
+		panelAdm.add(btnViewAllAdministrators);
+		
+		JButton btnAddNewAdministrator = new JButton("Add New Administrator");
+		btnAddNewAdministrator.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAdmCards.removeAll();
+				panelAdmCards.add(panelAddAdm);
+				panelAdmCards.repaint();
+				panelAdmCards.revalidate();
+			}
+		});
+		btnAddNewAdministrator.setOpaque(true);
+		btnAddNewAdministrator.setForeground(Color.WHITE);
+		btnAddNewAdministrator.setBackground(Color.DARK_GRAY);
+		btnAddNewAdministrator.setBounds(155, 0, 155, 30);
+		panelAdm.add(btnAddNewAdministrator);
+		
+		JButton btnEditAdministrator = new JButton("Edit Administrator");
+		btnEditAdministrator.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAdmCards.removeAll();
+				panelAdmCards.add(panelEditAdm);
+				panelAdmCards.repaint();
+				panelAdmCards.revalidate();
+			}
+		});
+		btnEditAdministrator.setOpaque(true);
+		btnEditAdministrator.setForeground(Color.WHITE);
+		btnEditAdministrator.setBackground(Color.DARK_GRAY);
+		btnEditAdministrator.setBounds(310, 0, 135, 30);
+		panelAdm.add(btnEditAdministrator);
+		
+		JButton btnDeleteAdministrator = new JButton("Delete Administrator");
+		btnDeleteAdministrator.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelAdmCards.removeAll();
+				panelAdmCards.add(panelDelAdm);
+				panelAdmCards.repaint();
+				panelAdmCards.revalidate();
+			}
+		});
+		btnDeleteAdministrator.setOpaque(true);
+		btnDeleteAdministrator.setForeground(Color.WHITE);
+		btnDeleteAdministrator.setBackground(Color.DARK_GRAY);
+		btnDeleteAdministrator.setBounds(445, 0, 140, 30);
+		panelAdm.add(btnDeleteAdministrator);
 		
 		JPanel panelRent = new JPanel();
 		panelRent.setBackground(Color.DARK_GRAY);
 		panelCards.add(panelRent, "name_21985245195754");
 		panelRent.setLayout(null);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBackground(SystemColor.textHighlight);
-		tabbedPane.setBounds(0, 0, 793, 472);
-		panelRent.add(tabbedPane);
+		JPanel panelRentCards = new JPanel();
+		panelRentCards.setBounds(0, 30, 963, 439);
+		panelRent.add(panelRentCards);
+		panelRentCards.setLayout(new CardLayout(0, 0));
 		
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("View All Rentals", null, panel, null);
-		panel.setLayout(null);
+		JPanel panelViewRentals = new JPanel();
+		panelRentCards.add(panelViewRentals, "name_17670032545699");
+		panelViewRentals.setLayout(null);
 		
 		JScrollPane scrollPane_12 = new JScrollPane();
-		scrollPane_12.setBounds(6, 6, 781, 430);
-		panel.add(scrollPane_12);
+		scrollPane_12.getViewport().setBackground(Color.GRAY);
+		scrollPane_12.setBounds(0, 46, 963, 390);
+		panelViewRentals.add(scrollPane_12);
 		
 		tableViewRent = new JTable();
+		tableViewRent.setSelectionForeground(Color.BLACK);
+		tableViewRent.setSelectionBackground(Color.LIGHT_GRAY);
+		tableViewRent.setForeground(Color.WHITE);
+		tableViewRent.setBackground(Color.GRAY);
 		scrollPane_12.setViewportView(tableViewRent);
 		
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Overdue Rentals", null, panel_1, null);
-		panel_1.setLayout(null);
+		JLabel lblRentalHistory = new JLabel("Rental History");
+		lblRentalHistory.setOpaque(true);
+		lblRentalHistory.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRentalHistory.setFont(new Font("Tahoma", Font.PLAIN, 39));
+		lblRentalHistory.setBackground(Color.GRAY);
+		lblRentalHistory.setBounds(0, 0, 963, 45);
+		panelViewRentals.add(lblRentalHistory);
 		
-		JPanel ButtonMenu = new JPanel();
-		ButtonMenu.setBackground(Color.DARK_GRAY);
-		ButtonMenu.setBounds(0, 0, 963, 100);
-		contentPane.add(ButtonMenu);
+		JPanel panelOverdue = new JPanel();
+		panelRentCards.add(panelOverdue, "name_17671714306749");
+		panelOverdue.setLayout(null);
+		
+		JButton btnViewAllRentals = new JButton("View All Rentals");
+		btnViewAllRentals.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelViewRentals);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnViewAllRentals.setOpaque(true);
+		btnViewAllRentals.setForeground(Color.WHITE);
+		btnViewAllRentals.setBackground(Color.DARK_GRAY);
+		btnViewAllRentals.setBounds(0, 0, 135, 30);
+		panelRent.add(btnViewAllRentals);
+		
+		JButton btnOverdueRentals = new JButton("Overdue Rentals");
+		btnOverdueRentals.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				panelRentCards.removeAll();
+				panelRentCards.add(panelOverdue);
+				panelRentCards.repaint();
+				panelRentCards.revalidate();
+			}
+		});
+		btnOverdueRentals.setOpaque(true);
+		btnOverdueRentals.setForeground(Color.WHITE);
+		btnOverdueRentals.setBackground(Color.DARK_GRAY);
+		btnOverdueRentals.setBounds(135, 0, 135, 30);
+		panelRent.add(btnOverdueRentals);
+		
+		JPanel panelButtons = new JPanel();
+		panelButtons.setBackground(Color.DARK_GRAY);
+		panelButtons.setBounds(0, 0, 963, 100);
+		contentPane.add(panelButtons);
 		
 		JButton btnCustomers = new JButton("");
+		btnCustomers.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/user-male2.png")));
 		btnCustomers.setContentAreaFilled(false);
 		btnCustomers.setBounds(363, 0, 120, 100);
 		btnCustomers.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnCustomers.setIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/user-male.png")));
+		btnCustomers.setIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/user-male3.png")));
 		btnCustomers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				panelCards.removeAll();
@@ -2061,6 +2354,7 @@ public class Main_Admin extends JFrame {
 		});
 		
 		JButton btnSettings = new JButton("");
+		btnSettings.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/keyring2.png")));
 		btnSettings.setContentAreaFilled(false);
 		btnSettings.setBounds(603, 0, 120, 100);
 		btnSettings.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -2081,6 +2375,7 @@ public class Main_Admin extends JFrame {
 		});
 		
 		JButton btnRentals = new JButton("");
+		btnRentals.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/database2.png")));
 		btnRentals.setContentAreaFilled(false);
 		btnRentals.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -2096,25 +2391,25 @@ public class Main_Admin extends JFrame {
 		btnRentals.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnRentals.setBounds(723, 0, 120, 100);
 		
-		ButtonMenu.setLayout(null);
-		ButtonMenu.add(btnCustomers);
-		ButtonMenu.add(btnMovies);
-		ButtonMenu.add(btnSettings);
-		ButtonMenu.add(btnRentals);
+		panelButtons.setLayout(null);
+		panelButtons.add(btnCustomers);
+		panelButtons.add(btnMovies);
+		panelButtons.add(btnSettings);
+		panelButtons.add(btnRentals);
 		
 		JButton btnLogout = new JButton("");
 		btnLogout.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/sign-ban2.png")));
 		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setBounds(843, 0, 120, 100);
-		ButtonMenu.add(btnLogout);
+		panelButtons.add(btnLogout);
 		btnLogout.setIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/sign-ban.png")));
 		
 		JButton button_12 = new JButton("");
 		button_12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				panelCards.removeAll();
-				panelCards.add(panelWelcome);
+				panelCards.add(panelHome);
 				panelCards.repaint();
 				panelCards.revalidate();
 			}
@@ -2129,7 +2424,7 @@ public class Main_Admin extends JFrame {
 		button_12.setContentAreaFilled(false);
 		button_12.setBackground(Color.DARK_GRAY);
 		button_12.setBounds(243, 0, 120, 100);
-		ButtonMenu.add(button_12);
+		panelButtons.add(button_12);
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int action = JOptionPane.showConfirmDialog(null, "Are you sure want to logout?", "Logout", JOptionPane.YES_NO_OPTION);
@@ -2141,10 +2436,10 @@ public class Main_Admin extends JFrame {
 			}
 		});
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.GRAY);
-		panel_4.setBounds(0, 569, 963, 29);
-		contentPane.add(panel_4);
+		JPanel panelStatusBar = new JPanel();
+		panelStatusBar.setBackground(Color.GRAY);
+		panelStatusBar.setBounds(0, 569, 963, 29);
+		contentPane.add(panelStatusBar);
 		
 		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in as Administrator ");
 		lblCurrentlyLoggedIn.setForeground(Color.WHITE);
@@ -2165,12 +2460,12 @@ public class Main_Admin extends JFrame {
 		lbCurrentUsernameAdmin = new JLabel();
 		lbCurrentUsernameAdmin.setForeground(Color.WHITE);
 		lbCurrentUsernameAdmin.setBounds(289, 7, 112, 16);
-		panel_4.setLayout(null);
-		panel_4.add(lblCurrentlyLoggedIn);
-		panel_4.add(lblUsername);
-		panel_4.add(lbCurrentUsernameAdmin);
-		panel_4.add(lblId_2);
-		panel_4.add(lbCurrentUserIDAdmin);
+		panelStatusBar.setLayout(null);
+		panelStatusBar.add(lblCurrentlyLoggedIn);
+		panelStatusBar.add(lblUsername);
+		panelStatusBar.add(lbCurrentUsernameAdmin);
+		panelStatusBar.add(lblId_2);
+		panelStatusBar.add(lbCurrentUserIDAdmin);
 		
 		tableCurrentUsername = new JTable();
 		contentPane.add(tableCurrentUsername);

@@ -992,10 +992,10 @@ public class Main_Cust extends JFrame {
 		btnAccount.setBounds(90, 0, 90, 30);
 		panelMov.add(btnAccount);
 
-		JPanel ButtonMenu = new JPanel();
-		ButtonMenu.setBackground(Color.DARK_GRAY);
-		ButtonMenu.setBounds(0, 0, 963, 90);
-		contentPane.add(ButtonMenu);
+		JPanel panelButtons = new JPanel();
+		panelButtons.setBackground(Color.DARK_GRAY);
+		panelButtons.setBounds(0, 0, 963, 90);
+		contentPane.add(panelButtons);
 
 		JButton btnCustomers = new JButton("");
 		btnCustomers.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -1069,42 +1069,42 @@ public class Main_Cust extends JFrame {
 			}
 			}
 		});
-		ButtonMenu.setLayout(null);
-		ButtonMenu.add(btnCustomers);
-		ButtonMenu.add(btnMovies);
-		ButtonMenu.add(btnLogout);
+		panelButtons.setLayout(null);
+		panelButtons.add(btnCustomers);
+		panelButtons.add(btnMovies);
+		panelButtons.add(btnLogout);
 
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.GRAY);
-		panel.setLayout(null);
-		panel.setBounds(0, 569, 963, 29);
-		contentPane.add(panel);
+		JPanel panelStatusBar = new JPanel();
+		panelStatusBar.setBackground(Color.GRAY);
+		panelStatusBar.setLayout(null);
+		panelStatusBar.setBounds(0, 569, 963, 29);
+		contentPane.add(panelStatusBar);
 
 		JLabel lblCurrentlyLoggedIn = new JLabel("Currently Logged in as Customer");
 		lblCurrentlyLoggedIn.setForeground(Color.WHITE);
 		lblCurrentlyLoggedIn.setBounds(6, 7, 182, 16);
-		panel.add(lblCurrentlyLoggedIn);
+		panelStatusBar.add(lblCurrentlyLoggedIn);
 
 		JLabel label_1 = new JLabel("Username:");
 		label_1.setForeground(Color.WHITE);
 		label_1.setBounds(200, 7, 73, 16);
-		panel.add(label_1);
+		panelStatusBar.add(label_1);
 
 		lbCurrentUsernameCust = new JLabel();
 		lbCurrentUsernameCust.setForeground(Color.WHITE);
 		lbCurrentUsernameCust.setBounds(264, 7, 112, 16);
-		panel.add(lbCurrentUsernameCust);
+		panelStatusBar.add(lbCurrentUsernameCust);
 
 		JLabel label_3 = new JLabel("ID:");
 		label_3.setForeground(Color.WHITE);
 		label_3.setBounds(388, 7, 27, 16);
-		panel.add(label_3);
+		panelStatusBar.add(label_3);
 
 		lbCurrentUserIDCust = new JLabel();
 		lbCurrentUserIDCust.setForeground(Color.WHITE);
 		lbCurrentUserIDCust.setText("22");
 		lbCurrentUserIDCust.setBounds(408, 7, 55, 16);
-		panel.add(lbCurrentUserIDCust);
+		panelStatusBar.add(lbCurrentUserIDCust);
 
 		tableCurrentUsername = new JTable();
 		contentPane.add(tableCurrentUsername);
