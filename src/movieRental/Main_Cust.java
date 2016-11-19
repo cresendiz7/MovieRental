@@ -49,6 +49,7 @@ public class Main_Cust extends JFrame {
 	private JTable tableCurrentRentals;
 	private JTextField tfCash;
 	private BigDecimal total_cost;
+	private LocalDate today = LocalDate.now();
 
 	/**
 	 * Launch the application.
@@ -165,7 +166,7 @@ public class Main_Cust extends JFrame {
 
 	public void refRentalHistoryTbl(){
 		try{
-			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date', returned as 'Returned?' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -181,7 +182,7 @@ public class Main_Cust extends JFrame {
 	
 	public void refCurrentRentalsTbl(){
 		try{
-			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date', returned as 'Returned?' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"' AND returned = 'NO'";
+			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"' AND returned = 'NO'";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -229,7 +230,6 @@ public class Main_Cust extends JFrame {
 			DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
 			format = format.withLocale( Locale.US );
 			LocalDate date = LocalDate.parse(return_date, format);
-			LocalDate today = LocalDate.now();
 			int days = (int) ChronoUnit.DAYS.between(today,date);
 			BigDecimal days2 = BigDecimal.valueOf(days);
 			
@@ -249,7 +249,6 @@ public class Main_Cust extends JFrame {
 		 int row = 0;
 		 while(row<count){
 			try{
-				LocalDate today = LocalDate.now();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM d, yyyy");
 				String date = today.format(formatter);
 				int movieid = Integer.parseInt(tableCheckout.getModel().getValueAt(row, 1).toString());
@@ -325,7 +324,6 @@ public class Main_Cust extends JFrame {
 		panelCards.add(panelWelcome, "name_145839516092709");
 		panelWelcome.setLayout(null);
 		
-		LocalDate today = LocalDate.now();
 		LocalDate tomorrow = today.plus(1, ChronoUnit.DAYS);
 		Date date = Date.from(tomorrow.atStartOfDay(ZoneId.systemDefault()).toInstant());
 		
@@ -663,12 +661,13 @@ public class Main_Cust extends JFrame {
 				String empty = "";
 				String date2 = ((JTextField)ReturnDateChooser.getDateEditor().getUiComponent()).getText();
 				  if(date2.equals(empty)){
-					  JOptionPane.showMessageDialog(null,"Must select a return date");
+					  JOptionPane.showMessageDialog(null,"Must select a return date.");
 					  return;
 					  }
+				  
 				String cash3 = tfCash.getText();
 				  if(cash3.equals(empty)){
-					  JOptionPane.showMessageDialog(null,"Give me some money!");
+					  JOptionPane.showMessageDialog(null,"Must insert cash value.");
 					  return;
 					  }
 				  
@@ -683,10 +682,10 @@ public class Main_Cust extends JFrame {
 					 panelRentCards.repaint();
 					 panelRentCards.revalidate();
 				 }else if(more){
-					 JOptionPane.showMessageDialog(null, "More MONEY!");
+					 JOptionPane.showMessageDialog(null, "Sorry, but I'm going to need more money.");
 				 }else if(change){
 					 BigDecimal change2 = cash.subtract(total_cost);
-					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2);
+					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2+".");
 					 Payment();
 				 }
 			}
@@ -791,8 +790,8 @@ public class Main_Cust extends JFrame {
 		btnReturnMovie.setForeground(Color.WHITE);
 		btnReturnMovie.setBackground(Color.DARK_GRAY);
 		btnReturnMovie.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try{
+		public void actionPerformed(ActionEvent e) {
+			try{
 					int row = tableCurrentRentals.getSelectedRow();
 					String movieid = (tableCurrentRentals.getModel().getValueAt(row, 1).toString());
 					String rentid = (tableCurrentRentals.getModel().getValueAt(row, 0).toString());
@@ -899,6 +898,14 @@ public class Main_Cust extends JFrame {
 		tfAge.setBounds(622, 209, 145, 29);
 		panelAccount.add(tfAge);
 		tfAge.setColumns(10);
+		
+		JLabel lblReturnMovie = new JLabel("Return Movie");
+		lblReturnMovie.setBounds(67, 209, 71, 16);
+		panelAccount.add(lblReturnMovie);
+		
+		JLabel lblSubmit_1 = new JLabel("Submit");
+		lblSubmit_1.setBounds(832, 70, 60, 16);
+		panelAccount.add(lblSubmit_1);
 		button_1.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
@@ -1047,7 +1054,6 @@ public class Main_Cust extends JFrame {
 		btnLogout.setOpaque(true);
 		btnLogout.setForeground(Color.WHITE);
 		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnLogout.setVerticalTextPosition(SwingConstants.BOTTOM);
 		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnLogout.setBounds(843, 0, 120, 90);
 		btnLogout.setBackground(Color.DARK_GRAY);
