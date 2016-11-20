@@ -6,9 +6,6 @@ import javax.swing.*;
 import java.sql.*;
 import javax.swing.border.*;
 
-import net.proteanit.sql.DbUtils;
-
-
 public class Signup extends JFrame {
 
 	/**
@@ -21,9 +18,7 @@ public class Signup extends JFrame {
 	private JTextField tfAge;
 	private JTextField tfUsername;
 	private JPasswordField tfPassword;
-	private JTable tableCurrentUsernameCust;
 	private String currentCust;
-	private JTable tableCurrentUsernameAdmin;
 	private String currentAdmin;
 
 	/**
@@ -140,6 +135,8 @@ public class Signup extends JFrame {
 		contentPane.add(checkBoxAdmin);
 
 		JButton btnSubmit = new JButton("");
+		btnSubmit.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnSubmit.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnSubmit.setRolloverIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-check2.png")));
 		btnSubmit.setContentAreaFilled(false);
 		btnSubmit.setIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-check.png")));
@@ -157,77 +154,56 @@ public class Signup extends JFrame {
 				  return;
 				  }
 				if(checkBoxAdmin.isSelected()){
-				  try{
-				      String query3 = ("SELECT username FROM admins");
-				      PreparedStatement pst3 = connection.prepareStatement(query3);
-				      ResultSet rs3 = pst3.executeQuery();
-				      tableCurrentUsernameAdmin.setModel(DbUtils.resultSetToTableModel(rs3));
-				      int row =0;
-				      int column = 0;
-				      currentAdmin = (tableCurrentUsernameAdmin.getModel().getValueAt(row,column).toString());
-				      }catch(Exception ex){
-				       JOptionPane.showMessageDialog(null,ex);
-				      }
 				    try{
 				      String query2 = ("SELECT username FROM admins WHERE username = ?");
 				      PreparedStatement pst2 = connection.prepareStatement(query2);
 				      pst2.setString(1, tfUsername.getText());
 				      ResultSet rs2 = pst2.executeQuery();
 				      if(rs2.next()){
-				       if(currentAdmin.equals(tfUsername.getText())){
+				    	  currentAdmin = rs2.getString("username");
+				      }else{}
+				      if(currentAdmin.equals(tfUsername.getText())){
 				        JOptionPane.showMessageDialog(null, "Username already exists.");
 				       return;
-				       }
-				      }
+				       }else{}
 				      }catch(Exception ex){
 				       JOptionPane.showMessageDialog(null,ex);
 				      }
-				try{
-					String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
-					PreparedStatement pst = connection.prepareStatement(query);
-					pst.setString(1, tfFirstName.getText() );
-					pst.setString(2, tfLastName.getText() );
-					pst.setString(3, tfAge.getText() );
-					pst.setString(4, tfUsername.getText() );
-					pst.setString(5, tfPassword.getText() );
+				    try{
+						String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
+						PreparedStatement pst = connection.prepareStatement(query);
+						pst.setString(1, tfFirstName.getText() );
+						pst.setString(2, tfLastName.getText() );
+						pst.setString(3, tfAge.getText() );
+						pst.setString(4, tfUsername.getText() );
+						pst.setString(5, tfPassword.getText() );
 
-					pst.execute();
+						pst.execute();
 
-					JOptionPane.showMessageDialog(null, "Profile Created.");
+						JOptionPane.showMessageDialog(null, "Profile Created.");
 
-					pst.close();
+						pst.close();
 
-					contentPane.setVisible(false);
-					dispose();
-					Login.main(null);
+						contentPane.setVisible(false);
+						dispose();
+						Login.main(null);
 
-				}catch(Exception ex){
-					ex.printStackTrace();
-				}
+					}catch(Exception ex){
+						ex.printStackTrace();
+					}
 			  }else{
-				  try{
-				      String query3 = ("SELECT username FROM customers");
-				      PreparedStatement pst3 = connection.prepareStatement(query3);
-				      ResultSet rs3 = pst3.executeQuery();
-				      tableCurrentUsernameCust.setModel(DbUtils.resultSetToTableModel(rs3));
-				      int row =0;
-				      int column = 0;
-				      currentCust = (tableCurrentUsernameCust.getModel().getValueAt(row,column).toString());
-				      }catch(Exception ex){
-				       JOptionPane.showMessageDialog(null,ex);
-				      }
 				    try{
 				      String query2 = ("SELECT username FROM customers WHERE username = ?");
 				      PreparedStatement pst2 = connection.prepareStatement(query2);
 				      pst2.setString(1, tfUsername.getText());
 				      ResultSet rs2 = pst2.executeQuery();
 				      if(rs2.next()){
-				       if(currentCust.equals(tfUsername.getText())){}
-				       else{
-				        JOptionPane.showMessageDialog(null, "Username already exists.");
-				       return;
-				       }
-				      }
+				    	  currentCust = rs2.getString("username");
+				      }else{}
+				       if(currentCust.equals(tfUsername.getText())){
+				    	   JOptionPane.showMessageDialog(null, "Username already exists.");
+				    	   return;
+				       }else{}
 				      }catch(Exception ex){
 				       JOptionPane.showMessageDialog(null,ex);
 				      }
@@ -256,10 +232,12 @@ public class Signup extends JFrame {
 			  }
 			}
 		});
-		btnSubmit.setBounds(415, 111, 50, 50);
+		btnSubmit.setBounds(361, 111, 116, 50);
 		contentPane.add(btnSubmit);
 
 		JButton btnLoginPage = new JButton("");
+		btnLoginPage.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnLoginPage.setHorizontalAlignment(SwingConstants.RIGHT);
 		btnLoginPage.setContentAreaFilled(false);
 		btnLoginPage.setRolloverIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-ban2.png")));
 		btnLoginPage.setIcon(new ImageIcon(Signup.class.getResource("/fortyeight/sign-ban48.png")));
@@ -273,14 +251,8 @@ public class Signup extends JFrame {
 				}
 			}
 		});
-		btnLoginPage.setBounds(415, 173, 50, 50);
+		btnLoginPage.setBounds(361, 173, 116, 50);
 		contentPane.add(btnLoginPage);
-
-		tableCurrentUsernameCust = new JTable();
-		contentPane.add(tableCurrentUsernameCust);
-
-		tableCurrentUsernameAdmin = new JTable();
-		contentPane.add(tableCurrentUsernameAdmin);
 		
 		JLabel lblSubmit = new JLabel("Submit");
 		lblSubmit.setHorizontalAlignment(SwingConstants.RIGHT);

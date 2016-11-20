@@ -86,11 +86,13 @@ public class Login{
 		frmLogin.getContentPane().add(checkBoxAdmin);
 		
 		JButton btnLogin = new JButton("");
+		btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnLogin.setHorizontalAlignment(SwingConstants.LEFT);
 		btnLogin.setContentAreaFilled(false);
 		btnLogin.setRolloverIcon(new ImageIcon(Login.class.getResource("/twentyfour/sign-check2.png")));
 		btnLogin.setBackground(Color.DARK_GRAY);
 		btnLogin.setIcon(new ImageIcon(Login.class.getResource("/twentyfour/sign-check.png")));
-		btnLogin.setBounds(130, 187, 30, 30);
+		btnLogin.setBounds(120, 187, 85, 30);
 		frmLogin.getContentPane().add(btnLogin);
 		btnLogin.addActionListener(new ActionListener(){
 			@SuppressWarnings("deprecation")
@@ -235,11 +237,13 @@ public class Login{
 		frmLogin.getContentPane().add(lblUserLogin);
 		
 		JButton btnCustomerSignUp = new JButton("");
+		btnCustomerSignUp.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		btnCustomerSignUp.setHorizontalAlignment(SwingConstants.LEADING);
 		btnCustomerSignUp.setRolloverIcon(new ImageIcon(Login.class.getResource("/twentyfour/user-id2.png")));
 		btnCustomerSignUp.setContentAreaFilled(false);
 		btnCustomerSignUp.setIcon(new ImageIcon(Login.class.getResource("/twentyfour/user-id.png")));
 		btnCustomerSignUp.addActionListener(signup); 
-		btnCustomerSignUp.setBounds(130, 227, 30, 30);
+		btnCustomerSignUp.setBounds(120, 227, 103, 30);
 		frmLogin.getContentPane().add(btnCustomerSignUp);
 		
 		tableCurrentIDAdmin = new JTable();
