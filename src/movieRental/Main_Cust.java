@@ -223,7 +223,7 @@ public class Main_Cust extends JFrame {
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
-
+			
 			pst.close();
 			rs.close();
 

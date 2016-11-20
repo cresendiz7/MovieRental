@@ -20,6 +20,7 @@ public class Signup extends JFrame {
 	private JPasswordField tfPassword;
 	private String currentCust;
 	private String currentAdmin;
+	private JCheckBox checkBoxAdmin;
 
 	/**
 	 * Launch the application.
@@ -129,7 +130,35 @@ public class Signup extends JFrame {
 		tfPassword.setBounds(130, 277, 145, 29);
 		contentPane.add(tfPassword);
 
-		JCheckBox checkBoxAdmin = new JCheckBox("Admin?");
+		checkBoxAdmin = new JCheckBox("Admin?");
+		checkBoxAdmin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+					if(checkBoxAdmin.isSelected()){
+						JPanel panel = new JPanel();
+						JLabel label = new JLabel("Enter password:");
+						JPasswordField pass = new JPasswordField(10);
+						panel.add(label);
+						panel.add(pass);
+						String correct = "admin";
+						String[] options = new String[]{"OK", "Cancel"};
+						int option = JOptionPane.showOptionDialog(null, panel, "Authentication",
+						                         JOptionPane.NO_OPTION, JOptionPane.PLAIN_MESSAGE,
+						                         null, options, options[1]);
+						if(option == 0)
+						{
+						    char[] password = pass.getPassword();
+						    if(String.valueOf(password).equals(correct)){}
+							else{
+								JOptionPane.showMessageDialog(null, "Wrong Password");
+								checkBoxAdmin.setSelected(false);
+							}
+						}else{
+							checkBoxAdmin.setSelected(false);
+						}
+					}
+					else{}
+			}
+		});
 		checkBoxAdmin.setForeground(Color.WHITE);
 		checkBoxAdmin.setBounds(130, 318, 75, 29);
 		contentPane.add(checkBoxAdmin);
@@ -167,7 +196,6 @@ public class Signup extends JFrame {
 				       return;
 				       }else{}
 				      }catch(Exception ex){
-				       JOptionPane.showMessageDialog(null,ex);
 				      }
 				    try{
 						String query = "INSERT INTO admins (first_name, last_name, age, username, password) VALUES (?,?,?,?,?)";
