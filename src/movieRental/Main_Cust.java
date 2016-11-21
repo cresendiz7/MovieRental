@@ -219,6 +219,7 @@ public class Main_Cust extends JFrame {
 	public void refCurrentRentalsTbl(){
 		try{
 			String return_date;
+			LocalDate return_date2;
 			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -226,21 +227,40 @@ public class Main_Cust extends JFrame {
 				return_date = rs.getString("Return Date");
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
 				format = format.withLocale( Locale.US );
-				LocalDate return_date2 = LocalDate.parse(return_date, format);	
+				return_date2 = LocalDate.parse(return_date, format);
+			}
 				if(return_date2.isAfter(today)){
 					try{
-						String query2 = "UPDATE rentals SET returned = 'YES'";
+						String query2 = "UPDATE rentals SET returned = 'NO'";
 						PreparedStatement pst2 = connection.prepareStatement(query2);
-						ResultSet rs2 = pst.executeQuery();
+						pst.executeQuery();
 						pst2.execute();
-						tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs2));
 					}catch(Exception ex){
 						JOptionPane.showMessageDialog(null, ex);
 					}
 					}
-			}
-			pst.close();
-			rs.close();
+				if(return_date2.isBefore(today)){
+						try{
+							String query3 = "UPDATE rentals SET returned = 'YES'";
+							PreparedStatement pst3 = connection.prepareStatement(query3);
+							pst.executeQuery();
+							pst3.execute();
+						}catch(Exception ex){
+							JOptionPane.showMessageDialog(null, ex);
+						}
+						}
+				if(return_date2.equals(today)){
+					try{
+						String query4 = "UPDATE rentals SET returned = 'NO'";
+						PreparedStatement pst4 = connection.prepareStatement(query4);
+						pst.executeQuery();
+						pst4.execute();
+						
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, ex);
+					}
+					}
+			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
