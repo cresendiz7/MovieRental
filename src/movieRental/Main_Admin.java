@@ -562,7 +562,17 @@ public class Main_Admin extends JFrame {
 		scrollPane.getViewport().setBackground(Color.GRAY);
 		panelViewCust.add(scrollPane);
 		
-		tableViewCust = new JTable();
+		tableViewCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableViewCust.setSelectionForeground(Color.BLACK);
 		tableViewCust.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewCust.setForeground(Color.WHITE);
@@ -591,7 +601,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_1.getViewport().setBackground(Color.GRAY);
 		panelAddCust.add(scrollPane_1);
 		
-		tableNewCust = new JTable();
+		tableNewCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableNewCust.setBackground(Color.GRAY);
 		tableNewCust.setForeground(Color.WHITE);
 		tableNewCust.setSelectionForeground(Color.BLACK);
@@ -794,7 +814,17 @@ public class Main_Admin extends JFrame {
 		btnSearch.setBounds(501, 56, 30, 30);
 		panelEditCust.add(btnSearch);
 		
-		tableEditCust = new JTable();
+		tableEditCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableEditCust.setSelectionForeground(Color.BLACK);
 		tableEditCust.setSelectionBackground(Color.LIGHT_GRAY);
 		tableEditCust.setBackground(Color.GRAY);
@@ -982,7 +1012,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_3.setBounds(0, 98, 963, 341);
 		panelDelCust.add(scrollPane_3);
 		
-		tableDelCust = new JTable();
+		tableDelCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableDelCust.setBackground(Color.GRAY);
 		tableDelCust.setForeground(Color.WHITE);
 		tableDelCust.setSelectionBackground(Color.LIGHT_GRAY);
@@ -1153,7 +1193,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_4.setBounds(0, 44, 963, 395);
 		panelViewMov.add(scrollPane_4);
 		
-		tableViewMov = new JTable();
+		tableViewMov = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};	
 		tableViewMov.setSelectionForeground(Color.BLACK);
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewMov.setForeground(Color.WHITE);
@@ -1181,7 +1231,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_5.setBounds(0, 44, 963, 267);
 		panelAddMov.add(scrollPane_5);
 		
-		tableNewMov = new JTable();
+		tableNewMov = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableNewMov.setSelectionForeground(Color.BLACK);
 		tableNewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableNewMov.setForeground(Color.WHITE);
@@ -1377,7 +1437,17 @@ public class Main_Admin extends JFrame {
 		tfRentRateEdit.setBounds(349, 323, 54, 28);
 		panelEditMov.add(tfRentRateEdit);
 		
-		tableEditMov = new JTable();
+		tableEditMov = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableEditMov.setBackground(Color.GRAY);
 		tableEditMov.setForeground(Color.WHITE);
 		tableEditMov.setSelectionBackground(Color.LIGHT_GRAY);
@@ -1589,7 +1659,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_7.setBounds(0, 98, 963, 338);
 		panelDelMov.add(scrollPane_7);
 		
-		tableDelMov = new JTable();
+		tableDelMov = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableDelMov.setSelectionForeground(Color.BLACK);
 		tableDelMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableDelMov.setForeground(Color.WHITE);
@@ -1771,7 +1851,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_8.setBounds(0, 46, 963, 393);
 		panelViewAdm.add(scrollPane_8);
 		
-		tableViewAdm = new JTable();
+		tableViewAdm = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableViewAdm.setSelectionForeground(Color.BLACK);
 		tableViewAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewAdm.setForeground(Color.WHITE);
@@ -1801,7 +1891,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_9.setBounds(0, 45, 963, 269);
 		panelAddAdm.add(scrollPane_9);
 		
-		tableNewAdm = new JTable();
+		tableNewAdm = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableNewAdm.setSelectionForeground(Color.BLACK);
 		tableNewAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableNewAdm.setForeground(Color.WHITE);
@@ -1953,7 +2053,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_10.setBounds(0, 97, 963, 217);
 		panelEditAdm.add(scrollPane_10);
 		
-		tableEditAdm = new JTable();
+		tableEditAdm = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableEditAdm.setBackground(Color.GRAY);
 		tableEditAdm.setForeground(Color.WHITE);
 		tableEditAdm.setSelectionForeground(Color.BLACK);
@@ -2191,7 +2301,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_11.setBounds(0, 97, 963, 339);
 		panelDelAdm.add(scrollPane_11);
 		
-		tableDelAdm = new JTable();
+		tableDelAdm = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableDelAdm.setSelectionForeground(Color.BLACK);
 		tableDelAdm.setSelectionBackground(Color.LIGHT_GRAY);
 		tableDelAdm.setForeground(Color.WHITE);
@@ -2372,7 +2492,17 @@ public class Main_Admin extends JFrame {
 		scrollPane_12.setBounds(0, 46, 963, 390);
 		panelViewRentals.add(scrollPane_12);
 		
-		tableViewRent = new JTable();
+		tableViewRent = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableViewRent.setSelectionForeground(Color.BLACK);
 		tableViewRent.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewRent.setForeground(Color.WHITE);

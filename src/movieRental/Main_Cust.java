@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import javax.swing.*;
 import java.sql.*;
 import javax.swing.border.*;
+import javax.swing.table.*;
 import net.proteanit.sql.DbUtils;
 import com.toedter.calendar.*;
 import java.beans.PropertyChangeEvent;
@@ -32,7 +33,6 @@ public class Main_Cust extends JFrame {
 	private JTextField tfAge;
 	private JTable tableViewMov;
 	private JTextField tfUserID;
-	private JTable tableCurrentUsername;
 	public static JLabel lbCurrentUsernameCust;
 	public static JLabel lbCurrentUserIDCust;
 	private JTable tableRentalHistory;
@@ -218,15 +218,29 @@ public class Main_Cust extends JFrame {
 	
 	public void refCurrentRentalsTbl(){
 		try{
+			String return_date;
 			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
-
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
-			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
-			
+			while(rs.next()){
+				return_date = rs.getString("Return Date");
+				DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
+				format = format.withLocale( Locale.US );
+				LocalDate return_date2 = LocalDate.parse(return_date, format);	
+				if(return_date2.isAfter(today)){
+					try{
+						String query2 = "UPDATE rentals SET returned = 'YES'";
+						PreparedStatement pst2 = connection.prepareStatement(query2);
+						ResultSet rs2 = pst.executeQuery();
+						pst2.execute();
+						tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs2));
+					}catch(Exception ex){
+						JOptionPane.showMessageDialog(null, ex);
+					}
+					}
+			}
 			pst.close();
 			rs.close();
-
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -306,7 +320,6 @@ public class Main_Cust extends JFrame {
 				JOptionPane.showMessageDialog(null, ex);
 			}
 			}
-			JOptionPane.showMessageDialog(null, "Thank you for your business!");
 			JOptionPane.showMessageDialog(null, "Transaction Complete");
 			delCart();
 			ReturnDateChooser.setCalendar(null);
@@ -412,7 +425,29 @@ public class Main_Cust extends JFrame {
 		scrollPane_4.getViewport().setBackground(Color.GRAY);
 		panelSelectMov.add(scrollPane_4);				
 		
-		tableViewMov = new JTable();
+		tableViewMov = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+		        Component c = super.prepareRenderer(renderer, row, column);
+		        if (c instanceof JComponent) {
+		        	if(column == 1 || column == 2){
+		        		JComponent jc = (JComponent) c;
+			            jc.setToolTipText(getValueAt(row, column).toString());
+		        	}else if(column == 0 || column == 3 || column == 4 || column == 5 || column == 6 || column == 7){
+		        		JComponent jc = (JComponent) c;
+		        	}
+		        }
+		        return c;
+		    }
+			};
 		tableViewMov.setSelectionForeground(Color.BLACK);
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableViewMov.setForeground(Color.WHITE);
@@ -482,7 +517,17 @@ public class Main_Cust extends JFrame {
 		scrollPane_1.getViewport().setBackground(Color.GRAY);
 		panelCart.add(scrollPane_1);																		
 		
-		tableCart = new JTable();
+		tableCart = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableCart.setSelectionForeground(Color.BLACK);
 		tableCart.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCart.setForeground(Color.WHITE);
@@ -675,7 +720,17 @@ public class Main_Cust extends JFrame {
 		scrollPane_3.setBounds(0, 46, 963, 175);
 		panelCheckout.add(scrollPane_3);																																						
 		
-		tableCheckout = new JTable();
+		tableCheckout = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableCheckout.setSelectionForeground(Color.BLACK);
 		tableCheckout.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCheckout.setForeground(Color.WHITE);
@@ -758,6 +813,10 @@ public class Main_Cust extends JFrame {
 					 BigDecimal change2 = cash.subtract(total_cost);
 					 JOptionPane.showMessageDialog(null, "Thank you for your business!\nHere is your change, $"+change2+".");
 					 Payment();
+					 panelRentCards.removeAll();
+					 panelRentCards.add(panelCart);
+					 panelRentCards.repaint();
+					 panelRentCards.revalidate();
 				 }
 			}
 		});																																												
@@ -829,7 +888,17 @@ public class Main_Cust extends JFrame {
 		scrollPane_2.setBounds(0, 0, 0, 0);
 		panelAccount.add(scrollPane_2);
 		
-		tableViewEditCust = new JTable();
+		tableViewEditCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		scrollPane_2.setViewportView(tableViewEditCust);
 		
 		tfUserID = new JTextField();
@@ -846,7 +915,17 @@ public class Main_Cust extends JFrame {
 		scrollPane.setBounds(10, 270, 456, 162);
 		panelAccount.add(scrollPane);				
 		
-		tableRentalHistory = new JTable();
+		tableRentalHistory = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableRentalHistory.setBackground(Color.GRAY);
 		tableRentalHistory.setForeground(Color.WHITE);
 		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
@@ -861,7 +940,17 @@ public class Main_Cust extends JFrame {
 		scrollPane_5.getViewport().setBackground(Color.GRAY);
 		panelAccount.add(scrollPane_5);
 		
-		tableCurrentRentals = new JTable();
+		tableCurrentRentals = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
 		tableCurrentRentals.setSelectionForeground(Color.BLACK);
 		tableCurrentRentals.setSelectionBackground(Color.LIGHT_GRAY);
 		tableCurrentRentals.setForeground(Color.WHITE);
@@ -1154,8 +1243,5 @@ public class Main_Cust extends JFrame {
 		
 		lbCurrentCustAge = new JLabel();
 		panelStatusBar.add(lbCurrentCustAge);
-
-		tableCurrentUsername = new JTable();
-		contentPane.add(tableCurrentUsername);
 	}
 }
