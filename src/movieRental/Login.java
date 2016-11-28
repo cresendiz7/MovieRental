@@ -119,10 +119,8 @@ public class Login{
 								int row =0;
 								int column = 0;
 								int column2 = 1;
-								int column3 = 2;
 								str = (tableCurrentIDAdmin.getModel().getValueAt(row,column).toString());
 								name = (tableCurrentIDAdmin.getModel().getValueAt(row,column2).toString());
-								age = (tableCurrentIDAdmin.getModel().getValueAt(row,column3).toString());
 								
 							}catch (Exception ex) { 
 								JOptionPane.showMessageDialog(null, ex);
@@ -133,7 +131,6 @@ public class Login{
 							Main_Admin.lbCurrentUserIDAdmin.setText(str);
 							Main_Admin.lbNameAdmin.setText(name);
 							Main_Admin.lbCurrentUsernameAdmin.setText(Username.getText());
-							Main_Admin.lbCurrentAdminAge.setText(age);
 							wel.setVisible(true);
 							frmLogin.dispose();
 						}
@@ -185,6 +182,7 @@ public class Login{
 							Main_Cust.lbNameCust.setText(name);
 							Main_Cust.lbCurrentUsernameCust.setText(Username.getText());
 							Main_Cust.lbCurrentCustAge.setText(age);
+							Main_Cust.delCart();
 							window.setVisible(true);
 							frmLogin.dispose();
 						}

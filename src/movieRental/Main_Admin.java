@@ -4,6 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import javax.swing.border.*;
 import net.proteanit.sql.DbUtils;
 import com.toedter.calendar.JYearChooser;
@@ -85,13 +89,14 @@ public class Main_Admin extends JFrame {
 	private JComboBox<String> comboBoxNewRating;
 	private JComboBox<String> comboBoxEditGenre;
 	private JComboBox<String> comboBoxEditRating;
+	private JComboBox<String> comboBoxSearchCustRent;
 	private JTextField tfTitle2;
 	private JTextField tfEditMovSearch;
 	private JTextField tfDelMovSearch;
 	private JTextField tfmovieID;
 	public static JLabel lbCurrentUsernameAdmin;
 	public static JLabel lbCurrentUserIDAdmin;
-	private JTable tableViewRent;
+	private JTable tableRentalHistory;
 	private JTextField tfRentRateNew;
 	private JTextField tfRentRateEdit;
 	public static JLabel lbNameAdmin;
@@ -100,6 +105,10 @@ public class Main_Admin extends JFrame {
 	private String currentAdmin;
 	private String allCust;
 	private String allAdmin;
+	private JTable tableCurrentRent;
+	private JTextField tfSearchCustRent;
+	private JTable tableRentCust;
+	private LocalDate today = LocalDate.now();
 	
 	/**
 	 * Launch the application.
@@ -187,11 +196,19 @@ public class Main_Admin extends JFrame {
 		try{
 			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-					+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+					+ "rating as 'Rating', length as 'Length' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+			tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+			tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 			pst.close();
 			rs.close();
@@ -205,11 +222,19 @@ public class Main_Admin extends JFrame {
 		try{
 			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-					+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+					+ "rating as 'Rating', length as 'Length' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableNewMov.setModel(DbUtils.resultSetToTableModel(rs));
+			tableNewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+			tableNewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+			tableNewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tableNewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+			tableNewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+			tableNewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+			tableNewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+			tableNewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 			pst.close();
 			rs.close();
@@ -223,11 +248,19 @@ public class Main_Admin extends JFrame {
 		try{
 			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-					+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+					+ "rating as 'Rating', length as 'Length' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableEditMov.setModel(DbUtils.resultSetToTableModel(rs));
+			tableEditMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+			tableEditMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+			tableEditMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tableEditMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+			tableEditMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+			tableEditMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+			tableEditMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+			tableEditMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 			pst.close();
 			rs.close();
@@ -241,11 +274,19 @@ public class Main_Admin extends JFrame {
 		try{
 			String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-					+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+					+ "rating as 'Rating', length as 'Length' FROM movies";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableDelMov.setModel(DbUtils.resultSetToTableModel(rs));
+			tableDelMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+			tableDelMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+			tableDelMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tableDelMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+			tableDelMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+			tableDelMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+			tableDelMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+			tableDelMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 			pst.close();
 			rs.close();
@@ -316,13 +357,45 @@ public class Main_Admin extends JFrame {
 		}
 	}
 	
-	public void refAllRentTbl(){
+	public void refCustRent(){
 		try{
-			String query = "SELECT userid as 'User ID', rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals";
+			String query = "SELECT userid as'Customer ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username' FROM customers";
 			
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
-			tableViewRent.setModel(DbUtils.resultSetToTableModel(rs));
+			tableRentCust.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void refCurrentRentals(){
+		try{
+			String query = "SELECT rentid as 'Rental ID', userid as 'User ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals WHERE returned = 'NO'";
+			
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableCurrentRent.setModel(DbUtils.resultSetToTableModel(rs));
+
+			pst.close();
+			rs.close();
+
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	public void refRentalHistory(){
+		try{
+			String query = "SELECT rentid as 'Rental ID', userid as 'User ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals";
+			
+			PreparedStatement pst = connection.prepareStatement(query);
+			ResultSet rs = pst.executeQuery();
+			tableRentalHistory.setModel(DbUtils.resultSetToTableModel(rs));
 
 			pst.close();
 			rs.close();
@@ -380,6 +453,19 @@ public class Main_Admin extends JFrame {
 			comboBoxDelCust.addItem("last_name");
 			comboBoxDelCust.addItem("age");
 			comboBoxDelCust.addItem("username");
+		}catch(Exception ex){
+			JOptionPane.showMessageDialog(null, ex);
+		}
+	}
+	
+	public void fillComboCustRent(){
+		try{
+			comboBoxSearchCustRent.removeAllItems();
+			comboBoxSearchCustRent.addItem("userid");
+			comboBoxSearchCustRent.addItem("first_name");
+			comboBoxSearchCustRent.addItem("last_name");
+			comboBoxSearchCustRent.addItem("age");
+			comboBoxSearchCustRent.addItem("username");
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -1203,6 +1289,28 @@ public class Main_Admin extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 				}
+			public String getToolTipText(MouseEvent e) {
+
+                String toolTipText = null;
+                Point p = e.getPoint(); // MouseEvent
+                int col = columnAtPoint(p);
+                int row = rowAtPoint(p);
+                Component comp = prepareRenderer(getCellRenderer(row, col), row, col);
+
+                Rectangle bounds = getCellRect(row, col, false);
+
+
+                try {
+                    //comment row, exclude heading
+                  if (comp.getPreferredSize().width > bounds.width) {
+                        toolTipText = getValueAt(row, col).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+                return toolTipText;
+
+               }
 			};	
 		tableViewMov.setSelectionForeground(Color.BLACK);
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
@@ -1241,6 +1349,28 @@ public class Main_Admin extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 				}
+			public String getToolTipText(MouseEvent e) {
+
+                String toolTipText = null;
+                Point p = e.getPoint(); // MouseEvent
+                int col = columnAtPoint(p);
+                int row = rowAtPoint(p);
+                Component comp = prepareRenderer(getCellRenderer(row, col), row, col);
+
+                Rectangle bounds = getCellRect(row, col, false);
+
+
+                try {
+                    //comment row, exclude heading
+                  if (comp.getPreferredSize().width > bounds.width) {
+                        toolTipText = getValueAt(row, col).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+                return toolTipText;
+
+               }
 			};
 		tableNewMov.setSelectionForeground(Color.BLACK);
 		tableNewMov.setSelectionBackground(Color.LIGHT_GRAY);
@@ -1447,6 +1577,28 @@ public class Main_Admin extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 				}
+			public String getToolTipText(MouseEvent e) {
+
+                String toolTipText = null;
+                Point p = e.getPoint(); // MouseEvent
+                int col = columnAtPoint(p);
+                int row = rowAtPoint(p);
+                Component comp = prepareRenderer(getCellRenderer(row, col), row, col);
+
+                Rectangle bounds = getCellRect(row, col, false);
+
+
+                try {
+                    //comment row, exclude heading
+                  if (comp.getPreferredSize().width > bounds.width) {
+                        toolTipText = getValueAt(row, col).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+                return toolTipText;
+
+               }
 			};
 		tableEditMov.setBackground(Color.GRAY);
 		tableEditMov.setForeground(Color.WHITE);
@@ -1463,7 +1615,7 @@ public class Main_Admin extends JFrame {
 					
 					String query = "SELECT movieid as 'Movie ID', title as 'Title', description as 'Description',"
 					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
-					+ " length as 'Length (Minutes)' FROM movies WHERE movieid = ' "+Table_click+" ' ";
+					+ " length as 'Length' FROM movies WHERE movieid = ' "+Table_click+" ' ";
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 				
@@ -1473,7 +1625,7 @@ public class Main_Admin extends JFrame {
 					tfTitle2.setText(rs.getString("Title"));
 					comboBoxEditGenre.setSelectedItem(rs.getString("Genre"));
 					yearChooserEdit.setYear(rs.getInt("Release Year"));
-					spinnerEditMin.setValue(new Integer(rs.getInt("Length (Minutes)")));
+					spinnerEditMin.setValue(new Integer(rs.getInt("Length")));
 					comboBoxEditRating.setSelectedItem(rs.getString("Rating"));
 					taDescriptionEdit.setText(rs.getString("Description"));
 					tfRentRateEdit.setText(rs.getString("Rental Rate"));
@@ -1587,11 +1739,20 @@ public class Main_Admin extends JFrame {
 					String value1 = tfEditMovSearch.getText()+"%";
 					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
-							+ " length as 'Length (Minutes)' FROM movies WHERE "+ value0 +" LIKE '"+value1+"' ";
+							+ " length as 'Length' FROM movies WHERE "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 					tableEditMov.setModel(DbUtils.resultSetToTableModel(rs));
+					tableEditMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+					tableEditMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+					tableEditMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+					tableEditMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+					tableEditMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+					tableEditMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+					tableEditMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+					tableEditMov.getColumnModel().getColumn(7).setPreferredWidth(6);
+					
 
 					pst.close();
 					rs.close();
@@ -1656,7 +1817,7 @@ public class Main_Admin extends JFrame {
 		
 		JScrollPane scrollPane_7 = new JScrollPane();
 		scrollPane_7.getViewport().setBackground(Color.GRAY);
-		scrollPane_7.setBounds(0, 98, 963, 338);
+		scrollPane_7.setBounds(0, 97, 963, 338);
 		panelDelMov.add(scrollPane_7);
 		
 		tableDelMov = new JTable(){
@@ -1669,6 +1830,28 @@ public class Main_Admin extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 				}
+			public String getToolTipText(MouseEvent e) {
+
+                String toolTipText = null;
+                Point p = e.getPoint(); // MouseEvent
+                int col = columnAtPoint(p);
+                int row = rowAtPoint(p);
+                Component comp = prepareRenderer(getCellRenderer(row, col), row, col);
+
+                Rectangle bounds = getCellRect(row, col, false);
+
+
+                try {
+                    //comment row, exclude heading
+                  if (comp.getPreferredSize().width > bounds.width) {
+                        toolTipText = getValueAt(row, col).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+                return toolTipText;
+
+               }
 			};
 		tableDelMov.setSelectionForeground(Color.BLACK);
 		tableDelMov.setSelectionBackground(Color.LIGHT_GRAY);
@@ -1736,11 +1919,19 @@ public class Main_Admin extends JFrame {
 					String value1 = tfDelMovSearch.getText()+"%";
 					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
-							+ " length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+							+ " length as 'Length' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 					
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 					tableDelMov.setModel(DbUtils.resultSetToTableModel(rs));
+					tableDelMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+					tableDelMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+					tableDelMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+					tableDelMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+					tableDelMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+					tableDelMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+					tableDelMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+					tableDelMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 					pst.close();
 					rs.close();
@@ -2477,22 +2668,18 @@ public class Main_Admin extends JFrame {
 		panelCards.add(panelRent, "name_21985245195754");
 		panelRent.setLayout(null);
 		
-		JPanel panelRentCards = new JPanel();
-		panelRentCards.setBounds(0, 30, 963, 439);
-		panelRent.add(panelRentCards);
-		panelRentCards.setLayout(new CardLayout(0, 0));
-		
 		JPanel panelViewRentals = new JPanel();
+		panelViewRentals.setBounds(0, 30, 963, 439);
+		panelRent.add(panelViewRentals);
 		panelViewRentals.setBackground(Color.LIGHT_GRAY);
-		panelRentCards.add(panelViewRentals, "name_17670032545699");
 		panelViewRentals.setLayout(null);
 		
 		JScrollPane scrollPane_12 = new JScrollPane();
 		scrollPane_12.getViewport().setBackground(Color.GRAY);
-		scrollPane_12.setBounds(0, 46, 963, 390);
+		scrollPane_12.setBounds(490, 300, 473, 140);
 		panelViewRentals.add(scrollPane_12);
 		
-		tableViewRent = new JTable(){
+		tableRentalHistory = new JTable(){
 			/**
 			 * 
 			 */
@@ -2503,16 +2690,137 @@ public class Main_Admin extends JFrame {
 				return false;
 				}
 			};
-		tableViewRent.setSelectionForeground(Color.BLACK);
-		tableViewRent.setSelectionBackground(Color.LIGHT_GRAY);
-		tableViewRent.setForeground(Color.WHITE);
-		tableViewRent.setBackground(Color.GRAY);
-		tableViewRent.getTableHeader().setReorderingAllowed(false);
-		tableViewRent.getTableHeader().setResizingAllowed(false);
-		tableViewRent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane_12.setViewportView(tableViewRent);
+		tableRentalHistory.setSelectionForeground(Color.BLACK);
+		tableRentalHistory.setSelectionBackground(Color.LIGHT_GRAY);
+		tableRentalHistory.setForeground(Color.WHITE);
+		tableRentalHistory.setBackground(Color.GRAY);
+		tableRentalHistory.getTableHeader().setReorderingAllowed(false);
+		tableRentalHistory.getTableHeader().setResizingAllowed(false);
+		tableRentalHistory.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_12.setViewportView(tableRentalHistory);
 		
-		JLabel lblRentalHistory = new JLabel("Rental History");
+		JScrollPane scrollPane_15 = new JScrollPane();
+		scrollPane_15.getViewport().setBackground(Color.GRAY);
+		scrollPane_15.setBounds(490, 134, 473, 140);
+		panelViewRentals.add(scrollPane_15);
+		
+		tableCurrentRent = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
+		tableCurrentRent = new JTable();
+		tableCurrentRent.setBackground(Color.GRAY);
+		tableCurrentRent.setForeground(Color.WHITE);
+		tableCurrentRent.setSelectionBackground(Color.LIGHT_GRAY);
+		tableCurrentRent.setSelectionForeground(Color.BLACK);
+		tableCurrentRent.getTableHeader().setReorderingAllowed(false);
+		tableCurrentRent.getTableHeader().setResizingAllowed(false);
+		tableCurrentRent.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_15.setViewportView(tableCurrentRent);
+		
+		JScrollPane scrollPane_16 = new JScrollPane();
+		scrollPane_16.getViewport().setBackground(Color.GRAY);
+		scrollPane_16.setBounds(0, 134, 478, 305);
+		panelViewRentals.add(scrollPane_16);
+		
+		tableRentCust = new JTable(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 4318462929069833067L;
+
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+				}
+			};
+		tableRentCust = new JTable();
+		tableRentCust.setSelectionForeground(Color.BLACK);
+		tableRentCust.setSelectionBackground(Color.LIGHT_GRAY);
+		tableRentCust.setForeground(Color.WHITE);
+		tableRentCust.setBackground(Color.GRAY);
+		tableRentCust.getTableHeader().setReorderingAllowed(false);
+		tableRentCust.getTableHeader().setResizingAllowed(false);
+		tableRentCust.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		tableRentCust.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try{
+					int row = tableRentCust.getSelectedRow();
+					String Table_click = (tableRentCust.getModel().getValueAt(row, 0).toString());
+					String return_date;
+					int rent_id;
+					LocalDate return_date2;
+					String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ Table_click +"'";
+					PreparedStatement pst = connection.prepareStatement(query);
+					ResultSet rs = pst.executeQuery();
+					
+					while(rs.next()){
+						return_date = rs.getString("Return Date");
+						rent_id =rs.getInt("Rental ID");
+						DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
+						format = format.withLocale( Locale.US );
+						return_date2 = LocalDate.parse(return_date, format);
+						
+						if(return_date2.isAfter(today)){
+							try{
+								String query2 = "UPDATE rentals SET returned = 'NO' WHERE rentid = '"+rent_id+"'";
+								PreparedStatement pst2 = connection.prepareStatement(query2);
+								pst2.execute();
+							}catch(Exception ex){
+								JOptionPane.showMessageDialog(null, ex);
+							}
+							}
+						if(return_date2.isBefore(today)){
+								try{
+									String query3 = "UPDATE rentals SET returned = 'YES' WHERE rentid = '"+rent_id+"'";
+									PreparedStatement pst3 = connection.prepareStatement(query3);
+									pst3.execute();
+								}catch(Exception ex){
+									JOptionPane.showMessageDialog(null, ex);
+								}
+								}
+						if(return_date2.equals(today)){
+							try{
+								String query4 = "UPDATE rentals SET returned = 'NO' WHERE rentid = '"+rent_id+"'";
+								PreparedStatement pst4 = connection.prepareStatement(query4);
+								pst4.execute();
+								
+							}catch(Exception ex){
+								JOptionPane.showMessageDialog(null, ex);
+							}
+						}
+					}
+					
+					String query3 = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals WHERE userid = ' "+Table_click+" ' AND returned = 'NO'";
+					PreparedStatement pst3 = connection.prepareStatement(query3);
+					ResultSet rs3 = pst3.executeQuery();
+					tableCurrentRent.setModel(DbUtils.resultSetToTableModel(rs3));
+					rs3.close();
+					pst3.close();
+				
+					String query2 = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals WHERE userid = ' "+Table_click+" '";
+					PreparedStatement pst2 = connection.prepareStatement(query2);
+					ResultSet rs2 = pst2.executeQuery();
+					tableRentalHistory.setModel(DbUtils.resultSetToTableModel(rs2));
+					rs2.close();
+					pst2.close();
+					
+				}catch (Exception ex) { 
+					JOptionPane.showMessageDialog(null, ex);
+				}
+			}
+		});
+		scrollPane_16.setViewportView(tableRentCust);
+		
+		JLabel lblRentalHistory = new JLabel("Rentals");
 		lblRentalHistory.setForeground(Color.WHITE);
 		lblRentalHistory.setOpaque(true);
 		lblRentalHistory.setHorizontalAlignment(SwingConstants.CENTER);
@@ -2521,42 +2829,78 @@ public class Main_Admin extends JFrame {
 		lblRentalHistory.setBounds(0, 0, 963, 45);
 		panelViewRentals.add(lblRentalHistory);
 		
-		JPanel panelOverdue = new JPanel();
-		panelOverdue.setBackground(Color.LIGHT_GRAY);
-		panelRentCards.add(panelOverdue, "name_17671714306749");
-		panelOverdue.setLayout(null);
+		JLabel lblRentalHistory_1 = new JLabel("Rental History:");
+		lblRentalHistory_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblRentalHistory_1.setBounds(490, 285, 107, 16);
+		panelViewRentals.add(lblRentalHistory_1);
 		
-		JButton btnViewAllRentals = new JButton("View All Rentals");
-		btnViewAllRentals.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnViewAllRentals.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				panelRentCards.removeAll();
-				panelRentCards.add(panelViewRentals);
-				panelRentCards.repaint();
-				panelRentCards.revalidate();
+		JLabel lblCurrentRentals = new JLabel("Current Rentals:");
+		lblCurrentRentals.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCurrentRentals.setBounds(490, 120, 121, 16);
+		panelViewRentals.add(lblCurrentRentals);
+		
+		JLabel lblSearchCustomer = new JLabel("Search Customer:");
+		lblSearchCustomer.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblSearchCustomer.setBounds(10, 58, 237, 28);
+		panelViewRentals.add(lblSearchCustomer);
+		
+		comboBoxSearchCustRent = new JComboBox<String>();
+		comboBoxSearchCustRent.setBounds(194, 58, 145, 29);
+		panelViewRentals.add(comboBoxSearchCustRent);
+		
+		tfSearchCustRent = new JTextField();
+		tfSearchCustRent.setColumns(10);
+		tfSearchCustRent.setBounds(349, 58, 145, 29);
+		panelViewRentals.add(tfSearchCustRent);
+		
+		JButton button_13 = new JButton("");
+		button_13.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					String value0 = (String)comboBoxSearchCustRent.getSelectedItem();
+					String value1 = tfSearchCustRent.getText()+"%";
+					String query = "SELECT userid as'User ID', first_name as 'First Name', last_name as 'Last Name', age as 'Age', username as 'Username' FROM customers WHERE "+value0+" LIKE '"+value1+"'";
+					
+					PreparedStatement pst = connection.prepareStatement(query);
+					ResultSet rs = pst.executeQuery();
+					tableRentCust.setModel(DbUtils.resultSetToTableModel(rs));
+
+					pst.close();
+					rs.close();
+
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, ex);
+				}
 			}
 		});
-		btnViewAllRentals.setOpaque(true);
-		btnViewAllRentals.setForeground(Color.WHITE);
-		btnViewAllRentals.setBackground(Color.DARK_GRAY);
-		btnViewAllRentals.setBounds(0, 0, 135, 30);
-		panelRent.add(btnViewAllRentals);
+		button_13.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/twentyfour/search-hover.png")));
+		button_13.setIcon(new ImageIcon(Main_Admin.class.getResource("/twentyfour/search.png")));
+		button_13.setContentAreaFilled(false);
+		button_13.setBounds(506, 57, 30, 30);
+		panelViewRentals.add(button_13);
 		
-		JButton btnOverdueRentals = new JButton("Overdue Rentals");
-		btnOverdueRentals.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		btnOverdueRentals.addActionListener(new ActionListener() {
+		JButton btnViewAll = new JButton("");
+		btnViewAll.setHorizontalAlignment(SwingConstants.TRAILING);
+		btnViewAll.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/database2.png")));
+		btnViewAll.setIcon(new ImageIcon(Main_Admin.class.getResource("/fortyeight/database.png")));
+		btnViewAll.setContentAreaFilled(false);
+		btnViewAll.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				panelRentCards.removeAll();
-				panelRentCards.add(panelOverdue);
-				panelRentCards.repaint();
-				panelRentCards.revalidate();
+				refCurrentRentals();
+				refRentalHistory();
 			}
 		});
-		btnOverdueRentals.setOpaque(true);
-		btnOverdueRentals.setForeground(Color.WHITE);
-		btnOverdueRentals.setBackground(Color.DARK_GRAY);
-		btnOverdueRentals.setBounds(135, 0, 135, 30);
-		panelRent.add(btnOverdueRentals);
+		btnViewAll.setBounds(814, 72, 149, 50);
+		panelViewRentals.add(btnViewAll);
+		
+		JLabel lblCustomers_1 = new JLabel("Customers:");
+		lblCustomers_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblCustomers_1.setBounds(10, 113, 114, 16);
+		panelViewRentals.add(lblCustomers_1);
+		
+		JLabel lblViewAllRentals = new JLabel("View All Rentals");
+		lblViewAllRentals.setBounds(814, 93, 88, 16);
+		panelViewRentals.add(lblViewAllRentals);
 		
 		JPanel panelButtons = new JPanel();
 		panelButtons.setBackground(Color.DARK_GRAY);
@@ -2564,6 +2908,7 @@ public class Main_Admin extends JFrame {
 		contentPane.add(panelButtons);
 		
 		JButton btnCustomers = new JButton("");
+		btnCustomers.setToolTipText("Customers");
 		btnCustomers.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCustomers.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/user-male2.png")));
 		btnCustomers.setContentAreaFilled(false);
@@ -2586,6 +2931,7 @@ public class Main_Admin extends JFrame {
 		});
 		
 		JButton btnMovies = new JButton("");
+		btnMovies.setToolTipText("Movies");
 		btnMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMovies.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/device-tv2.png")));
 		btnMovies.setContentAreaFilled(false);
@@ -2612,6 +2958,7 @@ public class Main_Admin extends JFrame {
 		});
 		
 		JButton btnSettings = new JButton("");
+		btnSettings.setToolTipText("Administrators");
 		btnSettings.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnSettings.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/keyring2.png")));
 		btnSettings.setContentAreaFilled(false);
@@ -2634,6 +2981,7 @@ public class Main_Admin extends JFrame {
 		});
 		
 		JButton btnRentals = new JButton("");
+		btnRentals.setToolTipText("Rentals");
 		btnRentals.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRentals.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/database2.png")));
 		btnRentals.setContentAreaFilled(false);
@@ -2643,7 +2991,8 @@ public class Main_Admin extends JFrame {
 				panelCards.add(panelRent);
 				panelCards.repaint();
 				panelCards.revalidate();
-				refAllRentTbl();
+				fillComboCustRent();
+				refCustRent();
 			}
 		});
 		
@@ -2658,6 +3007,7 @@ public class Main_Admin extends JFrame {
 		panelButtons.add(btnRentals);
 		
 		JButton btnLogout = new JButton("");
+		btnLogout.setToolTipText("Logout");
 		btnLogout.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogout.setRolloverIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/sign-ban2.png")));
 		btnLogout.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -2667,6 +3017,7 @@ public class Main_Admin extends JFrame {
 		btnLogout.setIcon(new ImageIcon(Main_Admin.class.getResource("/nintysix/sign-ban.png")));
 		
 		JButton button_12 = new JButton("");
+		button_12.setToolTipText("Home");
 		button_12.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		button_12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -2728,15 +3079,5 @@ public class Main_Admin extends JFrame {
 		panelStatusBar.add(lbCurrentUsernameAdmin);
 		panelStatusBar.add(lblId_2);
 		panelStatusBar.add(lbCurrentUserIDAdmin);
-		
-		JLabel lblAge = new JLabel("Age:");
-		lblAge.setForeground(Color.WHITE);
-		lblAge.setBounds(563, 7, 27, 16);
-		panelStatusBar.add(lblAge);
-		
-		lbCurrentAdminAge = new JLabel();
-		lbCurrentAdminAge.setForeground(Color.WHITE);
-		lbCurrentAdminAge.setBounds(591, 7, 55, 16);
-		panelStatusBar.add(lbCurrentAdminAge);
 	}
 }

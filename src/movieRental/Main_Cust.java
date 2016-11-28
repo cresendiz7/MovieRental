@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import javax.swing.*;
 import java.sql.*;
 import javax.swing.border.*;
-import javax.swing.table.*;
 import net.proteanit.sql.DbUtils;
 import com.toedter.calendar.*;
 import java.beans.PropertyChangeEvent;
@@ -52,6 +51,7 @@ public class Main_Cust extends JFrame {
 	public static JLabel lbNameCust;
 	public static JLabel lbCurrentCustAge;
 	private String allCust;
+	private int currentMov;
 	private String currentCust;
 
 	/**
@@ -68,17 +68,12 @@ public class Main_Cust extends JFrame {
 				try {
 					Main_Cust frame = new Main_Cust();
 					frame.setVisible(true);
+					Main_Cust.delCart();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		//Delete Customer Cart on exit
-		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-	        public void run() {
-	        	Main_Cust.delCart();
-	        }
-	    }, "Shutdown-thread"));
 	}
 
 	public void refEditCustTbl(){
@@ -125,43 +120,75 @@ public class Main_Cust extends JFrame {
 		try{
 			String query;
 			if(Integer.parseInt(lbCurrentCustAge.getText()) > 17){
-			query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
-					+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-					+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies";
+			query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description', "
+					+ "genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+					+ "rating as 'Rating', length as 'Length' FROM movies";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
 			tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+			tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+			tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+			tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+			tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 			pst.close();
 			rs.close();
 			}else if(Integer.parseInt(lbCurrentCustAge.getText()) == 17){
-				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
-						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-						+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13' OR rating = 'R'";
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description', "
+						+ "genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', length as 'Length' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13' OR rating = 'R'";
 
 				PreparedStatement pst = connection.prepareStatement(query);
 				ResultSet rs = pst.executeQuery();
 				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+				tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+				tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 				pst.close();
 				rs.close();
 			}else if(Integer.parseInt(lbCurrentCustAge.getText()) < 17 && Integer.parseInt(lbCurrentCustAge.getText()) >= 13){
-				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
-						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-						+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13'";
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description', "
+						+ "genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', length as 'Length' FROM movies WHERE rating = 'G' OR rating = 'PG' OR rating = 'PG-13'";
 
 				PreparedStatement pst = connection.prepareStatement(query);
 				ResultSet rs = pst.executeQuery();
 				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+				tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+				tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 				pst.close();
 				rs.close();
 			}else if(Integer.parseInt(lbCurrentCustAge.getText()) < 13){
-				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
-						+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
-						+ "rating as 'Rating', length as 'Length (Minutes)' FROM movies WHERE rating = 'G' OR rating = 'PG'";
+				query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description', "
+						+ "genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', "
+						+ "rating as 'Rating', length as 'Length' FROM movies WHERE rating = 'G' OR rating = 'PG'";
 
 				PreparedStatement pst = connection.prepareStatement(query);
 				ResultSet rs = pst.executeQuery();
 				tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+				tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+				tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+				tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+				tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 				pst.close();
 				rs.close();
 			}
@@ -185,7 +212,7 @@ public class Main_Cust extends JFrame {
 
 	public void refCartTbl(){
 		try{
-			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate', replacement_cost as 'Replacement Cost' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -219,21 +246,23 @@ public class Main_Cust extends JFrame {
 	public void refCurrentRentalsTbl(){
 		try{
 			String return_date;
+			int rent_id;
 			LocalDate return_date2;
 			String query = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"'";
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
+			
 			while(rs.next()){
 				return_date = rs.getString("Return Date");
+				rent_id =rs.getInt("Rental ID");
 				DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d, yyyy");
 				format = format.withLocale( Locale.US );
 				return_date2 = LocalDate.parse(return_date, format);
-			}
+				
 				if(return_date2.isAfter(today)){
 					try{
-						String query2 = "UPDATE rentals SET returned = 'NO'";
+						String query2 = "UPDATE rentals SET returned = 'NO' WHERE rentid = '"+rent_id+"'";
 						PreparedStatement pst2 = connection.prepareStatement(query2);
-						pst.executeQuery();
 						pst2.execute();
 					}catch(Exception ex){
 						JOptionPane.showMessageDialog(null, ex);
@@ -241,9 +270,8 @@ public class Main_Cust extends JFrame {
 					}
 				if(return_date2.isBefore(today)){
 						try{
-							String query3 = "UPDATE rentals SET returned = 'YES'";
+							String query3 = "UPDATE rentals SET returned = 'YES' WHERE rentid = '"+rent_id+"'";
 							PreparedStatement pst3 = connection.prepareStatement(query3);
-							pst.executeQuery();
 							pst3.execute();
 						}catch(Exception ex){
 							JOptionPane.showMessageDialog(null, ex);
@@ -251,16 +279,21 @@ public class Main_Cust extends JFrame {
 						}
 				if(return_date2.equals(today)){
 					try{
-						String query4 = "UPDATE rentals SET returned = 'NO'";
+						String query4 = "UPDATE rentals SET returned = 'NO' WHERE rentid = '"+rent_id+"'";
 						PreparedStatement pst4 = connection.prepareStatement(query4);
-						pst.executeQuery();
 						pst4.execute();
 						
 					}catch(Exception ex){
 						JOptionPane.showMessageDialog(null, ex);
 					}
-					}
-			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs));
+				}
+			}
+			
+	     	String query2 = "SELECT rentid as 'Rental ID', movieid as 'Movie ID', rental_date as 'Date Rented', return_date as 'Return Date' FROM rentals where userid = '"+ lbCurrentUserIDCust.getText() +"' AND returned = 'NO' ";
+			PreparedStatement pst2 = connection.prepareStatement(query2);
+			ResultSet rs2 = pst2.executeQuery();
+			tableCurrentRentals.setModel(DbUtils.resultSetToTableModel(rs2));
+			
 		}catch(Exception ex){
 			JOptionPane.showMessageDialog(null, ex);
 		}
@@ -268,7 +301,7 @@ public class Main_Cust extends JFrame {
 	
 	public void refCheckoutTbl(){
 		try{
-			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate', replacement_cost as 'Replacement Cost' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
+			String query = "SELECT userid as 'User ID', movieid as 'Movie ID', title as 'Title', rental_rate as 'Rental Rate' FROM cart where userid = '"+ lbCurrentUserIDCust.getText() +"'";
 
 			PreparedStatement pst = connection.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
@@ -455,18 +488,28 @@ public class Main_Cust extends JFrame {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 				}
-			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-		        Component c = super.prepareRenderer(renderer, row, column);
-		        if (c instanceof JComponent) {
-		        	if(column == 1 || column == 2){
-		        		JComponent jc = (JComponent) c;
-			            jc.setToolTipText(getValueAt(row, column).toString());
-		        	}else if(column == 0 || column == 3 || column == 4 || column == 5 || column == 6 || column == 7){
-		        		JComponent jc = (JComponent) c;
-		        	}
-		        }
-		        return c;
-		    }
+			public String getToolTipText(MouseEvent e) {
+
+                String toolTipText = null;
+                Point p = e.getPoint(); // MouseEvent
+                int col = columnAtPoint(p);
+                int row = rowAtPoint(p);
+                Component comp = prepareRenderer(getCellRenderer(row, col), row, col);
+
+                Rectangle bounds = getCellRect(row, col, false);
+
+
+                try {
+                    //comment row, exclude heading
+                  if (comp.getPreferredSize().width > bounds.width) {
+                        toolTipText = getValueAt(row, col).toString();
+                    }
+                } catch (RuntimeException e1) {
+                    //catch null pointer exception if mouse is over an empty line
+                }
+                return toolTipText;
+
+               }
 			};
 		tableViewMov.setSelectionForeground(Color.BLACK);
 		tableViewMov.setSelectionBackground(Color.LIGHT_GRAY);
@@ -636,30 +679,48 @@ public class Main_Cust extends JFrame {
 		panelSelectMov.add(btnAddToCart);
 		btnAddToCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-					try{
-						int row = tableViewMov.getSelectedRow();
-						int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
-						String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
-						String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
-						String repl_cost = (tableViewMov.getModel().getValueAt(row, 7).toString());
+				try{
+					int row = tableViewMov.getSelectedRow();
+					int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+					
+					String query2 = ("SELECT movieid FROM cart WHERE movieid = ?");
+				    PreparedStatement pst2 = connection.prepareStatement(query2);
+				    pst2.setInt(1, movieid);
+				    
+				    ResultSet rs2 = pst2.executeQuery();
+				    
+				    if(rs2.next()){
+				    	currentMov = rs2.getInt("movieid");
+				    }else{}
+				     if(currentMov == movieid){
+				    	 JOptionPane.showMessageDialog(null, "Movie already in cart.");
+				    	 return;
+				     }else{}
+				     }catch(Exception ex){
+				       JOptionPane.showMessageDialog(null,ex);
+				     }
+				try{
+					int row = tableViewMov.getSelectedRow();
+					int movieid = Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString());
+					String title = (tableViewMov.getModel().getValueAt(row, 1).toString());
+					String rent_rate = (tableViewMov.getModel().getValueAt(row, 5).toString());
+					
+					String query = "INSERT INTO cart (userid,movieid,title,rental_rate) SELECT * FROM(SELECT ?,?,?,?) AS tmp WHERE NOT EXISTS (SELECT movieid FROM cart WHERE movieid = "+ Integer.parseInt(tableViewMov.getModel().getValueAt(row, 0).toString()) +") LIMIT 1;";
+					PreparedStatement pst = connection.prepareStatement(query);
 
-						String query = "INSERT INTO cart (userid,movieid,title,rental_rate,replacement_cost) VALUES (?,?,?,?,?)";
-						PreparedStatement pst = connection.prepareStatement(query);
+					pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
+					pst.setInt(2, movieid);
+					pst.setString(3, title);
+					pst.setString(4, rent_rate);
+					
+					pst.execute();
+					pst.close();
 
-						pst.setInt(1, Integer.parseInt(lbCurrentUserIDCust.getText()));
-						pst.setInt(2, movieid);
-						pst.setString(3, title);
-						pst.setString(4, rent_rate);
-						pst.setString(5, repl_cost);
-
-						pst.execute();
-						pst.close();
-
-					}catch(Exception ex){
-						JOptionPane.showMessageDialog(null, "Select the movie you wish to add to your cart.");
-					}
-					refCartTbl();
-				  }
+				}catch(Exception ex){
+					JOptionPane.showMessageDialog(null, "Select the movie you wish to add to your cart.");
+				}
+				refCartTbl();
+			  }
 		});																												
 		
 		JLabel label = new JLabel("Search Movie:");
@@ -692,11 +753,19 @@ public class Main_Cust extends JFrame {
 					String value1 = tfRentMovieSearch.getText()+"%";
 					String query = "SELECT movieid as 'Movie ID', title as 'Title',description as 'Description',"
 							+ " genre as 'Genre', release_year as 'Release Year', rental_rate as 'Rental Rate', rating as 'Rating',"
-							+ " replacement_cost as 'Replacement Cost', length as 'Length (Minutes)' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
+							+ " length as 'Length' FROM movies where "+ value0 +" LIKE '"+value1+"' ";
 
 					PreparedStatement pst = connection.prepareStatement(query);
 					ResultSet rs = pst.executeQuery();
 					tableViewMov.setModel(DbUtils.resultSetToTableModel(rs));
+					tableViewMov.getColumnModel().getColumn(0).setPreferredWidth(6);
+					tableViewMov.getColumnModel().getColumn(1).setPreferredWidth(120);
+					tableViewMov.getColumnModel().getColumn(2).setPreferredWidth(100);
+					tableViewMov.getColumnModel().getColumn(3).setPreferredWidth(6);
+					tableViewMov.getColumnModel().getColumn(4).setPreferredWidth(6);
+					tableViewMov.getColumnModel().getColumn(5).setPreferredWidth(6);
+					tableViewMov.getColumnModel().getColumn(6).setPreferredWidth(6);
+					tableViewMov.getColumnModel().getColumn(7).setPreferredWidth(6);
 
 					pst.close();
 					rs.close();
@@ -927,12 +996,12 @@ public class Main_Cust extends JFrame {
 		
 		JLabel lblCurrentRentals = new JLabel("Rental History");
 		lblCurrentRentals.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblCurrentRentals.setBounds(13, 253, 107, 16);
+		lblCurrentRentals.setBounds(10, 242, 107, 16);
 		panelAccount.add(lblCurrentRentals);		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.getViewport().setBackground(Color.GRAY);
-		scrollPane.setBounds(10, 270, 456, 162);
+		scrollPane.setBounds(10, 258, 456, 174);
 		panelAccount.add(scrollPane);				
 		
 		tableRentalHistory = new JTable(){
@@ -956,7 +1025,7 @@ public class Main_Cust extends JFrame {
 		scrollPane.setViewportView(tableRentalHistory);
 		
 		JScrollPane scrollPane_5 = new JScrollPane();
-		scrollPane_5.setBounds(10, 35, 456, 162);
+		scrollPane_5.setBounds(10, 35, 456, 183);
 		scrollPane_5.getViewport().setBackground(Color.GRAY);
 		panelAccount.add(scrollPane_5);
 		
@@ -1153,6 +1222,7 @@ public class Main_Cust extends JFrame {
 		contentPane.add(panelButtons);
 
 		JButton btnCustomers = new JButton("");
+		btnCustomers.setToolTipText("Home");
 		btnCustomers.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnCustomers.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/house2.png")));
 		btnCustomers.setContentAreaFilled(false);
@@ -1176,6 +1246,7 @@ public class Main_Cust extends JFrame {
 		});
 
 		JButton btnMovies = new JButton("");
+		btnMovies.setToolTipText("Movies");
 		btnMovies.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnMovies.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/device-tv2.png")));
 		btnMovies.setContentAreaFilled(false);
@@ -1203,6 +1274,7 @@ public class Main_Cust extends JFrame {
 		});
 
 		JButton btnLogout = new JButton("");
+		btnLogout.setToolTipText("Logout");
 		btnLogout.setRolloverIcon(new ImageIcon(Main_Cust.class.getResource("/nintysix/sign-ban2.png")));
 		btnLogout.setContentAreaFilled(false);
 		btnLogout.setFocusPainted(false);
