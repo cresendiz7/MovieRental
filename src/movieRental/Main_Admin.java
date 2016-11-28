@@ -1317,6 +1317,7 @@ public class Main_Admin extends JFrame {
 		tableViewMov.setForeground(Color.WHITE);
 		tableViewMov.setBackground(Color.GRAY);
 		tableViewMov.getTableHeader().setReorderingAllowed(false);
+		tableViewMov.getTableHeader().setResizingAllowed(false);
 		tableViewMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_4.setViewportView(tableViewMov);
 		
@@ -1377,6 +1378,7 @@ public class Main_Admin extends JFrame {
 		tableNewMov.setForeground(Color.WHITE);
 		tableNewMov.setBackground(Color.GRAY);
 		tableNewMov.getTableHeader().setReorderingAllowed(false);
+		tableNewMov.getTableHeader().setResizingAllowed(false);
 		tableNewMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_5.setViewportView(tableNewMov);
 		
@@ -1605,6 +1607,7 @@ public class Main_Admin extends JFrame {
 		tableEditMov.setSelectionBackground(Color.LIGHT_GRAY);
 		tableEditMov.setSelectionForeground(Color.BLACK);
 		tableEditMov.getTableHeader().setReorderingAllowed(false);
+		tableEditMov.getTableHeader().setResizingAllowed(false);
 		tableEditMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableEditMov.addMouseListener(new MouseAdapter() {
 			@Override
@@ -1858,6 +1861,7 @@ public class Main_Admin extends JFrame {
 		tableDelMov.setForeground(Color.WHITE);
 		tableDelMov.setBackground(Color.GRAY);
 		tableDelMov.getTableHeader().setReorderingAllowed(false);
+		tableDelMov.getTableHeader().setResizingAllowed(false);
 		tableDelMov.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_7.setViewportView(tableDelMov);
 		
