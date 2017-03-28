@@ -9,7 +9,7 @@ Connection conn = null;
 
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://sql9.freemysqlhosting.net:3306/sql9146720?autoReconnect=true&useSSL=false", "sql9146720", "a1PU1hi6wS");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://mysql3.gear.host:3306/movierental?autoReconnect=true&useSSL=false", "movierental", "Hd46~Ld9mH_s");
 			System.out.println("Connection Successful ");
 			return conn;
 		}catch(Exception ex){
@@ -20,7 +20,7 @@ Connection conn = null;
 }
 
 //To access online database 
-// use this:   Connection conn = DriverManager.getConnection("jdbc:mysql://sql9.freemysqlhosting.net:3306/sql9146720?autoReconnect=true&useSSL=false", "sql9146720", "a1PU1hi6wS");
+// use this:   Connection conn = DriverManager.getConnection("jdbc:mysql://mysql3.gear.host:3306/movierental?autoReconnect=true&useSSL=false", "movierental", "Hd46~Ld9mH_s");
 
 //To access local database
 // use this:   Connection conn = DriverManager.getConnection("jdbc:mysql://Localhost:3306/project_wei?autoReconnect=true&useSSL=false", "root", "1234");

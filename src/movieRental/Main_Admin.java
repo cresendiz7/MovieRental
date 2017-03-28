@@ -574,13 +574,13 @@ public class Main_Admin extends JFrame {
 	 * Create the frame.
 	 */
 	public Main_Admin() {
-		setBackground(Color.DARK_GRAY);
 		setResizable(false);
+		setBackground(Color.DARK_GRAY);
 		setTitle("Movie Project");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Main_Admin.class.getResource("/fortyeight/device-tv.png")));
 		connection = databaseConnection.dbConnection();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 969, 627);
+		setBounds(100, 100, 969, 639);
 		contentPane = new JPanel();
 		contentPane.setBackground(Color.DARK_GRAY);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
