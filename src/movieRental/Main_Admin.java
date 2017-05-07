@@ -611,7 +611,7 @@ public class Main_Admin extends JFrame {
 		panelHome.add(lbNameAdmin);
 		
 		JLabel label_24 = new JLabel("");
-		label_24.setIcon(new ImageIcon(Main_Admin.class.getResource("/Logo/movie-vector-icons.png")));
+		label_24.setIcon(new ImageIcon(Main_Admin.class.getResource("/Logo/54mbwinsk1p3t22.jpg")));
 		label_24.setVerticalAlignment(SwingConstants.BOTTOM);
 		label_24.setHorizontalAlignment(SwingConstants.CENTER);
 		label_24.setBounds(0, 0, 963, 473);
